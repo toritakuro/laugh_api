@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  java:
+    image: maven:3.9-eclipse-temurin-8
+    restart: always
+    command: mvn spring-boot:run
+    volumes:
+      - type: bind
+        source: ./spring_prj
+        target: /opt/spring_prj
+      - type: volume
+        source: m2
+        target: /root/.m2
+        volume:
+              nocopy: true
+    working_dir: /opt/spring_prj
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  db:
+    build:
+      context: .
+      dockerfile: ./infra/docker/mysql/Dockerfile
+    ports:
+      - target: 3306
+        published: ${DB_PUBLISHED_PORT:-3306}
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: bind
+        source: ./infra/docker/mysql/my.cnf
+        target: /etc/mysql/conf.d/my.cnf
+      - type: bind
+        source: ./infra/docker/mysql/db
+        target: /var/lib/mysql
+
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE:-c4cup}
+      - MYSQL_USER=${DB_USERNAME:-java}
+      - MYSQL_PASSWORD=${DB_PASSWORD:-secret}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-secret}
+
+
+volumes:
+  m2:
+    external: true

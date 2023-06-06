@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.c4ccup.laugh.repository.DemoRepository">
+
+  <resultMap id="DemoResultMap" type="com.c4ccup.laugh.domain.Demo">
+    <id column="id" property="id" />
+    <result column="title" property="title"/>
+  </resultMap>
+
+  <select id="findById" parameterType="int" resultMap="DemoResultMap">
+    SELECT
+      id,title
+    FROM
+      DEMO
+    WHERE
+      id = #{id}
+  </select>
+
+</mapper>

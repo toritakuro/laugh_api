@@ -2,6 +2,7 @@ version: '3'
 
 services:
   java:
+    container_name: "java"
     image: maven:3.9-eclipse-temurin-8
     restart: always
     command: mvn spring-boot:run
@@ -20,6 +21,7 @@ services:
     depends_on:
       - db
   db:
+    container_name: "db"
     build:
       context: .
       dockerfile: ./infra/docker/mysql/Dockerfile
@@ -41,7 +43,6 @@ services:
       - MYSQL_USER=${DB_USERNAME:-java}
       - MYSQL_PASSWORD=${DB_PASSWORD:-secret}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-secret}
-
 
 volumes:
   m2:

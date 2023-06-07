@@ -5,7 +5,7 @@ services:
     container_name: "java"
     image: maven:3.9-eclipse-temurin-8
     restart: always
-    command: mvn spring-boot:run
+    command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
     volumes:
       - type: bind
         source: ./spring_prj
@@ -17,7 +17,8 @@ services:
               nocopy: true
     working_dir: /opt/spring_prj
     ports:
-      - "8080:8080"
+      - 8080:8080
+      - 5005:5005
     depends_on:
       - db
   db:

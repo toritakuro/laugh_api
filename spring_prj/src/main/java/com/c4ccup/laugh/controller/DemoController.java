@@ -22,6 +22,7 @@ public class DemoController {
     @RequestMapping(method = RequestMethod.GET)
     public String init() {
         Demo demo = demoRepository.findById(1);
+        demoRepository.isert();
         System.out.println(demo);
         return demo.getTitle();
     }

@@ -8,4 +8,5 @@ public interface DemoRepository {
 
     // @Select("SELECT id, title FROM DEMO WHERE id = #{id}")
     public Demo findById(Integer id);
+    public void isert();
 }

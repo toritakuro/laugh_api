@@ -16,4 +16,9 @@
       id = #{id}
   </select>
 
+
+  <insert id="isert">
+	INSERT INTO DEMO (id, title) VALUES (4 ,"ああああ");
+  </insert>
+
 </mapper>

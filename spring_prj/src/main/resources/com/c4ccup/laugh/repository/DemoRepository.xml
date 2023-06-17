@@ -15,10 +15,20 @@
     WHERE
       id = #{id}
   </select>
-
-
-  <insert id="isert">
-	INSERT INTO DEMO (id, title) VALUES (4 ,"ああああ");
+  
+  <insert id="insert">
+	INSERT INTO DEMO (title) VALUES (#{title});
   </insert>
+  
+  <update id="update">
+  	UPDATE DEMO SET title = #{title} WHERE id = #{id};
+  </update>
+  
+    <select id="findAll" resultMap="DemoResultMap">
+    SELECT
+      *
+    FROM
+      DEMO
+  </select>
 
 </mapper>

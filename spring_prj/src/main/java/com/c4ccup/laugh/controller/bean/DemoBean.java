@@ -1,17 +1,16 @@
-package com.c4ccup.laugh.domain;
-
+package com.c4ccup.laugh.controller.bean;
 
 /**
- *Demoテーブルのカラムの値をJavaオブジェクトで扱うためのクラス
+ *画面から取得した値をJavaオブジェクトで扱うためのクラス
  */
-public class Demo {
-
+public class DemoBean {
+	
     /** id */
     private int id;
     /** tittle */
     private String title;
-
-
+    
+    
     /**
      * idを取得します。
      * @return id

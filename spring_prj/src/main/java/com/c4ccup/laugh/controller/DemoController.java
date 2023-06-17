@@ -33,13 +33,15 @@ public class DemoController {
     
     @RequestMapping(path = "/insert", method = RequestMethod.GET)
     public void insert(DemoBean demoBean) {
-    	demoBean.setTitle("abbc");
+    	demoBean.setTitle("zzz");
+    	demoBean.setDetailIds(3);
 		demoRepository.insert(demoBean);
 	}
 
     @RequestMapping(path = "/update", method = RequestMethod.GET)
     public void update(DemoBean demoBean) {
-    	demoBean.setTitle("sushi");
+    	demoBean.setTitle("usagi");
+    	demoBean.setDetailIds(3);
     	demoBean.setId(1);
 		demoRepository.update(demoBean);
 	}
@@ -48,6 +50,22 @@ public class DemoController {
     public List<Demo> initList() {
     	List<Demo> demoList = new ArrayList<>();
     	demoList = demoRepository.findAll();
+        System.out.println(demoList);
+        return demoList;
+    }
+    
+    @RequestMapping(path = "/initWork", method = RequestMethod.GET)
+    public Demo initWork(DemoBean demoBean) {
+    	demoBean.setId(1);
+        Demo demo = demoRepository.findWorkById(demoBean.getId());
+        System.out.println(demo);
+        return demo;
+    }
+    
+    @RequestMapping(path = "/initWorkList", method = RequestMethod.GET)
+    public List<Demo> initWorkList() {
+    	List<Demo> demoList = new ArrayList<>();
+    	demoList = demoRepository.findAllWork();
         System.out.println(demoList);
         return demoList;
     }

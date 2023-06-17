@@ -10,9 +10,11 @@ public class Demo {
     private int id;
     /** tittle */
     private String title;
+    /** detailIds */
+    private DemoDetail detailIds;
 
 
-    /**
+	/**
      * idを取得します。
      * @return id
      */
@@ -40,4 +42,16 @@ public class Demo {
     public void setTitle(String title) {
         this.title = title;
     }
+    /**
+	 * @return detailIds
+	 */
+	public DemoDetail getDetailIds() {
+		return detailIds;
+	}
+	/**
+	 * @param detailIds セットする detailIds
+	 */
+	public void setDetailIds(DemoDetail detailIds) {
+		this.detailIds = detailIds;
+	}
 }

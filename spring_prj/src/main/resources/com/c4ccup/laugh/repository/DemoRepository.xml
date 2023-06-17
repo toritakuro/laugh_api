@@ -5,11 +5,18 @@
   <resultMap id="DemoResultMap" type="com.c4ccup.laugh.domain.Demo">
     <id column="id" property="id" />
     <result column="title" property="title"/>
+    <association property="detailIds" resultMap="DemoDetailResultMap"/>
   </resultMap>
+     <resultMap id="DemoDetailResultMap" type="com.c4ccup.laugh.domain.DemoDetail">
+       <result column="detail_id" property="detailId"/>
+       <result column="work" property="work"/>
+     </resultMap>
 
   <select id="findById" parameterType="int" resultMap="DemoResultMap">
     SELECT
-      id,title
+      id
+      ,title
+      ,detail_id
     FROM
       DEMO
     WHERE
@@ -17,18 +24,62 @@
   </select>
   
   <insert id="insert">
-	INSERT INTO DEMO (title) VALUES (#{title});
+	INSERT INTO 
+	  DEMO 
+	    (title
+	    ,detail_id
+	    ) 
+	VALUES 
+	  (#{title}
+	  ,#{detailIds}
+	  );
   </insert>
   
   <update id="update">
-  	UPDATE DEMO SET title = #{title} WHERE id = #{id};
+  	UPDATE 
+  	  DEMO 
+  	SET 
+  	  title = #{title}
+  	  ,detail_id = #{detailIds} 
+  	WHERE 
+  	  id = #{id};
   </update>
   
-    <select id="findAll" resultMap="DemoResultMap">
+  <select id="findAll" resultMap="DemoResultMap">
     SELECT
       *
     FROM
       DEMO
+  </select>
+  
+  <select id="findWorkById" parameterType="int" resultMap="DemoResultMap">
+    SELECT
+      DEMO.id
+      ,DEMO.title
+      ,DEMO.detail_id
+      ,DEMODETAIL.work
+    FROM
+      DEMO
+    JOIN
+      DEMODETAIL
+    ON
+      DEMO.detail_id=DEMODETAIL.detailId
+    WHERE
+      DEMO.id = #{id}
+  </select>
+  
+  <select id="findAllWork" resultMap="DemoResultMap">
+    SELECT
+      DEMO.id
+      ,DEMO.title
+      ,DEMO.detail_id
+      ,DEMODETAIL.work
+    FROM
+      DEMO
+    JOIN
+      DEMODETAIL
+    ON
+      DEMO.detail_id=DEMODETAIL.detailId
   </select>
 
 </mapper>

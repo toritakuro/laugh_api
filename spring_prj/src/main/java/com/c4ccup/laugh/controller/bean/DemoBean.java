@@ -9,9 +9,11 @@ public class DemoBean {
     private int id;
     /** tittle */
     private String title;
+    /** detailIds */
+    private int detailIds;
     
     
-    /**
+	/**
      * idを取得します。
      * @return id
      */
@@ -39,4 +41,16 @@ public class DemoBean {
     public void setTitle(String title) {
         this.title = title;
     }
+    /**
+	 * @return detailIds
+	 */
+	public int getDetailIds() {
+		return detailIds;
+	}
+	/**
+	 * @param detailIds セットする detailIds
+	 */
+	public void setDetailIds(int detailIds) {
+		this.detailIds = detailIds;
+	}
 }

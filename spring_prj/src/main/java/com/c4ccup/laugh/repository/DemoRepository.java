@@ -32,8 +32,21 @@ public interface DemoRepository {
     public void update(DemoBean demoBean);
     
 	/**
-	 * 全てのデータを取得する
+	 * DEMOテーブルの全てのデータを取得する
 	 * @return List<Demo>
 	 */
     public List<Demo> findAll();
+    
+	/**
+	 * DEMO.idをキーに職業データを取得する
+	 *@param demoBean DemoBean型の要素
+	 *@return Demo
+	 */
+    public Demo findWorkById(Integer id);
+    
+	/**
+	 * 職業を含んだ全てのデータを取得する
+	 * @return List<Demo>
+	 */
+    public List<Demo> findAllWork();
 }

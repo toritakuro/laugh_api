@@ -4,27 +4,27 @@ package com.c4ccup.laugh.controller.bean;
  *画面から取得した値をJavaオブジェクトで扱うためのクラス
  */
 public class DemoBean {
-	
+
     /** id */
-    private int id;
+    private Integer id;
     /** tittle */
     private String title;
     /** detailIds */
     private int detailIds;
-    
-    
+
+
 	/**
      * idを取得します。
      * @return id
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
     /**
      * idを設定します。
      * @param id id
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     /**

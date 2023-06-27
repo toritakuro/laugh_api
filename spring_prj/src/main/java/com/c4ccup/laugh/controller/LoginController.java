@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.JwtUtil;
+import com.c4ccup.laugh.util.PasswordUtil;
 
 @RestController
 public class LoginController {
@@ -23,7 +24,7 @@ public class LoginController {
     }
     
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
     	
     	String email = request.getEmail();
         String password = request.getPassword();
@@ -31,15 +32,13 @@ public class LoginController {
         // メールアドレスを使用してデータベースからユーザーを取得
         User user = userRepository.findByMail(email);
         
-        if (user != null && user.getPassword().equals(password)) {
-            // 認証成功
-            
+        // ユーザーが取得できるかつ、パスワードの検証がOK
+        if (user != null && PasswordUtil.matches(password, user.getPassword())) {
             // JWTを発行する処理
         	String jwt = jwtUtil.generateToken(email);
-            
-        	ResponseEntity<String> test = ResponseEntity.ok(jwt);
-            // レスポンスとしてJWTを返す
-            return test;
+        	LoginResponse response = new LoginResponse(jwt, user);
+            // レスポンスとしてJWTとユーザー情報を返す
+            return ResponseEntity.ok(response);
         } else {
             // 認証が失敗した場合は401 Unauthorizedを返す
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

@@ -1,8 +1,5 @@
 package com.c4ccup.laugh;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.util.JwtUtil;
-
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.c4ccup.laugh.util.PasswordUtil;
 
 @SpringBootApplication
 @RestController
@@ -29,5 +25,10 @@ public class LaughApplication {
     @Bean
     public JwtUtil jwtUtil() {
         return new JwtUtil();
+    }
+    
+    @Bean
+    public PasswordUtil passwordUtil() {
+        return new PasswordUtil();
     }
 }

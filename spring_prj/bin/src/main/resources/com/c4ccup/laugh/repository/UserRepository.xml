@@ -17,14 +17,12 @@
       id = #{id}
   </select>
 
-  <select id="findByMailAndPassword" parameterType="String" resultMap="UserResultMap">
+  <select id="findByMail" parameterType="String" resultMap="UserResultMap">
     SELECT
       *
     FROM
       user
     WHERE
       user_address = #{mail}
-    AND
-      password = #{password}
   </select>
 </mapper>

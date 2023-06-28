@@ -8,9 +8,9 @@ import javax.crypto.SecretKey;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.JwtException;
 
 public class JwtUtil {
 
@@ -41,15 +41,22 @@ public class JwtUtil {
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
-    
+
     public boolean validateToken(String token) {
         try {
-            // トークンのデコード処理
+            // トークンのデコード、検証処理
             Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             // デコードしたJWTからクレームを取得する
+            // TODO:トークンから取得した値を使用する？
             Claims claims = claimsJws.getBody();
             String userAddress = claims.getSubject();
-            // TODO:トークンから取得した値を使用する？
+            Date expirationDate = claims.getExpiration();
+            Date currentDate = new Date();
+
+            if (currentDate.after(expirationDate)) {
+                // トークンの有効期限切れ
+                return false;
+            }
             return true; // トークンが有効であればtrueを返す
         } catch (JwtException e) {
             // 無効なトークンの場合は例外が発生する

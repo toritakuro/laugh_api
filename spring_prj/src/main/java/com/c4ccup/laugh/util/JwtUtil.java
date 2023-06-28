@@ -12,6 +12,10 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+/**
+ * JWT Utilクラス
+ *
+ */
 public class JwtUtil {
 
     private final SecretKey secretKey;
@@ -21,6 +25,11 @@ public class JwtUtil {
         this.secretKey = generateSecretKey();
     }
 
+    /**
+     * SecretKeyを生成
+     *
+     * @return SecretKey
+     */
     private SecretKey generateSecretKey() {
         try {
             // KeyGeneratorを使用してSecretKeyを生成
@@ -33,15 +42,24 @@ public class JwtUtil {
         }
     }
 
+    /**
+     * 指定されたsubjectを含むJWTトークンを生成
+     * 
+     * @param subject JWTのsubject
+     * @return 生成されたJWTトークン
+     */
     public String generateToken(String subject) {
-        return Jwts.builder()
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder().setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(secretKey, SignatureAlgorithm.HS256)
-                .compact();
+                .signWith(secretKey, SignatureAlgorithm.HS256).compact();
     }
 
+    /**
+     * 指定されたトークンを検証
+     * 
+     * @param token 検証するJWTトークン
+     * @return トークンが有効であればtrue、無効であればfalse
+     */
     public boolean validateToken(String token) {
         try {
             // トークンのデコード、検証処理

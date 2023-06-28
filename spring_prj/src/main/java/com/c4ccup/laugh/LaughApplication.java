@@ -13,20 +13,30 @@ import com.c4ccup.laugh.util.PasswordUtil;
 @RestController
 public class LaughApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LaughApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LaughApplication.class, args);
+    }
 
     @RequestMapping("/")
     public String home() {
         return "変更しました";
     }
-    
+
+    /**
+     * JwtUtilのBeanを作成します。
+     *
+     * @return JwtUtilのインスタンス
+     */
     @Bean
     public JwtUtil jwtUtil() {
         return new JwtUtil();
     }
-    
+
+    /**
+     * PasswordUtilのBeanを作成
+     *
+     * @return PasswordUtilのインスタンス
+     */
     @Bean
     public PasswordUtil passwordUtil() {
         return new PasswordUtil();

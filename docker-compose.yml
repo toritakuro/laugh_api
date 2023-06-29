@@ -3,13 +3,18 @@ version: '3'
 services:
   java:
     container_name: "java"
-    image: maven:3.9-eclipse-temurin-8
+    build:
+      context: .
+      dockerfile: ./infra/docker/java/Dockerfile
     restart: always
     command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
     volumes:
       - type: bind
         source: ./spring_prj
         target: /opt/spring_prj
+      - type: bind
+        source: credentials
+        target: /root/.aws/credentials
       - type: volume
         source: m2
         target: /root/.m2

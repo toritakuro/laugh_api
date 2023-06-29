@@ -22,7 +22,7 @@ public interface UserRepository {
     /**
      * メールアドレスでユーザーを取得
      * 
-     * @param mail, password
+     * @param mail
      * @return User
      */
     public User findByMail(String mail);

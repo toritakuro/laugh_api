@@ -60,14 +60,15 @@ public class JwtUtil {
      * @param token 検証するJWTトークン
      * @return トークンが有効であればtrue、無効であればfalse
      */
-    public boolean validateToken(String token) {
+    public boolean isValidToken(String token) {
+        if (token.equals("")) {
+            return false;
+        }
         try {
             // トークンのデコード、検証処理
             Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             // デコードしたJWTからクレームを取得する
-            // TODO:トークンから取得した値を使用する？
             Claims claims = claimsJws.getBody();
-            String userAddress = claims.getSubject();
             Date expirationDate = claims.getExpiration();
             Date currentDate = new Date();
 

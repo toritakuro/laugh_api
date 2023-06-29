@@ -34,11 +34,17 @@ public class TokenInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String token = request.getHeader("Authorization");
-        if (token != null && jwtUtil.validateToken(token)) {
+        String tokenVal = "";
+        String[] parts = token.split(" ");
+        if (parts.length == 2 && parts[0].equals("Bearer")) {
+            tokenVal = parts[1]; // トークンの値のみを格納
+        }
+        if (jwtUtil.isValidToken(tokenVal)) {
             return true;
         } else {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-            return false;
+            // TODO:フロントの処理が実装されるまでtrueを返すようにしておく
+            return true;
         }
     }
 }

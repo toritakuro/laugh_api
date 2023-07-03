@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class UserBean {
     private int id;
-    private String userAddress;
+    private String mail;
     private String userNameKana;
     private int userType;
     private String password;
@@ -27,16 +27,16 @@ public class UserBean {
         this.id = id;
     }
     /**
-     * @return userAddress
+     * @return mail
      */
-    public String getUserAddress() {
-        return userAddress;
+    public String getmail() {
+        return mail;
     }
     /**
-     * @param userAddress セットする userAddress
+     * @param mail セットする mail
      */
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
     /**
      * @return userNameKana

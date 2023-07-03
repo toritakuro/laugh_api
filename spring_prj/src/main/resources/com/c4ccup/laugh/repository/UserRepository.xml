@@ -3,10 +3,8 @@
 <mapper namespace="com.c4ccup.laugh.repository.UserRepository">
 
   <resultMap id="UserResultMap" type="com.c4ccup.laugh.domain.User">
-    <result column="ID" property="id"/>
-    <result column="mail_address" property="mail"/>
     <id column="id" property="id" />
-    <result column="user_address" property="userAddress"/>
+    <result column="mail_address" property="mail"/>
     <result column="user_name" property="userName"/>
     <result column="user_name_kana" property="userNameKana"/>
     <result column="user_type" property="userType"/>

@@ -11,7 +11,7 @@ public class User {
     /** id */
     private int id;
     /** ユーザアドレス */
-    private String userAddress;
+    private String mail;
     /** ユーザ名 */
     private String userName;
     /** ユーザ名(かな) */
@@ -48,19 +48,19 @@ public class User {
     }
 
     /**
-     * userAddressを取得
+     * mailを取得
      * 
-     * @return userAddress
+     * @return mail
      */
-    public String getUserAddress() {
-        return userAddress;
+    public String getMail() {
+        return mail;
     }
 
     /**
-     * @param userAddress セットする userAddress
+     * @param mail セットする mail
      */
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     /**

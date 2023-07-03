@@ -61,22 +61,30 @@ public class JwtUtil {
      * @return トークンが有効であればtrue、無効であればfalse
      */
     public boolean isValidToken(String token) {
-        if (token.equals("")) {
-            return false;
+        // TODO:トークンのnullチェック。フロント実装完了までtrueで返す。(tori)
+        if (token == null) {
+            return true;
+        }
+        // トークンの値のみを抽出
+        String tokenVal = "";
+        String[] parts = token.split(" ");
+        if (parts.length == 2 && parts[0].equals("Bearer")) {
+            tokenVal = parts[1];
         }
         try {
             // トークンのデコード、検証処理
-            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
-            // デコードしたJWTからクレームを取得する
+            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(tokenVal);
+
+            // 有効期限検証のため、デコードしたJWTからクレームを取得する
             Claims claims = claimsJws.getBody();
             Date expirationDate = claims.getExpiration();
             Date currentDate = new Date();
-
+            // トークンの有効期限切れ
             if (currentDate.after(expirationDate)) {
-                // トークンの有効期限切れ
                 return false;
             }
-            return true; // トークンが有効であればtrueを返す
+            // トークンが有効であればtrueを返す
+            return true;
         } catch (JwtException e) {
             // 無効なトークンの場合は例外が発生する
             return false; // トークンが無効であればfalseを返す

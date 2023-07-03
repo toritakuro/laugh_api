@@ -1,7 +1,10 @@
 package com.c4ccup.laugh.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
+import com.c4ccup.laugh.controller.bean.UserBean;
 import com.c4ccup.laugh.domain.User;
 
 /**
@@ -26,4 +29,11 @@ public interface UserRepository {
      * @return User
      */
     public User findByMail(String mail);
+
+    public List<User> getComposerList(UserBean userBean);
+    public List<User> getComedianList(UserBean userBean);
+    public List<User> initByid(UserBean userBean);
+    
+    public List<User> init();
 }
+

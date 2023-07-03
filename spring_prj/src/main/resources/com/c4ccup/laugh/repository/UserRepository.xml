@@ -5,7 +5,69 @@
   <resultMap id="UserResultMap" type="com.c4ccup.laugh.domain.User">
     <result column="ID" property="id"/>
     <result column="mail_address" property="mail"/>
+    <id column="id" property="id" />
+    <result column="user_address" property="userAddress"/>
+    <result column="user_name" property="userName"/>
+    <result column="user_name_kana" property="userNameKana"/>
+    <result column="user_type" property="userType"/>
     <result column="password" property="password"/>
+    <result column="delete_flg" property="deleteFlg"/>
+    <result column="login_at" property="loginAt"/>
+    <result column="create_at" property="createAt"/>
+    <result column="update_at" property="updateAt"/>
+  </resultMap>
+  <resultMap id="ComposerUserResultMap" type="com.c4ccup.laugh.domain.User">
+    <id column="id" property="id" />
+    <result column="user_address" property="userAddress"/>
+    <result column="user_name" property="userName"/>
+    <result column="user_name_kana" property="userNameKana"/>
+    <result column="user_type" property="userType"/>
+    <result column="password" property="password"/>
+    <result column="delete_flg" property="deleteFlg"/>
+    <result column="login_at" property="loginAt"/>
+    <result column="create_at" property="createAt"/>
+    <result column="update_at" property="updateAt"/>
+      <collection property="composerList" ofType="com.c4ccup.laugh.domain.Composer">
+	    <id column="id" property="id" />
+	    <result column="user_id" property="userId"/>
+	    <result column="debut_dt" property="debutDt"/>
+	    <result column="gender" property="gender"/>
+	    <result column="office" property="office"/>
+	    <result column="fee_type" property="feeType"/>
+	    <result column="fee" property="fee"/>
+	    <result column="skill" property="skill"/>
+	    <result column="active_place" property="activePlace"/>
+	    <result column="self_introduction" property="selfIntoroduction"/>
+	    <result column="profile_img_path" property="porfileImg"/>
+	    <result column="create_at" property="createAt"/>
+	    <result column="update_at" property="updateAt"/>
+	  </collection>
+  </resultMap>
+  <resultMap id="ComedianUserResultMap" type="com.c4ccup.laugh.domain.User">
+    <id column="id" property="id" />
+    <result column="user_address" property="userAddress"/>
+    <result column="user_name" property="userName"/>
+    <result column="user_name_kana" property="userNameKana"/>
+    <result column="user_type" property="userType"/>
+    <result column="password" property="password"/>
+    <result column="delete_flg" property="deleteFlg"/>
+    <result column="login_at" property="loginAt"/>
+    <result column="create_at" property="createAt"/>
+    <result column="update_at" property="updateAt"/>
+	  <collection property="comedianList" ofType="com.c4ccup.laugh.domain.Comedian">
+	    <id column="id" property="id" />
+	    <result column="user_id" property="userId"/>
+	    <result column="debut_dt" property="debutDt"/>
+	    <result column="member_num" property="memberNum"/>
+	    <result column="gender" property="gender"/>
+	    <result column="belong" property="belong"/>
+	    <result column="fee_type" property="feeType"/>
+	    <result column="active_place" property="activePlace"/>
+	    <result column="self_introduction" property="selfIntoroduction"/>
+	    <result column="profile_img_path" property="porfileImg"/>
+	    <result column="create_at" property="createAt"/>
+	    <result column="update_at" property="updateAt"/>
+	  </collection>
   </resultMap>
 
   <select id="findById" parameterType="int" resultMap="UserResultMap">
@@ -24,5 +86,47 @@
       user
     WHERE
       user_address = #{mail}
+  </select>
+
+    <select id="initByid" parameterType="int" resultMap="UserResultMap">
+    SELECT
+      *
+    FROM
+      user
+    WHERE
+      user_type != #{userType}
+  </select>
+  
+  <select id="init" parameterType="int" resultMap="UserResultMap">
+    SELECT
+      *
+    FROM
+      User
+  </select>
+  
+  <select id="getComposerList" parameterType="int" resultMap="ComposerUserResultMap">
+    SELECT
+      user.*,composer_profile.*
+    FROM
+      user
+    LEFT JOIN
+      composer_profile
+    ON
+      user.id = composer_profile.user_id
+    WHERE
+      user.user_type = #{userType}
+  </select>
+  
+  <select id="getComedianList" parameterType="int" resultMap="ComedianUserResultMap">
+    SELECT
+      user.*,comedian_profile.*
+    FROM
+      user
+    LEFT JOIN
+      comedian_profile
+    ON
+      user.id = comedian_profile.user_id
+    WHERE
+      user.user_type = #{userType}
   </select>
 </mapper>

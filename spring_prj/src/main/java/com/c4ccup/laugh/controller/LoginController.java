@@ -1,5 +1,7 @@
 package com.c4ccup.laugh.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,12 +40,15 @@ public class LoginController {
 
         String email = request.getEmail();
         String password = request.getPassword();
+        LocalDateTime now = LocalDateTime.now();
 
         // メールアドレスを使用してデータベースからユーザーを取得
         User user = userRepository.findByMail(email);
 
         // ユーザーが取得できるかつ、パスワードの検証がOK
         if (user != null && PasswordUtil.matches(password, user.getPassword())) {
+            // ログイン日時を更新
+            updateLoginAt(user, now);
             // JWTを発行する処理
             String jwt = jwtUtil.generateToken(email);
             LoginResponse response = new LoginResponse(jwt, user);
@@ -53,6 +58,17 @@ public class LoginController {
             // 認証が失敗した場合は401 Unauthorizedを返す
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    /**
+     * ログイン日時更新
+     * 
+     * @param user ユーザーオブジェクト
+     * @param now  システム時刻
+     */
+    public void updateLoginAt(User user, LocalDateTime now) {
+        user.setLoginAt(now);
+        userRepository.updateLoginAt(user);
     }
 
 }

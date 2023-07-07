@@ -26,4 +26,11 @@ public interface UserRepository {
      * @return User
      */
     public User findByMail(String mail);
+
+    /**
+     * ログイン日時を更新
+     * 
+     * @param User
+     */
+    public void updateLoginAt(User user);
 }

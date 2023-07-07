@@ -48,7 +48,8 @@ public class LoginController {
         // ユーザーが取得できるかつ、パスワードの検証がOK
         if (user != null && PasswordUtil.matches(password, user.getPassword())) {
             // ログイン日時を更新
-            updateLoginAt(user, now);
+            user.setLoginAt(now);
+            userRepository.updateLoginAt(user);
             // JWTを発行する処理
             String jwt = jwtUtil.generateToken(email);
             LoginResponse response = new LoginResponse(jwt, user);
@@ -58,17 +59,6 @@ public class LoginController {
             // 認証が失敗した場合は401 Unauthorizedを返す
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-    }
-
-    /**
-     * ログイン日時更新
-     * 
-     * @param user ユーザーオブジェクト
-     * @param now  システム時刻
-     */
-    public void updateLoginAt(User user, LocalDateTime now) {
-        user.setLoginAt(now);
-        userRepository.updateLoginAt(user);
     }
 
 }

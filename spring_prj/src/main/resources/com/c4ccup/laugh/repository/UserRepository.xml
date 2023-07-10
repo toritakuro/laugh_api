@@ -25,4 +25,129 @@
     WHERE
       user_address = #{mail}
   </select>
+
+  <insert id="register">
+    INSERT INTO
+      user
+        (
+        user_address
+        ,user_name
+        ,user_name_kana
+        ,user_type
+        ,password
+        ,debut_dt
+        ,gender
+        ,office_id
+        ,area_id
+        ,self_introduction
+        ,profile_img_path
+        ,delete_flg
+        ,login_at
+        ,create_at
+        ,update_at
+        )
+    VALUES
+      (
+      #{userAddress}
+      ,#{userName}
+      ,#{userNameKana}
+      ,#{userType}
+      ,#{password}
+      ,#{debutDt}
+      ,#{gender}
+      ,#{officeId}
+      ,#{areaId}
+      ,#{selfIntroduction}
+      ,#{profileImgPath}
+      ,0
+      ,#{loginAt}
+      ,#{createAt}
+      ,#{updateAt}
+      );
+  </insert>
+
+  <insert id="registerComedian">
+    INSERT INTO
+      comedian_profile
+        (
+        user_id
+        ,member_num
+        ,create_at
+        ,update_at
+        )
+    VALUES
+      (
+      #{userId}
+      ,#{memberNum}
+      ,#{createAt}
+      ,#{updateAt}
+      );
+  </insert>
+
+  <insert id="registerComposer">
+    INSERT INTO
+      composer_profile
+        (
+        user_id
+        ,fee_type
+        ,fee
+        ,create_at
+        ,update_at
+        )
+    VALUES
+      (
+      #{userId}
+      ,#{feeType}
+      ,#{fee}
+      ,#{createAt}
+      ,#{updateAt}
+      );
+  </insert>
+
+  <select id="getMaxUserId" resultType="int">
+    SELECT
+      max(user.id)
+    FROM
+      user
+      ;
+  </select>
+
+  <insert id="registerOwnComedyStyle">
+    INSERT INTO
+      own_comedy_style
+        (
+        comedy_style_id
+        ,user_id
+        ,create_at
+        ,update_at
+        )
+    VALUES
+      (
+      #{comedyStyleId}
+      ,#{userId}
+      ,#{createAt}
+      ,#{updateAt}
+      );
+  </insert>
+
+  <insert id="registerOwnSpecialSkill">
+    INSERT INTO
+      own_special_skill
+        (
+        user_id
+        ,special_skill_id
+        ,another_skill
+        ,create_at
+        ,update_at
+        )
+    VALUES
+      (
+      #{userId}
+      ,#{specialSkillId}
+      ,#{anotherSkill}
+      ,#{createAt}
+      ,#{updateAt}
+      );
+  </insert>
+
 </mapper>

@@ -5,22 +5,15 @@
   <resultMap id="ComedianResultMap" type="com.c4ccup.laugh.domain.Comedian">
     <id column="id" property="id" />
     <result column="user_id" property="userId"/>
-    <result column="debut_dt" property="debutDt"/>
     <result column="member_num" property="memberNum"/>
-    <result column="gender" property="gender"/>
-    <result column="belong" property="belong"/>
-    <result column="fee_type" property="feeType"/>
-    <result column="active_place" property="activePlace"/>
-    <result column="self_introduction" property="selfIntoroduction"/>
-    <result column="profile_img_path" property="porfileImg"/>
     <result column="create_at" property="createTime"/>
     <result column="update_at" property="updateTime"/>
   </resultMap>
 
-  <select id="getBelongList" resultType="string">
-  SELECT DISTINCT
-    belong
-  FROM
-    comedian_profile
-  </select>
+<!--   <select id="getBelongList" resultType="string"> -->
+<!--   SELECT DISTINCT -->
+<!--     belong -->
+<!--   FROM -->
+<!--     comedian_profile -->
+<!--   </select> -->
 </mapper>

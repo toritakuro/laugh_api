@@ -2,12 +2,15 @@ package com.c4ccup.laugh.domain;
 
 import java.time.LocalDateTime;
 
-public class Comedian {
+public class Office {
 
+    /** id */
     private int id;
-    private int userId;
-    private int memberNum;
+    /** オフィス名 */
+    private String officeName;
+    /** 作成日時 */
     private LocalDateTime createAt;
+    /** 更新日時 */
     private LocalDateTime updateAt;
 
     /**
@@ -23,28 +26,16 @@ public class Comedian {
         this.id = id;
     }
     /**
-     * @return userId
+     * @return officeName
      */
-    public int getUserId() {
-        return userId;
+    public String getOfficeName() {
+        return officeName;
     }
     /**
-     * @param userId セットする userId
+     * @param officeName セットする officeName
      */
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-    /**
-     * @return memberNum
-     */
-    public int getMemberNum() {
-        return memberNum;
-    }
-    /**
-     * @param memberNum セットする memberNum
-     */
-    public void setMemberNum(int memberNum) {
-        this.memberNum = memberNum;
+    public void setOfficeName(String officeName) {
+        this.officeName = officeName;
     }
     /**
      * @return createAt
@@ -70,5 +61,4 @@ public class Comedian {
     public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
     }
-    
 }

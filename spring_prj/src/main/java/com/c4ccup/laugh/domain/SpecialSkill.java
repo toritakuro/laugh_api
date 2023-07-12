@@ -2,12 +2,15 @@ package com.c4ccup.laugh.domain;
 
 import java.time.LocalDateTime;
 
-public class Comedian {
+public class SpecialSkill {
 
+    /** id */
     private int id;
-    private int userId;
-    private int memberNum;
+    /** スキル名 */
+    private String specialSkillName;
+    /** 作成日時 */
     private LocalDateTime createAt;
+    /** 更新日時 */
     private LocalDateTime updateAt;
 
     /**
@@ -23,28 +26,16 @@ public class Comedian {
         this.id = id;
     }
     /**
-     * @return userId
+     * @return specialSkillName
      */
-    public int getUserId() {
-        return userId;
+    public String getSpecialSkillName() {
+        return specialSkillName;
     }
     /**
-     * @param userId セットする userId
+     * @param specialSkillName セットする specialSkillName
      */
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-    /**
-     * @return memberNum
-     */
-    public int getMemberNum() {
-        return memberNum;
-    }
-    /**
-     * @param memberNum セットする memberNum
-     */
-    public void setMemberNum(int memberNum) {
-        this.memberNum = memberNum;
+    public void setSpecialSkillName(String specialSkillName) {
+        this.specialSkillName = specialSkillName;
     }
     /**
      * @return createAt
@@ -70,5 +61,4 @@ public class Comedian {
     public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
     }
-    
 }

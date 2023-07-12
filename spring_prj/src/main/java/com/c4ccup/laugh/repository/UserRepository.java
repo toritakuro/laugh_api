@@ -32,6 +32,7 @@ public interface UserRepository {
 
     public List<User> getComposerList(UserBean userBean);
     public List<User> getComedianList(UserBean userBean);
+    public List<User> getSkillList(UserBean userBean);
     public List<User> initByid(UserBean userBean);
     
     public List<User> init();

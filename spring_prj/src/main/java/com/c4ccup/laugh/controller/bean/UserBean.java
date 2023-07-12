@@ -1,19 +1,28 @@
 package com.c4ccup.laugh.controller.bean;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 public class UserBean {
     private int id;
-    private String mail;
+    private String userName;
     private String userNameKana;
     private int userType;
-    private String password;
-    private int deleteFlg;
+    private LocalDateTime debutDt;
+    private int gender;
+    private int officeId;
+    private String officeName;
+    private int areaId;
+    private String areaName;
+    private String selfIntroduction;
+    private String profileImg;
     private LocalDateTime loginAt;
-    private LocalDateTime createAt;
     private LocalDateTime updateAt;
-    
-    
+    private int feeType;
+    private int fee;
+    private Map<Integer, String> skill;
+    private int memberNum;
+
     /**
      * @return id
      */
@@ -27,16 +36,16 @@ public class UserBean {
         this.id = id;
     }
     /**
-     * @return mail
+     * @return userName
      */
-    public String getmail() {
-        return mail;
+    public String getUserName() {
+        return userName;
     }
     /**
-     * @param mail セットする mail
+     * @param userName セットする userName
      */
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
     /**
      * @return userNameKana
@@ -63,28 +72,100 @@ public class UserBean {
         this.userType = userType;
     }
     /**
-     * @return password
+     * @return debutDt
      */
-    public String getPassword() {
-        return password;
+    public LocalDateTime getDebutDt() {
+        return debutDt;
     }
     /**
-     * @param password セットする password
+     * @param debutDt セットする debutDt
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setDebutDt(LocalDateTime debutDt) {
+        this.debutDt = debutDt;
     }
     /**
-     * @return deleteFlg
+     * @return gender
      */
-    public int getDeleteFlg() {
-        return deleteFlg;
+    public int getGender() {
+        return gender;
     }
     /**
-     * @param deleteFlg セットする deleteFlg
+     * @param gender セットする gender
      */
-    public void setDeleteFlg(int deleteFlg) {
-        this.deleteFlg = deleteFlg;
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+    /**
+     * @return officeId
+     */
+    public int getOfficeId() {
+        return officeId;
+    }
+    /**
+     * @param officeId セットする officeId
+     */
+    public void setOfficeId(int officeId) {
+        this.officeId = officeId;
+    }
+    /**
+     * @return officeName
+     */
+    public String getOfficeName() {
+        return officeName;
+    }
+    /**
+     * @param officeName セットする officeName
+     */
+    public void setOfficeName(String officeName) {
+        this.officeName = officeName;
+    }
+    /**
+     * @return areaId
+     */
+    public int getAreaId() {
+        return areaId;
+    }
+    /**
+     * @param areaId セットする areaId
+     */
+    public void setAreaId(int areaId) {
+        this.areaId = areaId;
+    }
+    /**
+     * @return areaName
+     */
+    public String getAreaName() {
+        return areaName;
+    }
+    /**
+     * @param areaName セットする areaName
+     */
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+    /**
+     * @return selfIntroduction
+     */
+    public String getSelfIntroduction() {
+        return selfIntroduction;
+    }
+    /**
+     * @param selfIntroduction セットする selfIntroduction
+     */
+    public void setSelfIntroduction(String selfIntroduction) {
+        this.selfIntroduction = selfIntroduction;
+    }
+    /**
+     * @return profileImg
+     */
+    public String getProfileImg() {
+        return profileImg;
+    }
+    /**
+     * @param profileImg セットする profileImg
+     */
+    public void setProfileImg(String profileImg) {
+        this.profileImg = profileImg;
     }
     /**
      * @return loginAt
@@ -99,18 +180,6 @@ public class UserBean {
         this.loginAt = loginAt;
     }
     /**
-     * @return createAt
-     */
-    public LocalDateTime getCreateAt() {
-        return createAt;
-    }
-    /**
-     * @param createAt セットする createAt
-     */
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
-    }
-    /**
      * @return updateAt
      */
     public LocalDateTime getUpdateAt() {
@@ -122,4 +191,54 @@ public class UserBean {
     public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
     }
+    /**
+     * @return feeType
+     */
+    public int getFeeType() {
+        return feeType;
+    }
+    /**
+     * @param feeType セットする feeType
+     */
+    public void setFeeType(int feeType) {
+        this.feeType = feeType;
+    }
+    /**
+     * @return fee
+     */
+    public int getFee() {
+        return fee;
+    }
+    /**
+     * @param fee セットする fee
+     */
+    public void setFee(int fee) {
+        this.fee = fee;
+    }
+    /**
+     * @return skill
+     */
+    public Map<Integer, String> getSkill() {
+        return skill;
+    }
+    /**
+     * @param skill セットする skill
+     */
+    public void setSkill(Map<Integer, String> skill) {
+        this.skill = skill;
+    }
+    /**
+     * @return memberNum
+     */
+    public int getMemberNum() {
+        return memberNum;
+    }
+    /**
+     * @param memberNum セットする memberNum
+     */
+    public void setMemberNum(int memberNum) {
+        this.memberNum = memberNum;
+    }
+    
+
 }

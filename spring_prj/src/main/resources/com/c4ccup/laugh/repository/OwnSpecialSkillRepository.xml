@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.c4ccup.laugh.repository.OwnSpecialSkillRepository">
+
+  <resultMap id="OwnSpecialSkillResultMap" type="com.c4ccup.laugh.domain.OwnSpecialSkill">
+    <id column="id" property="id" />
+    <result column="user_id" property="userId"/>
+    <result column="another_skill" property="anotherSkillName"/>
+    <result column="create_at" property="createAt"/>
+    <result column="update_at" property="updateAt"/>
+    <association property="specialSkillId" resultMap="SpecialSkillResultMap"/>
+  </resultMap>
+    <resultMap id="SpecialSkillResultMap" type="com.c4ccup.laugh.domain.SpecialSkill">
+      <id column="id" property="id" />
+      <result column="special_skill_name" property="specialSkillName"/>
+      <result column="create_at" property="createAt"/>
+      <result column="update_at" property="updateAt"/>
+    </resultMap>
+
+  <select id="getOwnSpecialSkillList" parameterType="int" resultMap="OwnSpecialSkillResultMap">
+    SELECT
+      own_special_skill.*,special_skill.*
+    FROM
+      own_special_skill
+    LEFT JOIN
+      special_skill
+    ON
+      own_special_skill.special_skill_id = special_skill.id
+  </select>
+</mapper>

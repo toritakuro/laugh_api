@@ -5,37 +5,16 @@
   <resultMap id="ComposerResultMap" type="com.c4ccup.laugh.domain.Composer">
     <id column="id" property="id" />
     <result column="user_id" property="userId"/>
-    <result column="debut_dt" property="debutDt"/>
-    <result column="gender" property="gender"/>
-    <result column="office" property="office"/>
     <result column="fee_type" property="feeType"/>
     <result column="fee" property="fee"/>
-    <result column="skill" property="skill"/>
-    <result column="active_place" property="activePlace"/>
-    <result column="self_introduction" property="selfIntoroduction"/>
-    <result column="profile_img_path" property="porfileImg"/>
     <result column="create_at" property="createTime"/>
     <result column="update_at" property="updateTime"/>
   </resultMap>
 
-  <select id="getBelongList" resultType="string">
-  SELECT DISTINCT
-    office
-  FROM
-    composer_profile
-  </select>
-  
-  <select id="getFeeList" resultType="int">
-  SELECT DISTINCT
-    fee
-  FROM
-    composer_profile
-  </select>
-  
-  <select id="getSkillList" resultType="String">
-  SELECT DISTINCT
-    skill
-  FROM
-    composer_profile
-  </select>
+<!--   <select id="getBelongList" resultType="string"> -->
+<!--   SELECT DISTINCT -->
+<!--     office -->
+<!--   FROM -->
+<!--     composer_profile -->
+<!--   </select> -->
 </mapper>

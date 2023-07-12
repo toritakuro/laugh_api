@@ -2,48 +2,46 @@ package com.c4ccup.laugh.controller.bean;
 
 import java.util.List;
 
-import com.c4ccup.laugh.domain.User;
-
 /**
- *TOP画面から取得した値をJavaオブジェクトで扱うためのクラス
+ * TOP画面から取得した値をJavaオブジェクトで扱うためのクラス
  */
 public class TopBean {
 
-    /**ユーザーリスト*/
-    private List<User> userList;
-    /**ユーザー名*/
+    /** ユーザーリスト */
+    private List<UserBean> userList;
+    /** ユーザー名 */
     private String userName;
-    /**性別*/
+    /** 性別 */
     private int gender;
-    /**活動歴　何年以上*/
+    /** 活動歴 何年以上 */
     private int activityNum1;
-    /**活動歴　何年未満*/
+    /** 活動歴 何年未満 */
     private int activityNum2;
-    /**事務所リスト*/
+    /** 事務所リスト */
     private List<String> belongList;
-    /**芸風リスト*/
+    /** 芸風リスト */
     private List<String> comedyStyleList;
-    /**得意分野リスト*/
+    /** 得意分野リスト */
     private List<String> ownComedyStyleList;
-    /**料金体系リスト*/
+    /** 料金体系リスト */
     private List<String> feeTypeList;
-    /**金額リスト*/
+    /** 金額リスト */
     private List<Integer> feeList;
-    /**特殊スキルリスト*/
+    /** 特殊スキルリスト */
     private List<String> skillList;
-    /**活動場所リスト*/
+    /** 活動場所リスト */
     private List<String> activePlaceList;
 
     /**
      * @return userList
      */
-    public List<User> getUserList() {
+    public List<UserBean> getUserList() {
         return userList;
     }
     /**
      * @param userList セットする userList
      */
-    public void setUserList(List<User> userList) {
+    public void setUserList(List<UserBean> userList) {
         this.userList = userList;
     }
     /**

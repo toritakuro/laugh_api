@@ -133,4 +133,12 @@
     VALUES
         (#{themeId}, #{userId}, #{answerContent}, #{now})
 </insert>
+
+<!-- リアクションを登録する -->
+<insert id="regReaction">
+    INSERT INTO
+        oogiri_reaction(oogiri_answer_id, user_id, reaction_status, create_at, update_at)
+    VALUES
+        (#{answerId}, #{userId}, #{reactionStatus}, #{now}, #{now})
+</insert>
 </mapper>

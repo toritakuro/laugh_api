@@ -73,4 +73,14 @@ public interface OogiriRepository {
      * @param now           現在時刻
      */
     public void regAnswer(int themeId, int userId, String answerContent, LocalDateTime now);
+
+    /**
+     * リアクションを登録する
+     * 
+     * @param answerId       回答ID
+     * @param userId         ユーザーID
+     * @param reactionStatus リアクションステータス
+     * @param now            現在時刻
+     */
+    public void regReaction(int answerId, int userId, int reactionStatus, LocalDateTime now);
 }

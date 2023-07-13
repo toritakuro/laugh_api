@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.c4ccup.laugh.controller.OogiriAnswerResponse;
+import com.c4ccup.laugh.controller.OogiriReactionResponse;
 import com.c4ccup.laugh.domain.OogiriTheme;
 
 /**
@@ -13,6 +14,14 @@ import com.c4ccup.laugh.domain.OogiriTheme;
  */
 @Mapper
 public interface OogiriRepository {
+    /**
+     * 大喜利お題を1件取得
+     * 
+     * @param お題ID
+     * @return OogiriTheme
+     */
+    OogiriTheme getTheme(int themeId);
+
     /**
      * お題を更新順に取得
      * 
@@ -36,4 +45,12 @@ public interface OogiriRepository {
      * @return List<OogiriAnswerResponse>
      */
     List<OogiriAnswerResponse> getThreeAnswers(int themeId);
+
+    /**
+     * 回答に対するリアクションを全件取得
+     * 
+     * @param answerId
+     * @return List<OogiriReactionResponse>
+     */
+    List<OogiriReactionResponse> getAllReactions(int answerId);
 }

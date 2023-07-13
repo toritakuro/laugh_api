@@ -130,7 +130,25 @@ public class OogiriResponse {
      * @param answers 回答リスト
      * @return 大喜利レスポンス
      */
-    public static OogiriResponse fromThemeAndAnswers(OogiriTheme theme, List<OogiriAnswerResponse> answers) {
+    public static OogiriResponse themeAndAnswers(OogiriTheme theme, List<OogiriAnswerResponse> answers) {
+        OogiriResponse response = new OogiriResponse();
+        response.setThemeId(theme.getThemeId());
+        response.setThemeUserId(theme.getThemeUserId());
+        response.setThemeContent(theme.getThemeContent());
+        response.setThemeCreatedAt(theme.getThemeCreatedAt());
+        response.setThemeUpdatedAt(theme.getThemeUpdatedAt());
+        response.setAnswers(answers);
+        return response;
+    }
+
+    /**
+     * 大喜利詳細レスポンスを生成
+     * 
+     * @param theme   お題
+     * @param answers 回答リスト
+     * @return 大喜利詳細レスポンス
+     */
+    public static OogiriResponse oogiriDetails(OogiriTheme theme, List<OogiriAnswerResponse> answers) {
         OogiriResponse response = new OogiriResponse();
         response.setThemeId(theme.getThemeId());
         response.setThemeUserId(theme.getThemeUserId());

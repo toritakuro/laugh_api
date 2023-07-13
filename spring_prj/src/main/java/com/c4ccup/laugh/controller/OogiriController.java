@@ -1,5 +1,6 @@
 package com.c4ccup.laugh.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class OogiriController {
      * 
      * @return
      */
-    @RequestMapping(path = "/init", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<OogiriResponse>> getOogiriThemes() {
         try {
             // レスポンスリスト
@@ -61,7 +62,7 @@ public class OogiriController {
     /**
      * 大喜利詳細データ取得
      * 
-     * @param themeId お題ID
+     * @param request
      * @return
      */
     @RequestMapping(path = "/detail", method = RequestMethod.GET)
@@ -79,6 +80,28 @@ public class OogiriController {
             OogiriResponse response = OogiriResponse.oogiriDetails(theme, answers);
 
             return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            OogiriResponse errorResponse = OogiriResponse.errorResponse(500, "Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+    /**
+     * お題登録
+     * 
+     * @param request
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<?> regTheme(@RequestBody OogiriRequest request) {
+
+        int userId = request.getUserId();
+        String themeContent = request.getThemeContent();
+        LocalDateTime now = LocalDateTime.now();
+
+        try {
+            oogiriRepository.regTheme(userId, themeContent, now);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             OogiriResponse errorResponse = OogiriResponse.errorResponse(500, "Internal Server Error");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);

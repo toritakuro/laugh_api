@@ -117,4 +117,13 @@
     ORDER BY
         create_at DESC
 </select>
+
+<!-- お題を登録する -->
+<insert id="regTheme">
+    INSERT INTO
+        oogiri_theme(user_id, theme_content, create_at, update_at)
+    VALUES
+        (#{userId}, #{themeContent}, #{now}, #{now})
+</insert>
+
 </mapper>

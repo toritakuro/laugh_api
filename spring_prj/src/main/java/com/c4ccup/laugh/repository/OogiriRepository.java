@@ -75,6 +75,14 @@ public interface OogiriRepository {
     public void regAnswer(int themeId, int userId, String answerContent, LocalDateTime now);
 
     /**
+     * 回答を削除する
+     * 
+     * @param answerId 回答ID
+     * @param now      現在時刻
+     */
+    public void delAnswer(int answerId, LocalDateTime now);
+
+    /**
      * リアクションを登録する
      * 
      * @param answerId       回答ID
@@ -83,4 +91,14 @@ public interface OogiriRepository {
      * @param now            現在時刻
      */
     public void regReaction(int answerId, int userId, int reactionStatus, LocalDateTime now);
+
+    /**
+     * リアクションを更新する
+     * 
+     * @param reactionId     リアクションID
+     * @param reactionStatus リアクションステータス
+     * @param now            現在時刻
+     */
+    public void editReaction(int reactionId, int reactionStatus, LocalDateTime now);
+
 }

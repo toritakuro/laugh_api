@@ -134,6 +134,15 @@
         (#{themeId}, #{userId}, #{answerContent}, #{now})
 </insert>
 
+<!-- 回答を削除する -->
+<update id="delAnswer">
+    UPDATE
+        oogiri_answer
+    SET
+        delete_at = #{now}
+    WHERE id = #{answerId}
+</update>
+
 <!-- リアクションを登録する -->
 <insert id="regReaction">
     INSERT INTO
@@ -141,4 +150,14 @@
     VALUES
         (#{answerId}, #{userId}, #{reactionStatus}, #{now}, #{now})
 </insert>
+
+<!-- リアクションを更新する -->
+<update id="editReaction">
+    UPDATE
+        oogiri_reaction
+    SET
+        reaction_status = #{reactionStatus},
+        update_at = #{now}
+    WHERE id = #{reactionId}
+</update>
 </mapper>

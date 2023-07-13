@@ -132,12 +132,33 @@ public class OogiriController {
     }
 
     /**
+     * 回答削除
+     * 
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/answer/delete", method = RequestMethod.POST)
+    public ResponseEntity<?> delAnswer(@RequestBody OogiriRequest request) {
+
+        int answerId = request.getAnswerId();
+        LocalDateTime now = LocalDateTime.now();
+
+        try {
+            oogiriRepository.delAnswer(answerId, now);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            OogiriResponse errorResponse = OogiriResponse.errorResponse(500, "Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+    /**
      * リアクション登録
      * 
      * @param request
      * @return
      */
-    @RequestMapping(path = "/reaction/register", method = RequestMethod.POST)
+    @RequestMapping(path = "/reaction", method = RequestMethod.POST)
     public ResponseEntity<?> regReaction(@RequestBody OogiriRequest request) {
 
         int answerId = request.getAnswerId();
@@ -147,6 +168,28 @@ public class OogiriController {
 
         try {
             oogiriRepository.regReaction(answerId, userId, reactionStatus, now);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            OogiriResponse errorResponse = OogiriResponse.errorResponse(500, "Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+    /**
+     * リアクション更新
+     * 
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/reaction/edit", method = RequestMethod.POST)
+    public ResponseEntity<?> editReaction(@RequestBody OogiriRequest request) {
+
+        int answerId = request.getReactionId();
+        int reactionStatus = request.getReactionStatus();
+        LocalDateTime now = LocalDateTime.now();
+
+        try {
+            oogiriRepository.editReaction(answerId, reactionStatus, now);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             OogiriResponse errorResponse = OogiriResponse.errorResponse(500, "Internal Server Error");

@@ -126,4 +126,11 @@
         (#{userId}, #{themeContent}, #{now}, #{now})
 </insert>
 
+<!-- 回答を登録する -->
+<insert id="regAnswer">
+    INSERT INTO
+        oogiri_answer(oogiri_theme_id, user_id, answer_content, create_at)
+    VALUES
+        (#{themeId}, #{userId}, #{answerContent}, #{now})
+</insert>
 </mapper>

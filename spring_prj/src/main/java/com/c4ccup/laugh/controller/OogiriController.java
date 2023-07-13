@@ -107,4 +107,27 @@ public class OogiriController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
+
+    /**
+     * 回答登録
+     * 
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/answer", method = RequestMethod.POST)
+    public ResponseEntity<?> regAnswer(@RequestBody OogiriRequest request) {
+
+        int themeId = request.getThemeId();
+        int userId = request.getUserId();
+        String answerContent = request.getAnswerContent();
+        LocalDateTime now = LocalDateTime.now();
+
+        try {
+            oogiriRepository.regAnswer(themeId, userId, answerContent, now);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            OogiriResponse errorResponse = OogiriResponse.errorResponse(500, "Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
 }

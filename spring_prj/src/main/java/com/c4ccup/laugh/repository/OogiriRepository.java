@@ -18,7 +18,7 @@ public interface OogiriRepository {
     /**
      * 大喜利お題を1件取得
      * 
-     * @param お題ID
+     * @param themeId お題ID
      * @return OogiriTheme
      */
     public OogiriTheme getTheme(int themeId);
@@ -63,4 +63,14 @@ public interface OogiriRepository {
      * @param now          現在時刻
      */
     public void regTheme(int userId, String themeContent, LocalDateTime now);
+
+    /**
+     * 回答を登録する
+     * 
+     * @param userId        ユーザーID
+     * @param themeId       お題ID
+     * @param answerContent 回答内容
+     * @param now           現在時刻
+     */
+    public void regAnswer(int themeId, int userId, String answerContent, LocalDateTime now);
 }

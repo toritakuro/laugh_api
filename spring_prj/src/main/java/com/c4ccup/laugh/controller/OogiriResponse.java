@@ -126,9 +126,9 @@ public class OogiriResponse {
     /**
      * 大喜利レスポンスを生成
      * 
-     * @param theme   お題
-     * @param answers 回答リスト
-     * @return 大喜利レスポンス
+     * @param theme
+     * @param answers
+     * @return
      */
     public static OogiriResponse themeAndAnswers(OogiriTheme theme, List<OogiriAnswerResponse> answers) {
         OogiriResponse response = new OogiriResponse();
@@ -144,9 +144,9 @@ public class OogiriResponse {
     /**
      * 大喜利詳細レスポンスを生成
      * 
-     * @param theme   お題
-     * @param answers 回答リスト
-     * @return 大喜利詳細レスポンス
+     * @param theme
+     * @param answers
+     * @return
      */
     public static OogiriResponse oogiriDetails(OogiriTheme theme, List<OogiriAnswerResponse> answers) {
         OogiriResponse response = new OogiriResponse();
@@ -162,8 +162,8 @@ public class OogiriResponse {
     /**
      * エラーレスポンスを生成
      * 
-     * @param errorCode    エラーコード
-     * @param errorMessage エラーメッセージ
+     * @param errorCode
+     * @param errorMessage
      * @return
      */
     public static OogiriResponse errorResponse(int errorCode, String errorMessage) {

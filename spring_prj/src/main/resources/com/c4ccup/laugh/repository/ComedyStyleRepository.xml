@@ -6,13 +6,13 @@
   <resultMap id="ComedyStyleResultMap" type="com.c4ccup.laugh.domain.ComedyStyle">
     <id column="id" property="id" />
     <result column="style_name" property="styleName"/>
-    <result column="create_at" property="createAt"/>
-    <result column="update_at" property="updateAt"/>
+<!--     <result column="create_at" property="createAt"/> -->
+<!--     <result column="update_at" property="updateAt"/> -->
   </resultMap>
 
-  <select id="getComedyStyleList" resultType="string">
-  SELECT DISTINCT
-    style_name
+  <select id="getComedyStyleList" resultMap="ComedyStyleResultMap">
+  SELECT 
+    id, style_name
   FROM
     comedy_style
   </select>

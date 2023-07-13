@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.c4ccup.laugh.repository.OwnComedyStyleRepository">
+
+  <resultMap id="OwnComedyStyleResultMap" type="com.c4ccup.laugh.domain.OwnComedyStyle">
+    <id column="own_comedy_style_id" property="id" />
+    <result column="user_id" property="userId"/>
+    <result column="another_skill" property="anotherSkillName"/>
+    <association property="comedyStyleId" resultMap="ComedyStyleResultMap"/>
+  </resultMap>
+    <resultMap id="ComedyStyleResultMap" type="com.c4ccup.laugh.domain.ComedyStyle">
+      <id column="id" property="id" />
+      <result column="style_name" property="styleName"/>
+    </resultMap>
+
+  <select id="getOwnComedyStyleList" resultMap="OwnComedyStyleResultMap">
+    SELECT
+      own_comedy_style.id as own_comedy_style_id
+      ,own_comedy_style.comedy_style_id
+      ,own_comedy_style.user_id
+      ,comedy_style.id
+      ,comedy_style.style_name
+    FROM
+      own_comedy_style
+    LEFT JOIN
+      comedy_style
+    ON
+      own_comedy_style.comedy_style_id = comedy_style.id
+  </select>
+</mapper>

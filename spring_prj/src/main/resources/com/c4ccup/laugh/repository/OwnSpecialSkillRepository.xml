@@ -3,7 +3,7 @@
 <mapper namespace="com.c4ccup.laugh.repository.OwnSpecialSkillRepository">
 
   <resultMap id="OwnSpecialSkillResultMap" type="com.c4ccup.laugh.domain.OwnSpecialSkill">
-    <id column="id" property="id" />
+    <id column="own_special_skill_id" property="id" />
     <result column="user_id" property="userId"/>
     <result column="another_skill" property="anotherSkillName"/>
     <result column="create_at" property="createAt"/>
@@ -17,9 +17,14 @@
       <result column="update_at" property="updateAt"/>
     </resultMap>
 
-  <select id="getOwnSpecialSkillList" parameterType="int" resultMap="OwnSpecialSkillResultMap">
+  <select id="getOwnSpecialSkillList" resultMap="OwnSpecialSkillResultMap">
     SELECT
-      own_special_skill.*,special_skill.*
+      own_special_skill.id as own_special_skill_id
+      ,own_special_skill.user_id
+      ,own_special_skill.special_skill_id
+      ,own_special_skill.another_skill
+      ,special_skill.id
+      ,special_skill.special_skill_name
     FROM
       own_special_skill
     LEFT JOIN

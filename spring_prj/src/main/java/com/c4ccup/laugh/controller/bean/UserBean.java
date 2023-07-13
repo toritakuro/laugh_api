@@ -10,6 +10,7 @@ public class UserBean {
     private int userType;
     private LocalDateTime debutDt;
     private int gender;
+    private Map<Integer, String> comedyStyle;
     private int officeId;
     private String officeName;
     private int areaId;
@@ -94,6 +95,18 @@ public class UserBean {
      */
     public void setGender(int gender) {
         this.gender = gender;
+    }
+    /**
+     * @return comedyStyle
+     */
+    public Map<Integer, String> getComedyStyle() {
+        return comedyStyle;
+    }
+    /**
+     * @param comedyStyle セットする comedyStyle
+     */
+    public void setComedyStyle(Map<Integer, String> comedyStyle) {
+        this.comedyStyle = comedyStyle;
     }
     /**
      * @return officeId

@@ -2,6 +2,8 @@ package com.c4ccup.laugh.controller.bean;
 
 import java.util.List;
 
+import com.c4ccup.laugh.domain.ComedyStyle;
+
 /**
  * TOP画面から取得した値をJavaオブジェクトで扱うためのクラス
  */
@@ -20,7 +22,7 @@ public class TopBean {
     /** 事務所リスト */
     private List<String> belongList;
     /** 芸風リスト */
-    private List<String> comedyStyleList;
+    private List<ComedyStyle> comedyStyleList;
     /** 得意分野リスト */
     private List<String> ownComedyStyleList;
     /** 料金体系リスト */
@@ -107,13 +109,13 @@ public class TopBean {
     /**
      * @return comedyStyleList
      */
-    public List<String> getComedyStyleList() {
+    public List<ComedyStyle> getComedyStyleList() {
         return comedyStyleList;
     }
     /**
      * @param comedyStyleList セットする comedyStyleList
      */
-    public void setComedyStyleList(List<String> comedyStyleList) {
+    public void setComedyStyleList(List<ComedyStyle> comedyStyleList) {
         this.comedyStyleList = comedyStyleList;
     }
     /**

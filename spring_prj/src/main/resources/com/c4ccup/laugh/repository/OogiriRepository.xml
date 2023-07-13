@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.c4ccup.laugh.repository.OogiriRepository">
+
+<!-- OogiriThemeのResultMap -->
+<resultMap id="OogiriThemeResultMap" type="com.c4ccup.laugh.domain.OogiriTheme">
+    <id property="themeId" column="theme_id"/>
+    <result property="themeUserId" column="theme_user_id"/>
+    <result property="themeContent" column="theme_content"/>
+    <result property="themeCreatedAt" column="theme_created_at"/>
+    <result property="themeUpdatedAt" column="theme_updated_at"/>
+</resultMap>
+
+<!-- OogiriAnswerResponseのResultMap -->
+<resultMap id="OogiriAnswerResponseResultMap" type="com.c4ccup.laugh.controller.OogiriAnswerResponse">
+    <id property="answerId" column="answer_id"/>
+    <result property="answerUserId" column="answer_user_id"/>
+    <result property="answerContent" column="answer_content"/>
+    <result property="answerCreatedAt" column="answer_created_at"/>
+    <collection property="reactions" ofType="com.c4ccup.laugh.controller.OogiriReactionResponse">
+        <id property="reactionId" column="reaction_id"/>
+        <result property="reactionUserId" column="reaction_user_id"/>
+        <result property="reactionStatus" column="reaction_status"/>
+        <result property="reactionCreatedAt" column="reaction_created_at"/>
+        <result property="reactionUpdatedAt" column="reaction_updated_at"/>
+    </collection>
+</resultMap>
+
+<!-- OogiriReactionResponseのResultMap -->
+<resultMap id="OogiriReactionResponseResultMap" type="com.c4ccup.laugh.controller.OogiriReactionResponse">
+    <id property="reactionId" column="reaction_id"/>
+    <result property="reactionUserId" column="reaction_user_id"/>
+    <result property="reactionStatus" column="reaction_status"/>
+    <result property="reactionCreatedAt" column="reaction_created_at"/>
+    <result property="reactionUpdatedAt" column="reaction_updated_at"/>
+</resultMap>
+
+<!-- OogiriResponseのResultMap -->
+<resultMap id="OogiriResponseResultMap" type="com.c4ccup.laugh.controller.OogiriResponse">
+    <id property="themeId" column="theme_id"/>
+    <result property="themeUserId" column="theme_user_id"/>
+    <result property="themeContent" column="theme_content"/>
+    <result property="themeCreatedAt" column="theme_created_at"/>
+    <result property="themeUpdatedAt" column="theme_updated_at"/>
+    <collection property="answers" ofType="com.c4ccup.laugh.controller.OogiriAnswerResponse" resultMap="OogiriAnswerResponseResultMap"/>
+    <collection property="reactions" ofType="com.c4ccup.laugh.controller.OogiriReactionResponse" resultMap="OogiriReactionResponseResultMap"/>
+</resultMap>
+
+<!-- 最新の50件の大喜利お題を取得する -->
+<select id="getLatestOogiriThemes" resultMap="OogiriThemeResultMap">
+    SELECT
+        oogiri_theme.id AS theme_id,
+        oogiri_theme.user_id AS theme_user_id,
+        theme_content AS theme_content,
+        oogiri_theme.update_at AS theme_updated_at
+    FROM
+        oogiri_theme
+    ORDER BY
+        oogiri_theme.update_at DESC
+    LIMIT #{limit}
+</select>
+
+<!-- お題に紐づく全ての回答を取得する -->
+<select id="getAllAnswers" resultMap="OogiriAnswerResponseResultMap">
+    SELECT
+        oogiri_answer.id AS answer_id,
+        oogiri_answer.user_id AS answer_user_id,
+        answer_content AS answer_content,
+        oogiri_answer.create_at AS answer_created_at
+    FROM
+        oogiri_answer
+    WHERE
+        oogiri_theme_id = #{themeId}
+    ORDER BY
+        create_at DESC
+</select>
+
+<!-- お題に紐づく回答を3件取得する -->
+<select id="getThreeAnswers" resultMap="OogiriAnswerResponseResultMap">
+    SELECT
+        oogiri_answer.id AS answer_id,
+        oogiri_answer.user_id AS answer_user_id,
+        answer_content AS answer_content,
+        oogiri_answer.create_at AS answer_created_at
+    FROM
+        oogiri_answer
+    WHERE
+        oogiri_theme_id = #{themeId}
+    ORDER BY
+        create_at DESC
+    LIMIT 3
+</select>
+
+</mapper>

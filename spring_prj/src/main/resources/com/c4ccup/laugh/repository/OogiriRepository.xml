@@ -11,6 +11,15 @@
     <result property="themeUpdatedAt" column="theme_updated_at"/>
 </resultMap>
 
+<!-- OogiriAnswerのResultMap -->
+<resultMap id="OogiriAnswerResultMap" type="com.c4ccup.laugh.domain.OogiriAnswer">
+    <id property="answerId" column="answer_id"/>
+    <result property="answerUserId" column="answer_user_id"/>
+    <result property="answerContent" column="answer_content"/>
+    <result property="answerCreatedAt" column="answer_created_at"/>
+    <result property="answerDeletedAt" column="answer_deleted_at"/>
+</resultMap>
+
 <!-- OogiriAnswerResponseのResultMap -->
 <resultMap id="OogiriAnswerResponseResultMap" type="com.c4ccup.laugh.controller.OogiriAnswerResponse">
     <id property="answerId" column="answer_id"/>
@@ -104,19 +113,6 @@
     LIMIT 3
 </select>
 
-<!-- 回答に紐づく全てのリアクションを取得する -->
-<select id="getAllReactions" resultMap="OogiriReactionResponseResultMap">
-    SELECT
-        oogiri_reaction.id AS reaction_id,
-        oogiri_reaction.user_id AS reaction_user_id,
-        reaction_status AS reaction_status
-    FROM
-        oogiri_reaction
-    WHERE
-        oogiri_answer_id = #{answerId}
-    ORDER BY
-        create_at DESC
-</select>
 
 <!-- お題を登録する -->
 <insert id="regTheme">
@@ -125,6 +121,19 @@
     VALUES
         (#{userId}, #{themeContent}, #{now}, #{now})
 </insert>
+
+<!-- 回答を1件取得 -->
+<select id="getAnswer" resultMap="OogiriAnswerResultMap">
+    SELECT
+        oogiri_answer.id AS answer_id,
+        oogiri_answer.user_id AS answer_user_id,
+        answer_content AS answer_content,
+        oogiri_answer.create_at AS answer_created_at
+    FROM
+        oogiri_answer
+    WHERE
+        oogiri_answer.id = #{answerId}
+</select>
 
 <!-- 回答を登録する -->
 <insert id="regAnswer">
@@ -142,6 +151,20 @@
         delete_at = #{now}
     WHERE id = #{answerId}
 </update>
+
+<!-- 回答に紐づく全てのリアクションを取得する -->
+<select id="getAllReactions" resultMap="OogiriReactionResponseResultMap">
+    SELECT
+        oogiri_reaction.id AS reaction_id,
+        oogiri_reaction.user_id AS reaction_user_id,
+        reaction_status AS reaction_status
+    FROM
+        oogiri_reaction
+    WHERE
+        oogiri_answer_id = #{answerId}
+    ORDER BY
+        create_at DESC
+</select>
 
 <!-- リアクションを登録する -->
 <insert id="regReaction">

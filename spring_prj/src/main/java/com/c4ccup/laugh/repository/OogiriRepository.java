@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.c4ccup.laugh.controller.OogiriAnswerResponse;
 import com.c4ccup.laugh.controller.OogiriReactionResponse;
+import com.c4ccup.laugh.domain.OogiriAnswer;
 import com.c4ccup.laugh.domain.OogiriTheme;
 
 /**
@@ -48,14 +49,6 @@ public interface OogiriRepository {
     public List<OogiriAnswerResponse> getThreeAnswers(int themeId);
 
     /**
-     * 回答に対するリアクションを全件取得
-     * 
-     * @param answerId
-     * @return List<OogiriReactionResponse>
-     */
-    public List<OogiriReactionResponse> getAllReactions(int answerId);
-
-    /**
      * お題を登録する
      * 
      * @param userId       ユーザーID
@@ -63,6 +56,14 @@ public interface OogiriRepository {
      * @param now          現在時刻
      */
     public void regTheme(int userId, String themeContent, LocalDateTime now);
+
+    /**
+     * 回答を1件取得
+     * 
+     * @param answerId 回答ID
+     * @return
+     */
+    public OogiriAnswer getAnswer(int answerId);
 
     /**
      * 回答を登録する
@@ -81,6 +82,14 @@ public interface OogiriRepository {
      * @param now      現在時刻
      */
     public void delAnswer(int answerId, LocalDateTime now);
+
+    /**
+     * 回答に対するリアクションを全件取得
+     * 
+     * @param answerId
+     * @return List<OogiriReactionResponse>
+     */
+    public List<OogiriReactionResponse> getAllReactions(int answerId);
 
     /**
      * リアクションを登録する

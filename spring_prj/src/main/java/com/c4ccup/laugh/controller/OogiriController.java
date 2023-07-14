@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.c4ccup.laugh.domain.OogiriAnswer;
 import com.c4ccup.laugh.domain.OogiriTheme;
 import com.c4ccup.laugh.repository.OogiriRepository;
 
@@ -69,15 +70,18 @@ public class OogiriController {
     @RequestMapping(path = "/detail", method = RequestMethod.GET)
     public ResponseEntity<OogiriResponse> getOogiriAnswers(@RequestParam int themeId) {
         try {
+            // お題取得
             OogiriTheme theme = oogiriRepository.getTheme(themeId);
+            // お題に紐づく回答リストを取得
             List<OogiriAnswerResponse> answers = oogiriRepository.getAllAnswers(themeId);
+            // 回答に紐づくリアクションリストをレスポンスに追加
             List<OogiriReactionResponse> reactions = new ArrayList<OogiriReactionResponse>();
             for (OogiriAnswerResponse answer : answers) {
                 reactions = oogiriRepository.getAllReactions(answer.getAnswerId());
                 answer.setReactions(reactions);
             }
+            // 詳細用レスポンスを生成
             OogiriResponse response = OogiriResponse.oogiriDetails(theme, answers);
-
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             OogiriResponse errorResponse = OogiriResponse.errorResponse(500, "Internal Server Error");
@@ -99,6 +103,7 @@ public class OogiriController {
         LocalDateTime now = LocalDateTime.now();
 
         try {
+            // お題登録
             oogiriRepository.regTheme(userId, themeContent, now);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -122,6 +127,7 @@ public class OogiriController {
         LocalDateTime now = LocalDateTime.now();
 
         try {
+            // 回答登録
             oogiriRepository.regAnswer(themeId, userId, answerContent, now);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -139,10 +145,18 @@ public class OogiriController {
     @RequestMapping(path = "/answer/delete", method = RequestMethod.POST)
     public ResponseEntity<?> delAnswer(@RequestBody OogiriRequest request) {
 
+        int userId = request.getUserId();
         int answerId = request.getAnswerId();
         LocalDateTime now = LocalDateTime.now();
 
         try {
+            // リクエストのユーザーIDと回答ユーザーIDが一致しない場合、エラーを返す
+            OogiriAnswer answer = oogiriRepository.getAnswer(answerId);
+            if (answer.getAnswerUserId() != userId) {
+                OogiriResponse errorResponse = OogiriResponse.errorResponse(400, "Bad Request");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            }
+            // 回答削除処理
             oogiriRepository.delAnswer(answerId, now);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -166,6 +180,7 @@ public class OogiriController {
         LocalDateTime now = LocalDateTime.now();
 
         try {
+            // リアクション登録
             oogiriRepository.regReaction(answerId, userId, reactionStatus, now);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -188,6 +203,7 @@ public class OogiriController {
         LocalDateTime now = LocalDateTime.now();
 
         try {
+            // リアクション更新
             oogiriRepository.editReaction(answerId, reactionStatus, now);
             return ResponseEntity.ok().build();
         } catch (Exception e) {

@@ -6,6 +6,7 @@
     <result column="ID" property="id"/>
     <result column="mail_address" property="mail"/>
     <result column="password" property="password"/>
+    <result column="login_at" property="loginAt"/>
   </resultMap>
 
   <select id="findById" parameterType="int" resultMap="UserResultMap">
@@ -25,4 +26,10 @@
     WHERE
       user_address = #{mail}
   </select>
+
+  <update id="updateLoginAt" parameterType="com.c4ccup.laugh.domain.User">
+    UPDATE user
+    SET login_at = #{loginAt}
+    WHERE id = #{id}
+  </update>
 </mapper>

@@ -1,7 +1,5 @@
 package com.c4ccup.laugh.controller;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.UserBean;
 import com.c4ccup.laugh.repository.UserRepository;
+import com.c4ccup.laugh.util.AppConst.UserEnum;
+import com.c4ccup.laugh.util.AppConst.specialSkillEnum;
 
 /**
  * CRUDを操作するProfileクラス
@@ -26,35 +26,30 @@ public class ProfileController {
 
     /**
      * 新規登録するメソッド
-     * @param id
+     * @param userBean
      * @return
      */
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public void register(@RequestBody UserBean userBean) {
-        // TODO：共通クラスに記載？
-        userBean.setLoginAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")));
-        userBean.setCreateAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")));
-        userBean.setUpdateAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")));
 
         //debutDtをセット
         Calendar cal = Calendar.getInstance();
         cal.set(userBean.getDebutYear(), userBean.getDebutMonth() - 1, 1);
         userBean.setDebutDt(cal);
 
-        // ユーザーの登録
-        userRepository.register(userBean);
+        // ユーザーを登録し、採番されたidを取得する
+        int registerUserId = userRepository.register(userBean);
 
         // 登録したユーザーのuserId取得
-        int userId = userRepository.getMaxUserId();
-        userBean.setUserId(userId);
+        userBean.setUserId(registerUserId);
 
         // 作家プロフィールの登録
-        if(userBean.getUserType() == 1) {
+        if(userBean.getUserType() == UserEnum.COMPOSER.getId()) {
             userRepository.registerComposer(userBean);
         }
 
         // 芸人プロフィールの登録
-        if(userBean.getUserType() == 2) {
+        if(userBean.getUserType() == UserEnum.COMEDIAN.getId()) {
             userRepository.registerComedian(userBean);
         }
 
@@ -71,7 +66,8 @@ public class ProfileController {
             String tmp_another_skill = userBean.getAnotherSkill();
             for(int specialSkillId: userBean.getSpecialSkillIdList()) {
                 userBean.setSpecialSkillId(specialSkillId);
-                String another_skill = specialSkillId == 3 ? tmp_another_skill : "";
+                // 「その他」選択されてたらanother_skillカラムに内容登録
+                String another_skill = specialSkillId == specialSkillEnum.OTHERS.getId() ? tmp_another_skill : "";
                 userBean.setAnotherSkill(another_skill);
                 userRepository.registerOwnSpecialSkill(userBean);
             }

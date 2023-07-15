@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- *画面から取得した値をJavaオブジェクトで扱うためのクラス
+ * 画面から取得した値をJavaオブジェクトで扱うためのクラス
  */
 public class UserBean {
 

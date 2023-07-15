@@ -1,62 +1,79 @@
 package com.c4ccup.laugh.domain;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  *Profileテーブルのカラムの値をJavaオブジェクトで扱うためのクラス
  */
 public class Profile {
 
+    // userテーブル用
     /** ID */
     private int id;
     /** ユーザアドレス */
-    private String user_address;
+    private String userAddress;
     /** ユーザ名 */
-    private String user_name;
+    private String userName;
     /** ユーザ名(かな) */
-    private String user_name_kana;
+    private String userNameKana;
     /** 活動種別 */
-    private int user_type;
+    private int userType;
     /** パスワード */
     private String password;
-    /** 退会フラグ */
-    private int delete_flg;
-    /** ログイン日時 */
-    private LocalDateTime login_at;
-    /** 作成日時 */
-    private LocalDateTime create_at;
-    /** 更新日時 */
-    private LocalDateTime update_at;
-
-
- // ---------comedianの要素(comedianBeanに移動させたほうが良い？？)-----------
-    /** ユーザID */
-    private int user_id;
+    /** 活動開始年 */
+    private int debutYear;
+    /** 活動開始月 */
+    private int debutMonth;
     /** 活動開始年月 */
-    private Date debut_dt;
-    /** 活動人数 */
-    private int member_num;
+    private Calendar debutDt;
     /** 性別 */
     private int gender;
-    /** 事務所 */
-    private String belong;
-    /** 活動場所 */
-    private int active_place;
+    /** 事務所ID */
+    private int officeId;
+    /** 活動場所ID */
+    private int areaId;
     /** 自己紹介文 */
-    private String self_introduction;
+    private String selfIntroduction;
     /** プロフィール画像 */
-    private String profile_img_path;
-    // ------------------------------------------------------------------------
+    private String profileImgPath;
+    /** 退会フラグ */
+    private int deleteFlg;
+    /** ログイン日時 */
+    private LocalDateTime loginAt;
+    /** 作成日時 */
+    private LocalDateTime createAt;
+    /** 更新日時 */
+    private LocalDateTime updateAt;
 
-    // ---------composerの要素(composerBeanに移動させたほうが良い？？)-----------
+    // userテーブル以外用
+    /** ユーザID */
+    private int userId;
+
+    // comedian_profileテーブル用
+    /** 活動人数 */
+    private int memberNum;
+
+    // composer_profileテーブル用
     /** 料金体系 */
-    private int fee_type;
+    private int feeType;
     /** 料金 */
     private int fee;
+
+    // own_comedy_styleテーブル用
+    /** 得意分野 */
+    private int comedyStyleId;
+    /** 得意分野一覧 */
+    private int[] comedyStyleIdList;
+
+    // own_comedy_styleテーブル用
     /** 特殊スキル */
-    private String skill;
-    // ------------------------------------------------------------------------
+    private int specialSkillId;
+    /** 特殊スキル(その他) */
+    private String anotherSkill;
+    /** 特殊スキル一覧 */
+    private int[] specialSkillIdList;
+
 
 
     /**
@@ -72,52 +89,52 @@ public class Profile {
         this.id = id;
     }
     /**
-     * @return user_address
+     * @return userAddress
      */
-    public String getUser_address() {
-        return user_address;
+    public String getUserAddress() {
+        return userAddress;
     }
     /**
-     * @param user_address セットする user_address
+     * @param userAddress セットする userAddress
      */
-    public void setUser_address(String user_address) {
-        this.user_address = user_address;
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
     /**
-     * @return user_name
+     * @return userName
      */
-    public String getUser_name() {
-        return user_name;
+    public String getUserName() {
+        return userName;
     }
     /**
-     * @param user_name セットする user_name
+     * @param userName セットする userName
      */
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
     /**
-     * @return user_name_kana
+     * @return userNameKana
      */
-    public String getUser_name_kana() {
-        return user_name_kana;
+    public String getUserNameKana() {
+        return userNameKana;
     }
     /**
-     * @param user_name_kana セットする user_name_kana
+     * @param userNameKana セットする userNameKana
      */
-    public void setUser_name_kana(String user_name_kana) {
-        this.user_name_kana = user_name_kana;
+    public void setUserNameKana(String userNameKana) {
+        this.userNameKana = userNameKana;
     }
     /**
-     * @return user_type
+     * @return userType
      */
-    public int getUser_type() {
-        return user_type;
+    public int getUserType() {
+        return userType;
     }
     /**
-     * @param user_type セットする user_type
+     * @param userType セットする userType
      */
-    public void setUser_type(int user_type) {
-        this.user_type = user_type;
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
     /**
      * @return password
@@ -132,93 +149,40 @@ public class Profile {
         this.password = password;
     }
     /**
-     * @return delete_flg
+     * @return debutYear
      */
-    public int getDelete_flg() {
-        return delete_flg;
+    public int getDebutYear() {
+        return debutYear;
     }
     /**
-     * @param delete_flg セットする delete_flg
+     * @param debutYear セットする debutYear
      */
-    public void setDelete_flg(int delete_flg) {
-        this.delete_flg = delete_flg;
+    public void setDebutYear(int debutYear) {
+        this.debutYear = debutYear;
     }
     /**
-     * @return login_at
+     * @return debutMonth
      */
-    public LocalDateTime getLogin_at() {
-        return login_at;
+    public int getDebutMonth() {
+        return debutMonth;
     }
     /**
-     * @param login_at セットする login_at
+     * @param debutMonth セットする debutMonth
      */
-    public void setLogin_at(LocalDateTime login_at) {
-        this.login_at = login_at;
+    public void setDebutMonth(int debutMonth) {
+        this.debutMonth = debutMonth;
     }
     /**
-     * @return create_at
+     * @return debutDt
      */
-    public LocalDateTime getCreate_at() {
-        return create_at;
+    public Calendar getDebutDt() {
+        return debutDt;
     }
     /**
-     * @param create_at セットする create_at
+     * @param debutDt セットする debutDt
      */
-    public void setCreate_at(LocalDateTime create_at) {
-        this.create_at = create_at;
-    }
-    /**
-     * @return update_at
-     */
-    public LocalDateTime getUpdate_at() {
-        return update_at;
-    }
-    /**
-     * @param update_at セットする update_at
-     */
-    public void setUpdate_at(LocalDateTime update_at) {
-        this.update_at = update_at;
-    }
-
-
-
-
-
-    /**
-     * @return user_id
-     */
-    public int getUser_id() {
-        return user_id;
-    }
-    /**
-     * @param user_id セットする user_id
-     */
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-    /**
-     * @return debut_dt
-     */
-    public Date getDebut_dt() {
-        return debut_dt;
-    }
-    /**
-     * @param debut_dt セットする debut_dt
-     */
-    public void setDebut_dt(Date debut_dt) {
-        this.debut_dt = debut_dt;
-    }
-    /**
-     * @return member_num
-     */
-    public int getMember_num() {
-        return member_num;
-    }
-    /**
-     * @param member_num セットする member_num
-     */
-    public void setMember_num(int member_num) {
-        this.member_num = member_num;
+    public void setDebutDt(Calendar debutDt) {
+        this.debutDt = debutDt;
     }
     /**
      * @return gender
@@ -233,70 +197,136 @@ public class Profile {
         this.gender = gender;
     }
     /**
-     * @return belong
+     * @return officeId
      */
-    public String getBelong() {
-        return belong;
+    public int getOfficeId() {
+        return officeId;
     }
     /**
-     * @param belong セットする belong
+     * @param officeId セットする officeId
      */
-    public void setBelong(String belong) {
-        this.belong = belong;
+    public void setOfficeId(int officeId) {
+        this.officeId = officeId;
     }
     /**
-     * @return active_place
+     * @return areaId
      */
-    public int getActive_place() {
-        return active_place;
+    public int getAreaId() {
+        return areaId;
     }
     /**
-     * @param active_place セットする active_place
+     * @param areaId セットする areaId
      */
-    public void setActive_place(int active_place) {
-        this.active_place = active_place;
+    public void setAreaId(int areaId) {
+        this.areaId = areaId;
     }
     /**
-     * @return self_introduction
+     * @return selfIntroduction
      */
-    public String getSelf_introduction() {
-        return self_introduction;
+    public String getSelfIntroduction() {
+        return selfIntroduction;
     }
     /**
-     * @param self_introduction セットする self_introduction
+     * @param selfIntroduction セットする selfIntroduction
      */
-    public void setSelf_introduction(String self_introduction) {
-        this.self_introduction = self_introduction;
+    public void setSelfIntroduction(String selfIntroduction) {
+        this.selfIntroduction = selfIntroduction;
     }
     /**
-     * @return profile_img_path
+     * @return profileImgPath
      */
-    public String getProfile_img_path() {
-        return profile_img_path;
+    public String getProfileImgPath() {
+        return profileImgPath;
     }
     /**
-     * @param profile_img_path セットする profile_img_path
+     * @param profileImgPath セットする profileImgPath
      */
-    public void setProfile_img_path(String profile_img_path) {
-        this.profile_img_path = profile_img_path;
-    }
-
-
-
-
-
-
-    /**
-     * @return fee_type
-     */
-    public int getFee_type() {
-        return fee_type;
+    public void setProfileImgPath(String profileImgPath) {
+        this.profileImgPath = profileImgPath;
     }
     /**
-     * @param fee_type セットする fee_type
+     * @return deleteFlg
      */
-    public void setFee_type(int fee_type) {
-        this.fee_type = fee_type;
+    public int getDeleteFlg() {
+        return deleteFlg;
+    }
+    /**
+     * @param deleteFlg セットする deleteFlg
+     */
+    public void setDeleteFlg(int deleteFlg) {
+        this.deleteFlg = deleteFlg;
+    }
+    /**
+     * @return loginAt
+     */
+    public LocalDateTime getLoginAt() {
+        return loginAt;
+    }
+    /**
+     * @param loginAt セットする loginAt
+     */
+    public void setLoginAt(LocalDateTime loginAt) {
+        this.loginAt = loginAt;
+    }
+    /**
+     * @return createAt
+     */
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+    /**
+     * @param createAt セットする createAt
+     */
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
+    }
+    /**
+     * @return updateAt
+     */
+    public LocalDateTime getUpdateAt() {
+        return updateAt;
+    }
+    /**
+     * @param updateAt セットする updateAt
+     */
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
+    }
+    /**
+     * @return userId
+     */
+    public int getUserId() {
+        return userId;
+    }
+    /**
+     * @param userId セットする userId
+     */
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+    /**
+     * @return memberNum
+     */
+    public int getMemberNum() {
+        return memberNum;
+    }
+    /**
+     * @param memberNum セットする memberNum
+     */
+    public void setMemberNum(int memberNum) {
+        this.memberNum = memberNum;
+    }
+    /**
+     * @return feeType
+     */
+    public int getFeeType() {
+        return feeType;
+    }
+    /**
+     * @param feeType セットする feeType
+     */
+    public void setFeeType(int feeType) {
+        this.feeType = feeType;
     }
     /**
      * @return fee
@@ -311,17 +341,64 @@ public class Profile {
         this.fee = fee;
     }
     /**
-     * @return skill
+     * @return comedyStyleId
      */
-    public String getSkill() {
-        return skill;
+    public int getComedyStyleId() {
+        return comedyStyleId;
     }
     /**
-     * @param skill セットする skill
+     * @param comedyStyleId セットする comedyStyleId
      */
-    public void setSkill(String skill) {
-        this.skill = skill;
+    public void setComedyStyleId(int comedyStyleId) {
+        this.comedyStyleId = comedyStyleId;
     }
-
+    /**
+     * @return comedyStyleIdList
+     */
+    public int[] getComedyStyleIdList() {
+        return comedyStyleIdList;
+    }
+    /**
+     * @param comedyStyleIdList セットする comedyStyleIdList
+     */
+    public void setComedyStyleIdList(int[] comedyStyleIdList) {
+        this.comedyStyleIdList = comedyStyleIdList;
+    }
+    /**
+     * @return specialSkillId
+     */
+    public int getSpecialSkillId() {
+        return specialSkillId;
+    }
+    /**
+     * @param specialSkillId セットする specialSkillId
+     */
+    public void setSpecialSkillId(int specialSkillId) {
+        this.specialSkillId = specialSkillId;
+    }
+    /**
+     * @return anotherSkill
+     */
+    public String getAnotherSkill() {
+        return anotherSkill;
+    }
+    /**
+     * @param anotherSkill セットする anotherSkill
+     */
+    public void setAnotherSkill(String anotherSkill) {
+        this.anotherSkill = anotherSkill;
+    }
+    /**
+     * @return specialSkillIdList
+     */
+    public int[] getSpecialSkillIdList() {
+        return specialSkillIdList;
+    }
+    /**
+     * @param specialSkillIdList セットする specialSkillIdList
+     */
+    public void setSpecialSkillIdList(int[] specialSkillIdList) {
+        this.specialSkillIdList = specialSkillIdList;
+    }
 
 }

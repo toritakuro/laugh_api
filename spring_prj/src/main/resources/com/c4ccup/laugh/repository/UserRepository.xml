@@ -26,7 +26,7 @@
       user_address = #{mail}
   </select>
 
-  <insert id="register">
+  <insert id="register" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO
       user
         (
@@ -41,10 +41,6 @@
         ,area_id
         ,self_introduction
         ,profile_img_path
-        ,delete_flg
-        ,login_at
-        ,create_at
-        ,update_at
         )
     VALUES
       (
@@ -59,10 +55,6 @@
       ,#{areaId}
       ,#{selfIntroduction}
       ,#{profileImgPath}
-      ,0
-      ,#{loginAt}
-      ,#{createAt}
-      ,#{updateAt}
       );
   </insert>
 
@@ -72,15 +64,11 @@
         (
         user_id
         ,member_num
-        ,create_at
-        ,update_at
         )
     VALUES
       (
       #{userId}
       ,#{memberNum}
-      ,#{createAt}
-      ,#{updateAt}
       );
   </insert>
 
@@ -91,16 +79,12 @@
         user_id
         ,fee_type
         ,fee
-        ,create_at
-        ,update_at
         )
     VALUES
       (
       #{userId}
       ,#{feeType}
       ,#{fee}
-      ,#{createAt}
-      ,#{updateAt}
       );
   </insert>
 
@@ -118,15 +102,11 @@
         (
         comedy_style_id
         ,user_id
-        ,create_at
-        ,update_at
         )
     VALUES
       (
       #{comedyStyleId}
       ,#{userId}
-      ,#{createAt}
-      ,#{updateAt}
       );
   </insert>
 
@@ -137,16 +117,12 @@
         user_id
         ,special_skill_id
         ,another_skill
-        ,create_at
-        ,update_at
         )
     VALUES
       (
       #{userId}
       ,#{specialSkillId}
       ,#{anotherSkill}
-      ,#{createAt}
-      ,#{updateAt}
       );
   </insert>
 

@@ -30,9 +30,10 @@ public interface UserRepository {
 
     /**
      * userテーブルにデータを追加する
-     *@param UserBean
+     * @param UserBean
+     * @return user_id
      */
-    public void register(UserBean userBean);
+    public int register(UserBean userBean);
 
     /**
      * comedian_profileテーブルにデータを追加する
@@ -42,15 +43,9 @@ public interface UserRepository {
 
     /**
      * composer_profileテーブルにデータを追加する
-     *@param UserBean
+     * @param UserBean
      */
     public void registerComposer(UserBean userBean);
-
-    /**
-     * userテーブルのmax(id)を取得する
-     * @return max(id)
-     */
-    public int getMaxUserId();
 
     /**
      * own_comedy_styleテーブルにデータを追加する

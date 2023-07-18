@@ -2,7 +2,10 @@ package com.c4ccup.laugh.controller.bean;
 
 import java.util.List;
 
+import com.c4ccup.laugh.domain.Area;
 import com.c4ccup.laugh.domain.ComedyStyle;
+import com.c4ccup.laugh.domain.Office;
+import com.c4ccup.laugh.domain.SpecialSkill;
 
 /**
  * TOP画面から取得した値をJavaオブジェクトで扱うためのクラス
@@ -20,19 +23,19 @@ public class TopBean {
     /** 活動歴 何年未満 */
     private int activityNum2;
     /** 事務所リスト */
-    private List<String> belongList;
+    private List<Office> officeList;
     /** 芸風リスト */
     private List<ComedyStyle> comedyStyleList;
     /** 得意分野リスト */
-    private List<String> ownComedyStyleList;
+    private List<ComedyStyle> ownComedyStyleList;
     /** 料金体系リスト */
     private List<String> feeTypeList;
     /** 金額リスト */
     private List<Integer> feeList;
     /** 特殊スキルリスト */
-    private List<String> skillList;
+    private List<SpecialSkill> skillList;
     /** 活動場所リスト */
-    private List<String> activePlaceList;
+    private List<Area> areaList;
 
     /**
      * @return userList
@@ -95,16 +98,16 @@ public class TopBean {
         this.activityNum2 = activityNum2;
     }
     /**
-     * @return belongList
+     * @return officeList
      */
-    public List<String> getBelongList() {
-        return belongList;
+    public List<Office> getOfficeList() {
+        return officeList;
     }
     /**
-     * @param belongList セットする belongList
+     * @param officeList セットする officeList
      */
-    public void setBelongList(List<String> belongList) {
-        this.belongList = belongList;
+    public void setOfficeList(List<Office> officeList) {
+        this.officeList = officeList;
     }
     /**
      * @return comedyStyleList
@@ -121,13 +124,13 @@ public class TopBean {
     /**
      * @return ownComedyStyleList
      */
-    public List<String> getOwnComedyStyleList() {
+    public List<ComedyStyle> getOwnComedyStyleList() {
         return ownComedyStyleList;
     }
     /**
      * @param ownComedyStyleList セットする ownComedyStyleList
      */
-    public void setOwnComedyStyleList(List<String> ownComedyStyleList) {
+    public void setOwnComedyStyleList(List<ComedyStyle> ownComedyStyleList) {
         this.ownComedyStyleList = ownComedyStyleList;
     }
     /**
@@ -157,28 +160,25 @@ public class TopBean {
     /**
      * @return skillList
      */
-    public List<String> getSkillList() {
+    public List<SpecialSkill> getSkillList() {
         return skillList;
     }
     /**
      * @param skillList セットする skillList
      */
-    public void setSkillList(List<String> skillList) {
+    public void setSkillList(List<SpecialSkill> skillList) {
         this.skillList = skillList;
     }
     /**
-     * @return activePlaceList
+     * @return areaList
      */
-    public List<String> getActivePlaceList() {
-        return activePlaceList;
+    public List<Area> getAreaList() {
+        return areaList;
     }
     /**
-     * @param activePlaceList セットする activePlaceList
+     * @param areaList セットする areaList
      */
-    public void setActivePlaceList(List<String> activePlaceList) {
-        this.activePlaceList = activePlaceList;
+    public void setAreaList(List<Area> areaList) {
+        this.areaList = areaList;
     }
-    
-
-
 }

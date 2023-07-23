@@ -12,6 +12,7 @@ import com.c4ccup.laugh.controller.bean.UserBean;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
 import com.c4ccup.laugh.util.AppConst.specialSkillEnum;
+import com.c4ccup.laugh.util.AwsSesUtil;
 
 /**
  * CRUDを操作するProfileクラス
@@ -23,6 +24,8 @@ public class ProfileController {
 
     @Autowired
     private UserRepository userRepository;
+//    @Autowired
+//    private AwsSesUtil awsSesUtil;
 
     /**
      * 新規登録するメソッド
@@ -31,6 +34,8 @@ public class ProfileController {
      */
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public void register(@RequestBody UserBean userBean) {
+
+//        awsSesUtil.send("s.kunisu@c4c.co.jp", "test", "<h1>test</h1><p>aaa</p>");
 
         //debutDtをセット
         Calendar cal = Calendar.getInstance();
@@ -61,8 +66,8 @@ public class ProfileController {
             }
         }
 
-        // 特殊スキルの登録
-        if (userBean.getSpecialSkillIdList() != null) {
+        // 特殊スキルの登録(作家のみ)
+        if (userBean.getUserType() == UserEnum.COMPOSER.getId() && userBean.getSpecialSkillIdList() != null) {
             String tmp_another_skill = userBean.getAnotherSkill();
             for(int specialSkillId: userBean.getSpecialSkillIdList()) {
                 userBean.setSpecialSkillId(specialSkillId);

@@ -1,11 +1,14 @@
 package com.c4ccup.laugh.controller.bean;
 
+import javax.validation.constraints.NotNull;
+
 /**
  *画面から取得した値をJavaオブジェクトで扱うためのクラス
  */
 public class DemoBean {
 
     /** id */
+    @NotNull(message = "idは必須です")
     private Integer id;
     /** tittle */
     private String title;

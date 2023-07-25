@@ -1,11 +1,15 @@
 package com.c4ccup.laugh;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.c4ccup.laugh.controller.bean.res._Cmn;
 import com.c4ccup.laugh.util.AwsSesUtil;
 import com.c4ccup.laugh.util.JwtUtil;
 import com.c4ccup.laugh.util.PasswordUtil;
@@ -28,8 +32,12 @@ public class LaughApplication {
     }
 
     @RequestMapping("/")
-    public String home() {
-        return "変更しました";
+    public _Cmn home() {
+        _Cmn cm = new _Cmn();
+        List<String> a =new ArrayList<>();
+        //a.add("aaaa");
+        cm.setMessages(a);
+        return cm;
     }
 
     @RequestMapping("/demoMail")

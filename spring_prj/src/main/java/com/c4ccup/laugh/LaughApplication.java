@@ -35,8 +35,7 @@ public class LaughApplication {
     public _Cmn home() {
         _Cmn cm = new _Cmn();
         List<String> a =new ArrayList<>();
-        //a.add("aaaa");
-        cm.setMessages(a);
+        //cm.setMessages(a);
         return cm;
     }
 

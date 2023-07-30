@@ -8,9 +8,10 @@ import javax.validation.constraints.NotNull;
 public class DemoBean {
 
     /** id */
-    @NotNull(message = "idは必須です")
+    @NotNull
     private Integer id;
     /** tittle */
+    @NotNull
     private String title;
     /** detailIds */
     private int detailIds;

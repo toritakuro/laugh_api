@@ -1,13 +1,12 @@
 package com.c4ccup.laugh.controller;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+
+import com.c4ccup.laugh.controller.bean.res._Messages;
 
 public class _CmnController {
 
@@ -43,13 +42,23 @@ public class _CmnController {
         return msgSrc.getMessage(code, msgs, Locale.JAPAN);
     }
 
-    public Map<String ,List<String>> getReturnMsg(List<String> msgs) {
-        Map<String ,List<String>> msg = new HashMap<>();
-        msg.put("messages", msgs);
-        return msg;
+    /**
+     * メッセージの返却
+     * @param msgs
+     * @return
+     */
+    public _Messages getReturnMsg(List<String> msgs) {
+        _Messages messages = new _Messages();
+        messages.setMessages(msgs);
+        return messages;
     }
 
-    public Map<String ,List<String>> getReturnMsg(String msg) {
+    /**
+     * メッセージの返却
+     * @param msg
+     * @return
+     */
+    public _Messages getReturnMsg(String msg) {
         return this.getReturnMsg(Collections.singletonList(msg));
     }
 }

@@ -2,6 +2,9 @@ package com.c4ccup.laugh.controller;
 
 import java.time.LocalDateTime;
 
+import javax.security.auth.login.LoginException;
+
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,10 +26,12 @@ public class LoginController {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final MessageSource messageSource;
 
-    public LoginController(UserRepository userRepository, JwtUtil jwtUtil) {
+    public LoginController(UserRepository userRepository, JwtUtil jwtUtil, MessageSource messageSource) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
+        this.messageSource = messageSource;
     }
 
     /**
@@ -36,7 +41,7 @@ public class LoginController {
      * @return JWTとユーザー情報を含むレスポンスエンティティ
      */
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws LoginException {
 
         String email = request.getEmail();
         String password = request.getPassword();
@@ -50,8 +55,7 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         // パスワードチェック
-        if (!PasswordUtil.matches(password, user.getPassword()))
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        PasswordUtil.matches(password, user.getPassword(), messageSource);
 
         // ログイン日時を更新
         user.setLoginAt(now);

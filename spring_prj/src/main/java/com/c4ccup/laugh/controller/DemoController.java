@@ -2,8 +2,6 @@ package com.c4ccup.laugh.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.DemoBean;
+import com.c4ccup.laugh.controller.bean.res.DemoResources;
+import com.c4ccup.laugh.controller.bean.res._Messages;
 import com.c4ccup.laugh.domain.Demo;
 import com.c4ccup.laugh.repository.DemoRepository;
 
@@ -43,11 +43,14 @@ public class DemoController extends _CmnController {
      * @return
      */
     @RequestMapping(path = "/list", method = RequestMethod.GET)
-    public ResponseEntity<Map<String, List<String>>> initList() {
+    public ResponseEntity<DemoResources> initList() {
 //        System.out.println(getMessage("a", "テス"));
 //        List<Demo> demoList = new ArrayList<>();
         //demoList = demoRepository.findAll();
-        return ResponseEntity.ok(super.getReturnMsg(getMessage("a", "テス")));
+        DemoResources demo = new DemoResources();
+        _Messages returnMsg = super.getReturnMsg(getMessage("a", "テス"));
+        demo.setMessages(returnMsg);
+        return ResponseEntity.ok(demo);
     }
 
     /**

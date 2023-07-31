@@ -1,21 +1,22 @@
 package com.c4ccup.laugh.controller.bean.res;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class _Cmn {
+public class _Messages {
 
     /** メッセージ */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private _Messages _msg = new _Messages();
+    private List<String> messages = new ArrayList<>();
 
     /**
      * メッセージを設定します。
      * @param メッセージ
      */
-    public void setMessages(_Messages _msg) {
-        this._msg.setMessages(_msg.getMessages());
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
     }
 
     /**
@@ -24,6 +25,6 @@ public class _Cmn {
      */
     public List<String> getMessages()
     {
-        return this._msg.getMessages();
+        return messages;
     }
 }

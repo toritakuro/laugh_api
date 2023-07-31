@@ -19,7 +19,7 @@ public class PasswordUtil {
      * パスワードのハッシュ化
      * 
      * @param password ハッシュ化するパスワード
-     * @return hash化されたパスワード
+     * @return ハッシュ化されたパスワード
      */
     public static String hashPassword(String password) {
         return passwordEncoder.encode(password);
@@ -30,7 +30,7 @@ public class PasswordUtil {
      * 
      * @param rawPassword     平文パスワード
      * @param encodedPassword ハッシュ化されたパスワード
-     * @return パスワードが一致する場合はtrue、それ以外の場合はfalse
+     * @param messageSource   メッセージソース
      */
     public static void matches(String rawPassword, String encodedPassword, MessageSource messageSource)
             throws LoginException {

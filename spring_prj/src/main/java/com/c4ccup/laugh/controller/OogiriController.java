@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.domain.OogiriTheme;
 import com.c4ccup.laugh.repository.OogiriRepository;
+import com.c4ccup.laugh.repository.UserRepository;
 
 /**
  * 大喜利Controllerクラス
@@ -25,10 +26,12 @@ import com.c4ccup.laugh.repository.OogiriRepository;
 public class OogiriController {
 
     private final OogiriRepository oogiriRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public OogiriController(OogiriRepository oogiriRepository) {
+    public OogiriController(OogiriRepository oogiriRepository, UserRepository userRepository) {
         this.oogiriRepository = oogiriRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -168,6 +171,15 @@ public class OogiriController {
 
         // リアクション更新
         oogiriRepository.editReaction(answerId, reactionStatus, now);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(path = "/user", method = RequestMethod.GET)
+    public ResponseEntity<OogiriResponse> getOogiriByUser(@RequestParam String themeUserName, String answerUserName) {
+
+        // ユーザーネームからユーザーIDを取得
+        // IDで大喜利お題、回答それぞれのテーブルからデータを取得
+        // レスポンスを生成する
         return ResponseEntity.ok().build();
     }
 }

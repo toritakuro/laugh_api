@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import javax.security.auth.login.LoginException;
 
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,16 +21,14 @@ import com.c4ccup.laugh.util.PasswordUtil;
  *
  */
 @RestController
-public class LoginController {
+public class LoginController extends _CmnController {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
-    private final MessageSource messageSource;
 
-    public LoginController(UserRepository userRepository, JwtUtil jwtUtil, MessageSource messageSource) {
+    public LoginController(UserRepository userRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
-        this.messageSource = messageSource;
     }
 
     /**
@@ -55,7 +52,8 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         // パスワードチェック
-        PasswordUtil.matches(password, user.getPassword(), messageSource);
+        String errMsg = super.getMessage("e001", "パスワード認証");
+        PasswordUtil.matches(password, user.getPassword(), errMsg);
 
         // ログイン日時を更新
         user.setLoginAt(now);

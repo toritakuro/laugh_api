@@ -1,10 +1,7 @@
 package com.c4ccup.laugh.util;
 
-import java.util.Locale;
-
 import javax.security.auth.login.LoginException;
 
-import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -32,10 +29,8 @@ public class PasswordUtil {
      * @param encodedPassword ハッシュ化されたパスワード
      * @param messageSource   メッセージソース
      */
-    public static void matches(String rawPassword, String encodedPassword, MessageSource messageSource)
-            throws LoginException {
+    public static void matches(String rawPassword, String encodedPassword, String errMsg) throws LoginException {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-            String errMsg = messageSource.getMessage("e001", new Object[] { "パスワード認証" }, Locale.JAPAN);
             throw new LoginException(errMsg);
         }
     }

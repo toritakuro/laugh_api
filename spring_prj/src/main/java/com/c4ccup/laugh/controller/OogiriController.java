@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -100,6 +101,7 @@ public class OogiriController {
      * @return
      */
     @RequestMapping(path = "/answer", method = RequestMethod.POST)
+    @Transactional
     public ResponseEntity<?> regAnswer(@RequestBody OogiriRequest request) {
 
         int themeId = request.getThemeId();
@@ -109,6 +111,9 @@ public class OogiriController {
 
         // 回答登録
         oogiriRepository.regAnswer(themeId, userId, answerContent, now);
+
+        // お題の更新日時を更新
+        oogiriRepository.updTheme(themeId, now);
         return ResponseEntity.ok().build();
     }
 

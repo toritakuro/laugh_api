@@ -113,13 +113,22 @@
     LIMIT 3
 </select>
 
-
 <!-- お題を登録する -->
 <insert id="regTheme">
     INSERT INTO
         oogiri_theme(user_id, theme_content, create_at, update_at)
     VALUES
         (#{userId}, #{themeContent}, #{now}, #{now})
+</insert>
+
+<!-- お題の更新日時を更新する -->
+<insert id="updTheme">
+    UPDATE
+        oogiri_theme
+    SET
+        oogiri_theme.update_at = #{now}
+    WHERE
+        oogiri_theme.id = #{themeId}
 </insert>
 
 <!-- 回答を1件取得 -->

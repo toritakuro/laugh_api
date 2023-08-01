@@ -58,6 +58,14 @@ public interface OogiriRepository {
     public void regTheme(int userId, String themeContent, LocalDateTime now);
 
     /**
+     * お題の更新日時を更新する
+     * 
+     * @param themeId お題ID
+     * @param now     現在時刻
+     */
+    public void updTheme(int themeId, LocalDateTime now);
+
+    /**
      * 回答を1件取得
      * 
      * @param answerId 回答ID

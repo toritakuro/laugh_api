@@ -68,6 +68,18 @@
          oogiri_theme.id = #{themeId}
 </select>
 
+<select id="getThemeByUser" resultMap="OogiriThemeResultMap">
+    SELECT
+        oogiri_theme.id AS theme_id,
+        oogiri_theme.user_id AS theme_user_id,
+        theme_content AS theme_content,
+        oogiri_theme.update_at AS theme_updated_at
+    FROM
+        oogiri_theme
+    WHERE
+         oogiri_theme.user_id = #{themeUserId}
+</select>
+
 <!-- 最新の50件の大喜利お題を取得する -->
 <select id="getLatestOogiriThemes" resultMap="OogiriThemeResultMap">
     SELECT

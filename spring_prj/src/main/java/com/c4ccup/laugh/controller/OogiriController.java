@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.domain.OogiriTheme;
+import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.OogiriRepository;
 import com.c4ccup.laugh.repository.UserRepository;
 
@@ -174,11 +175,30 @@ public class OogiriController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 大喜利検索
+     * 
+     * @param themeUserName
+     * @param answerUserName
+     * @return
+     */
     @RequestMapping(path = "/user", method = RequestMethod.GET)
     public ResponseEntity<OogiriResponse> getOogiriByUser(@RequestParam String themeUserName, String answerUserName) {
 
-        // ユーザーネームからユーザーIDを取得
-        // IDで大喜利お題、回答それぞれのテーブルからデータを取得
+        // お題ユーザーを取得
+        List<User> themeUsers = userRepository.findByName(themeUserName);
+        // ユーザーのIDリスト
+        List<Integer> themeUserIds = new ArrayList<>();
+        for (User user : themeUsers) {
+            themeUserIds.add(user.getId());
+        }
+
+        // ユーザーのIDでお題を取得
+        List<OogiriTheme> themes = new ArrayList<>();
+        for (int userId : themeUserIds) {
+            themes = oogiriRepository.getThemeByUser(userId);
+        }
+
         // レスポンスを生成する
         return ResponseEntity.ok().build();
     }

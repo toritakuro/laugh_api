@@ -4,7 +4,7 @@
 
   <resultMap id="UserResultMap" type="com.c4ccup.laugh.domain.User">
     <result column="id" property="id"/>
-    <result column="user_address" property="mail"/>
+    <result column="user_address" property="userAddress"/>
     <result column="password" property="password"/>
     <result column="user_name" property="userName"/>
   </resultMap>

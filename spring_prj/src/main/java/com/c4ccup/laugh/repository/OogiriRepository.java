@@ -25,6 +25,14 @@ public interface OogiriRepository {
     public OogiriTheme getTheme(int themeId);
 
     /**
+     * ユーザーIDでお題を取得
+     * 
+     * @param themeUserId お題ユーザーID
+     * @return OogiriTheme
+     */
+    public List<OogiriTheme> getThemeByUser(int themeUserId);
+
+    /**
      * お題を更新順に取得
      * 
      * @param limit 件数

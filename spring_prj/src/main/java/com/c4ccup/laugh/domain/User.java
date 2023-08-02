@@ -1,5 +1,6 @@
 package com.c4ccup.laugh.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -20,7 +21,7 @@ public class User {
     /** パスワード */
     private String password;
     /** 活動開始年月 */
-    private LocalDateTime debutDt;
+    private LocalDate debutDt;
     /** 性別 */
     private int gender;
     /** 事務所 */
@@ -121,13 +122,13 @@ public class User {
     /**
      * @return debutDt
      */
-    public LocalDateTime getDebutDt() {
+    public LocalDate getDebutDt() {
         return debutDt;
     }
     /**
      * @param debutDt セットする debutDt
      */
-    public void setDebutDt(LocalDateTime debutDt) {
+    public void setDebutDt(LocalDate debutDt) {
         this.debutDt = debutDt;
     }
     /**

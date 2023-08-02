@@ -1,29 +1,77 @@
 package com.c4ccup.laugh.controller.bean;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
+
+import com.c4ccup.laugh.domain.User;
 
 public class UserBean {
+
+    /** id */
     private int id;
+    /** ユーザー名 */
     private String userName;
+    /** ユーザー名(カナ) */
     private String userNameKana;
+    /** ユーザータイプ */
     private int userType;
-    private LocalDateTime debutDt;
+    /** 活動開始年月 */
+    private LocalDate debutDt;
+    /** 性別 */
     private int gender;
-    private Map<Integer, String> comedyStyle;
+    /** コメディスタイルid */
+    private List<Integer> comedyStyleId;
+    /** コメディスタイル名 */
+    private List<String> comedyStyleName;
+    /** オフィスid */
     private int officeId;
+    /** オフィス名 */
     private String officeName;
+    /** エリアid */
     private int areaId;
+    /** エリア名 */
     private String areaName;
+    /** 自己紹介 */
     private String selfIntroduction;
+    /** プロフィール画像 */
     private String profileImg;
+    /** ログイン日付 */
     private LocalDateTime loginAt;
+    /** アップデート日付 */
     private LocalDateTime updateAt;
+    /** 料金タイプ */
     private int feeType;
+    /** 料金 */
     private int fee;
-    private Map<Integer, String> skill;
+    /** スキルid */
+    private List<Integer> skillId;
+    /** スキル名 */
+    private List<String> skillName;
+    /** 活動人数 */
     private int memberNum;
 
+
+    public UserBean() {
+        
+    }
+    
+    public UserBean(User user) {
+        this.id = user.getId();
+        this.userName = user.getUserName();
+        this.userNameKana = user.getUserNameKana();
+        this.userType = user.getUserType();
+        this.debutDt = user.getDebutDt();
+        this.gender = user.getGender();
+        this.officeId = user.getOfficeId().getId();
+        this.officeName = user.getOfficeId().getOfficeName();
+        this.areaId = user.getAreaId().getId();
+        this.areaName = user.getAreaId().getAreaName();
+        this.selfIntroduction = user.getSelfIntroduction();
+        this.profileImg = user.getProfileImg();
+        this.loginAt = user.getLoginAt();
+        this.updateAt = user.getUpdateAt();
+    }
     /**
      * @return id
      */
@@ -75,13 +123,13 @@ public class UserBean {
     /**
      * @return debutDt
      */
-    public LocalDateTime getDebutDt() {
+    public LocalDate getDebutDt() {
         return debutDt;
     }
     /**
      * @param debutDt セットする debutDt
      */
-    public void setDebutDt(LocalDateTime debutDt) {
+    public void setDebutDt(LocalDate debutDt) {
         this.debutDt = debutDt;
     }
     /**
@@ -97,16 +145,30 @@ public class UserBean {
         this.gender = gender;
     }
     /**
-     * @return comedyStyle
+     * @return comedyStyleId
      */
-    public Map<Integer, String> getComedyStyle() {
-        return comedyStyle;
+    public List<Integer> getComedyStyleId() {
+        return comedyStyleId;
+    }
+
+    /**
+     * @param comedyStyleId セットする comedyStyleId
+     */
+    public void setComedyStyleId(List<Integer> comedyStyleId) {
+        this.comedyStyleId = comedyStyleId;
+    }
+
+    /**
+     * @return comedyStyleName
+     */
+    public List<String> getComedyStyleName() {
+        return comedyStyleName;
     }
     /**
-     * @param comedyStyle セットする comedyStyle
+     * @param comedyStyleName セットする comedyStyleName
      */
-    public void setComedyStyle(Map<Integer, String> comedyStyle) {
-        this.comedyStyle = comedyStyle;
+    public void setComedyStyleName(List<String> comedyStyleName) {
+        this.comedyStyleName = comedyStyleName;
     }
     /**
      * @return officeId
@@ -229,16 +291,31 @@ public class UserBean {
         this.fee = fee;
     }
     /**
-     * @return skill
+     * @return skillId
      */
-    public Map<Integer, String> getSkill() {
-        return skill;
+    public List<Integer> getSkillId() {
+        return skillId;
     }
+
     /**
-     * @param skill セットする skill
+     * @param skillId セットする skillId
      */
-    public void setSkill(Map<Integer, String> skill) {
-        this.skill = skill;
+    public void setSkillId(List<Integer> skillId) {
+        this.skillId = skillId;
+    }
+
+    /**
+     * @return skillName
+     */
+    public List<String> getSkillName() {
+        return skillName;
+    }
+
+    /**
+     * @param skillName セットする skillName
+     */
+    public void setSkillName(List<String> skillName) {
+        this.skillName = skillName;
     }
     /**
      * @return memberNum
@@ -252,6 +329,4 @@ public class UserBean {
     public void setMemberNum(int memberNum) {
         this.memberNum = memberNum;
     }
-    
-
 }

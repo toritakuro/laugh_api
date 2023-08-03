@@ -2,16 +2,19 @@ package com.c4ccup.laugh.controller;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-
 import com.c4ccup.laugh.controller.bean.res._Messages;
+import com.c4ccup.laugh.util.MessageUtil;
 
+/**
+ * 共通コントーラークラス
+ * 各コントローラーに必要な共通処理を実装する
+ *
+ */
 public class _CmnController {
 
     @Autowired
-    MessageSource msgSrc;
+    MessageUtil msgUtil;
 
     /**
      * 固定メッセージの取得
@@ -19,7 +22,7 @@ public class _CmnController {
      * @return
      */
     public String getMessage(String code) {
-        return this.getMsg(code, null);
+        return msgUtil.getMessage(code);
     }
 
     /**
@@ -29,17 +32,7 @@ public class _CmnController {
      * @return
      */
     public String getMessage(String code, String... msgs) {
-        return this.getMsg(code, msgs);
-    }
-
-    /**
-     * メッセージをマッピングする
-     * @param code messages.properties のkey
-     * @param msgs messages.properties の可変部分
-     * @return
-     */
-    private String getMsg(String code, String[] msgs) {
-        return msgSrc.getMessage(code, msgs, Locale.JAPAN);
+        return msgUtil.getMessage(code, msgs);
     }
 
     /**
@@ -48,9 +41,7 @@ public class _CmnController {
      * @return
      */
     public _Messages getReturnMsg(List<String> msgs) {
-        _Messages messages = new _Messages();
-        messages.setMessages(msgs);
-        return messages;
+        return msgUtil.getReturnMsg(msgs);
     }
 
     /**
@@ -59,6 +50,7 @@ public class _CmnController {
      * @return
      */
     public _Messages getReturnMsg(String msg) {
-        return this.getReturnMsg(Collections.singletonList(msg));
+        return msgUtil.getReturnMsg(Collections.singletonList(msg));
     }
+
 }

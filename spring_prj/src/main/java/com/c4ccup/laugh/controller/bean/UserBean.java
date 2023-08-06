@@ -1,8 +1,10 @@
 package com.c4ccup.laugh.controller.bean;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Calendar;
-import java.util.Date;
+
+import com.c4ccup.laugh.util.PasswordUtil;
 
 /**
  * 画面から取得した値をJavaオブジェクトで扱うためのクラス
@@ -37,7 +39,7 @@ public class UserBean {
     /** 自己紹介文 */
     private String selfIntroduction;
     /** プロフィール画像 */
-    private String profileImgPath;
+    private byte[] profileImg;
     /** 退会フラグ */
     private int deleteFlg;
     /** ログイン日時 */
@@ -147,7 +149,7 @@ public class UserBean {
      * @param password セットする password
      */
     public void setPassword(String password) {
-        this.password = password;
+        this.password = PasswordUtil.hashPassword(password);
     }
     /**
      * @return debutYear
@@ -234,16 +236,24 @@ public class UserBean {
         this.selfIntroduction = selfIntroduction;
     }
     /**
-     * @return profileImgPath
+     * @return profileImg
      */
-    public String getProfileImgPath() {
-        return profileImgPath;
+    public String getProfileImg() {
+        if(profileImg == null) {
+            return null;
+        } else {
+            return Base64.getEncoder().encodeToString(profileImg);
+        }
     }
     /**
-     * @param profileImgPath セットする profileImgPath
+     * @param profileImg セットする profileImg
      */
-    public void setProfileImgPath(String profileImgPath) {
-        this.profileImgPath = profileImgPath;
+    public void setProfileImg(String profileImg) {
+        if(profileImg == null) {
+            this.profileImg = null;
+        } else {
+            this.profileImg = Base64.getDecoder().decode(profileImg);
+        }
     }
     /**
      * @return deleteFlg

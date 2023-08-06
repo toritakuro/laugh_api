@@ -24,8 +24,25 @@ public class ProfileController {
 
     @Autowired
     private UserRepository userRepository;
-//    @Autowired
-//    private AwsSesUtil awsSesUtil;
+    @Autowired
+    private AwsSesUtil awsSesUtil;
+
+
+    /**
+     * メールを送信するメソッド
+     * @param userBean
+     * @return
+     */
+    @RequestMapping(path = "/init", method = RequestMethod.POST)
+    public void init(@RequestBody UserBean userBean) {
+        String userMailAddress = userBean.getUserAddress();
+        String Title = "Laughの登録";
+        String Text = "<p>以下のURLから登録をお願いします。</p><br>"
+                     + "http://localhost:3000/profile/register/"
+                     + userBean.getUserAddress().replace(".", "+");
+        awsSesUtil.send(userMailAddress, Title, Text);
+    }
+
 
     /**
      * 新規登録するメソッド
@@ -35,17 +52,15 @@ public class ProfileController {
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public void register(@RequestBody UserBean userBean) {
 
-//        awsSesUtil.send("s.kunisu@c4c.co.jp", "test", "<h1>test</h1><p>aaa</p>");
-
         //debutDtをセット
         Calendar cal = Calendar.getInstance();
         cal.set(userBean.getDebutYear(), userBean.getDebutMonth() - 1, 1);
         userBean.setDebutDt(cal);
 
-        // ユーザーを登録し、採番されたidを取得する
+        // ユーザーをuserテーブルに登録する。また、採番されたidを取得しregisterUserIdに入れる
         int registerUserId = userRepository.register(userBean);
 
-        // 登録したユーザーのuserId取得
+        // 登録したユーザーのuserIdをセットしておく
         userBean.setUserId(registerUserId);
 
         // 作家プロフィールの登録
@@ -58,7 +73,7 @@ public class ProfileController {
             userRepository.registerComedian(userBean);
         }
 
-        // 得意分野の登録
+        // 得意分野の登録(作家・芸人どちらも)
         if (userBean.getComedyStyleIdList() != null) {
             for(int comedyStyleId: userBean.getComedyStyleIdList()) {
                 userBean.setComedyStyleId(comedyStyleId);

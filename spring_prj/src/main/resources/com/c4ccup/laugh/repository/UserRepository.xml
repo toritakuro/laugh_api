@@ -40,7 +40,7 @@
         ,office_id
         ,area_id
         ,self_introduction
-        ,profile_img_path
+        ,profile_img
         )
     VALUES
       (
@@ -54,7 +54,7 @@
       ,#{officeId}
       ,#{areaId}
       ,#{selfIntroduction}
-      ,#{profileImgPath}
+      ,#{profileImg}
       );
   </insert>
 

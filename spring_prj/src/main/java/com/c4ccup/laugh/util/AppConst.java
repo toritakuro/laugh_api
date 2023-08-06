@@ -34,11 +34,11 @@ public class AppConst {
     }
 
     /** 特殊スキル */
-    // TODO: 特殊スキルなにがあるか分からないので皆から意見もらいたい
     public enum specialSkillEnum {
         VIDEO_EDITTING(1, "動画編集"),
-        DESIGN(2, "デザイン"),
-        OTHERS(3, "その他"),
+        DESIGN(2, "イラスト"),
+        SOUND_PRODUCTION(3, "音源制作"),
+        OTHERS(4, "その他"),
         ;
 
         private int id;

@@ -126,4 +126,5 @@ public interface OogiriRepository {
      */
     public void editReaction(int reactionId, int reactionStatus, LocalDateTime now);
 
+    public List<Integer> getThemeIds(int userId);
 }

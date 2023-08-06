@@ -55,6 +55,8 @@
     <collection property="reactions" ofType="com.c4ccup.laugh.controller.OogiriReactionResponse" resultMap="OogiriReactionResponseResultMap"/>
 </resultMap>
 
+<resultMap id="ThemeIdsResultMap" type="java.lang.Integer" />
+
 <!-- 大喜利お題を1件取得する -->
 <select id="getTheme" resultMap="OogiriThemeResultMap">
     SELECT
@@ -204,4 +206,13 @@
         update_at = #{now}
     WHERE id = #{reactionId}
 </update>
+
+<select id="getThemeIds" resultMap="ThemeIdsResultMap">
+    SELECT DISTINCT
+        oogiri_theme_id
+    FROM
+        oogiri_answer
+    WHERE
+        user_id = #{userId};
+</select>
 </mapper>

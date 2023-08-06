@@ -185,14 +185,10 @@ public class OogiriController {
         // レスポンスリスト
         List<OogiriResponse> responses = new ArrayList<>();
 
+        // お題作成者検索
         if (!themeUserName.equals("")) {
-            // 検索お題ユーザーを取得
-            List<User> themeUsers = userRepository.findByName(themeUserName);
-            // ユーザーのIDリスト
-            List<Integer> themeUserIds = new ArrayList<>();
-            for (User user : themeUsers) {
-                themeUserIds.add(user.getId());
-            }
+            // 検索お題ユーザーIDを取得
+            List<Integer> themeUserIds = getUserIdsByName(themeUserName);
             List<OogiriTheme> themes = new ArrayList<>();
             for (int userId : themeUserIds) {
                 // ユーザーのIDでお題を取得
@@ -202,12 +198,23 @@ public class OogiriController {
             }
         }
 
+        // 回答者検索
+        if (!answerUserName.equals("")) {
+            // ユーザーのIDリスト
+            List<Integer> answerUserIds = getUserIdsByName(answerUserName);
+
+            List<Integer> themeIds = new ArrayList<>();
+            for (int userId : answerUserIds) {
+                themeIds = oogiriRepository.getThemeIds(userId);
+            }
+        }
+
         // レスポンスを生成する
         return ResponseEntity.ok(responses);
     }
 
     /**
-     * 一覧用レスポンスを生成
+     * 一覧用レスポンスの生成
      * 
      * @param responses
      * @param themes
@@ -221,5 +228,21 @@ public class OogiriController {
             responses.add(response);
         }
         return responses;
+    }
+
+    /**
+     * ユーザー名でユーザーのIDリストを取得
+     * 
+     * @param userName
+     * @return
+     */
+    private List<Integer> getUserIdsByName(String userName) {
+        List<User> users = userRepository.findByName(userName);
+        // ユーザーのIDリスト
+        List<Integer> userIds = new ArrayList<>();
+        for (User user : users) {
+            userIds.add(user.getId());
+        }
+        return userIds;
     }
 }

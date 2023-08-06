@@ -29,8 +29,9 @@ public class PasswordUtil {
      * @param encodedPassword ハッシュ化されたパスワード
      * @param messageSource   メッセージソース
      */
-    public static void matches(String rawPassword, String encodedPassword, String errMsg) throws LoginException {
+    public static void matches(String rawPassword, String encodedPassword, MessageUtil msgUtil) throws LoginException {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            String errMsg = msgUtil.getMessage("e001", "パスワード認証");
             throw new LoginException(errMsg);
         }
     }

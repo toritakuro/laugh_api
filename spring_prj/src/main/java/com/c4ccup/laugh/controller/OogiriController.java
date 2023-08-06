@@ -47,12 +47,8 @@ public class OogiriController {
         // お題を50件取得
         List<OogiriTheme> oogiriThemes = oogiriRepository.getLatestOogiriThemes(50);
 
-        // お題ごとにレスポンスを追加
-        for (OogiriTheme theme : oogiriThemes) {
-            List<OogiriAnswerResponse> answers = oogiriRepository.getThreeAnswers(theme.getThemeId());
-            OogiriResponse response = OogiriResponse.themeAndAnswers(theme, answers);
-            responses.add(response);
-        }
+        // レスポンスリストを生成
+        responses = createInitResList(responses, oogiriThemes);
 
         return ResponseEntity.ok(responses);
     }
@@ -183,23 +179,47 @@ public class OogiriController {
      * @return
      */
     @RequestMapping(path = "/user", method = RequestMethod.GET)
-    public ResponseEntity<OogiriResponse> getOogiriByUser(@RequestParam String themeUserName, String answerUserName) {
+    public ResponseEntity<List<OogiriResponse>> getOogiriByUser(@RequestParam String themeUserName,
+            String answerUserName) {
 
-        // お題ユーザーを取得
-        List<User> themeUsers = userRepository.findByName(themeUserName);
-        // ユーザーのIDリスト
-        List<Integer> themeUserIds = new ArrayList<>();
-        for (User user : themeUsers) {
-            themeUserIds.add(user.getId());
-        }
+        // レスポンスリスト
+        List<OogiriResponse> responses = new ArrayList<>();
 
-        // ユーザーのIDでお題を取得
-        List<OogiriTheme> themes = new ArrayList<>();
-        for (int userId : themeUserIds) {
-            themes = oogiriRepository.getThemeByUser(userId);
+        if (!themeUserName.equals("")) {
+            // 検索お題ユーザーを取得
+            List<User> themeUsers = userRepository.findByName(themeUserName);
+            // ユーザーのIDリスト
+            List<Integer> themeUserIds = new ArrayList<>();
+            for (User user : themeUsers) {
+                themeUserIds.add(user.getId());
+            }
+            List<OogiriTheme> themes = new ArrayList<>();
+            for (int userId : themeUserIds) {
+                // ユーザーのIDでお題を取得
+                themes = oogiriRepository.getThemeByUser(userId);
+                // 取得したお題でレスポンスリストに追加
+                responses = createInitResList(responses, themes);
+            }
         }
 
         // レスポンスを生成する
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(responses);
+    }
+
+    /**
+     * 一覧用レスポンスを生成
+     * 
+     * @param responses
+     * @param themes
+     * @return
+     */
+    private List<OogiriResponse> createInitResList(List<OogiriResponse> responses, List<OogiriTheme> themes) {
+        // お題ごとにレスポンスを追加
+        for (OogiriTheme theme : themes) {
+            List<OogiriAnswerResponse> answers = oogiriRepository.getThreeAnswers(theme.getThemeId());
+            OogiriResponse response = OogiriResponse.themeAndAnswers(theme, answers);
+            responses.add(response);
+        }
+        return responses;
     }
 }

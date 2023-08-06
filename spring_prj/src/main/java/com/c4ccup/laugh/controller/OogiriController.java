@@ -2,7 +2,9 @@ package com.c4ccup.laugh.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -181,35 +183,47 @@ public class OogiriController {
     @RequestMapping(path = "/user", method = RequestMethod.GET)
     public ResponseEntity<List<OogiriResponse>> getOogiriByUser(@RequestParam String themeUserName,
             String answerUserName) {
-
         // レスポンスリスト
         List<OogiriResponse> responses = new ArrayList<>();
+        // お題リスト
+        List<OogiriTheme> allThemes = new ArrayList<>();
 
-        // お題作成者検索
+        // お題作成者で検索
+        // お題作成者用お題リスト
+        List<OogiriTheme> themeResponses = new ArrayList<>();
         if (!themeUserName.equals("")) {
             // 検索お題ユーザーIDを取得
             List<Integer> themeUserIds = getUserIdsByName(themeUserName);
+            // 取得したIDでお題リストを取得
             List<OogiriTheme> themes = new ArrayList<>();
             for (int userId : themeUserIds) {
                 // ユーザーのIDでお題を取得
                 themes = oogiriRepository.getThemeByUser(userId);
                 // 取得したお題でレスポンスリストに追加
-                responses = createInitResList(responses, themes);
+                themeResponses.addAll(themes);
             }
+            // お題リストに追加
+            allThemes.addAll(themeResponses);
         }
 
-        // 回答者検索
+        // 回答者で検索
+        // 回答者検索用お題リスト
+        List<OogiriTheme> answerResponses = new ArrayList<>();
         if (!answerUserName.equals("")) {
-            // ユーザーのIDリスト
+            // 回答者ユーザーIDを取得
             List<Integer> answerUserIds = getUserIdsByName(answerUserName);
-
-            List<Integer> themeIds = new ArrayList<>();
+            // 取得したIDでお題リストを取得
             for (int userId : answerUserIds) {
-                themeIds = oogiriRepository.getThemeIds(userId);
+                // ユーザーのIDでお題IDを取得
+                List<Integer> themeIds = oogiriRepository.getThemeIds(userId);
+                // お題IDでお題リストを取得
+                answerResponses = getThemesByThemeId(answerResponses, themeIds);
             }
+            allThemes.addAll(answerResponses);
         }
 
         // レスポンスを生成する
+        responses = createInitResList(responses, allThemes);
         return ResponseEntity.ok(responses);
     }
 
@@ -222,10 +236,14 @@ public class OogiriController {
      */
     private List<OogiriResponse> createInitResList(List<OogiriResponse> responses, List<OogiriTheme> themes) {
         // お題ごとにレスポンスを追加
+        Set<Integer> addedThemeIds = new HashSet<>();
         for (OogiriTheme theme : themes) {
-            List<OogiriAnswerResponse> answers = oogiriRepository.getThreeAnswers(theme.getThemeId());
-            OogiriResponse response = OogiriResponse.themeAndAnswers(theme, answers);
-            responses.add(response);
+            if (!addedThemeIds.contains(theme.getThemeId())) {
+                List<OogiriAnswerResponse> answers = oogiriRepository.getThreeAnswers(theme.getThemeId());
+                OogiriResponse response = OogiriResponse.themeAndAnswers(theme, answers);
+                responses.add(response);
+                addedThemeIds.add(theme.getThemeId()); // 重複を防ぐためにセットに追加
+            }
         }
         return responses;
     }
@@ -244,5 +262,19 @@ public class OogiriController {
             userIds.add(user.getId());
         }
         return userIds;
+    }
+
+    /**
+     * お題IDでお題リストを取得
+     * 
+     * @param themes
+     * @param themeIds
+     * @return
+     */
+    private List<OogiriTheme> getThemesByThemeId(List<OogiriTheme> themes, List<Integer> themeIds) {
+        for (int themeId : themeIds) {
+            themes.add(oogiriRepository.getTheme(themeId));
+        }
+        return themes;
     }
 }

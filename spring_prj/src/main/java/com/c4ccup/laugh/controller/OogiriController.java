@@ -31,6 +31,7 @@ public class OogiriController {
 
     private final OogiriRepository oogiriRepository;
     private final UserRepository userRepository;
+    private LocalDateTime now = LocalDateTime.now();
 
     @Autowired
     public OogiriController(OogiriRepository oogiriRepository, UserRepository userRepository) {
@@ -90,7 +91,6 @@ public class OogiriController {
 
         int userId = request.getUserId();
         String themeContent = request.getThemeContent();
-        LocalDateTime now = LocalDateTime.now();
 
         // お題登録
         oogiriRepository.regTheme(userId, themeContent, now);
@@ -110,7 +110,6 @@ public class OogiriController {
         int themeId = request.getThemeId();
         int userId = request.getUserId();
         String answerContent = request.getAnswerContent();
-        LocalDateTime now = LocalDateTime.now();
 
         // 回答登録
         oogiriRepository.regAnswer(themeId, userId, answerContent, now);
@@ -130,7 +129,6 @@ public class OogiriController {
     public ResponseEntity<?> delAnswer(@RequestBody OogiriRequest request) {
 
         int answerId = request.getAnswerId();
-        LocalDateTime now = LocalDateTime.now();
 
         // 回答削除処理
         oogiriRepository.delAnswer(answerId, now);
@@ -149,7 +147,6 @@ public class OogiriController {
         int answerId = request.getAnswerId();
         int userId = request.getUserId();
         int reactionStatus = request.getReactionStatus();
-        LocalDateTime now = LocalDateTime.now();
 
         // リアクション登録
         oogiriRepository.regReaction(answerId, userId, reactionStatus, now);
@@ -165,12 +162,11 @@ public class OogiriController {
     @RequestMapping(path = "/reaction/edit", method = RequestMethod.POST)
     public ResponseEntity<?> editReaction(@RequestBody OogiriRequest request) {
 
-        int answerId = request.getReactionId();
+        int reactionId = request.getReactionId();
         int reactionStatus = request.getReactionStatus();
-        LocalDateTime now = LocalDateTime.now();
 
         // リアクション更新
-        oogiriRepository.editReaction(answerId, reactionStatus, now);
+        oogiriRepository.editReaction(reactionId, reactionStatus, now);
         return ResponseEntity.ok().build();
     }
 
@@ -183,48 +179,36 @@ public class OogiriController {
      */
     @RequestMapping(path = "/user", method = RequestMethod.GET)
     public ResponseEntity<List<OogiriResponse>> getOogiriByUser(@RequestParam String themeUserName,
-            String answerUserName) {
+            String answerUserName, int page) {
         // レスポンスリスト
         List<OogiriResponse> responses = new ArrayList<>();
         // お題リスト
-        List<OogiriTheme> allThemes = new ArrayList<>();
+        List<OogiriTheme> themes = new ArrayList<>();
 
         // お題作成者で検索
-        // お題作成者用お題リスト
-        List<OogiriTheme> themeResponses = new ArrayList<>();
         if (!themeUserName.isEmpty()) {
-            // 検索お題ユーザーIDを取得
+            // ユーザーIDを取得
             List<Integer> themeUserIds = getUserIdsByName(themeUserName);
-            // 取得したIDでお題リストを取得
-            List<OogiriTheme> themes = new ArrayList<>();
+            // お題リストを取得
             for (int userId : themeUserIds) {
-                // ユーザーのIDでお題を取得
-                themes = oogiriRepository.getThemeByUser(userId);
-                // 取得したお題でレスポンスリストに追加
-                themeResponses.addAll(themes);
+                themes.addAll(oogiriRepository.getThemeByUser(userId));
             }
-            // お題リストに追加
-            allThemes.addAll(themeResponses);
         }
 
         // 回答者で検索
-        // 回答者検索用お題リスト
-        List<OogiriTheme> answerResponses = new ArrayList<>();
         if (!answerUserName.isEmpty()) {
-            // 回答者ユーザーIDを取得
+            // ユーザーIDを取得
             List<Integer> answerUserIds = getUserIdsByName(answerUserName);
-            // 取得したIDでお題リストを取得
+            // お題リストを取得
+            List<OogiriTheme> answerResponses = new ArrayList<>();
             for (int userId : answerUserIds) {
-                // ユーザーのIDでお題IDを取得
-                List<Integer> themeIds = oogiriRepository.getThemeIds(userId);
-                // お題IDでお題リストを取得
-                answerResponses = getThemesByThemeId(answerResponses, themeIds);
+                themes.addAll(getThemesByThemeId(answerResponses, oogiriRepository.getThemeIds(userId)));
             }
-            allThemes.addAll(answerResponses);
         }
 
         // レスポンスを生成する
-        responses = createInitResList(responses, allThemes);
+        responses = createInitResList(responses, themes);
+        responses = resetResByPage(responses, page);
         return ResponseEntity.ok(responses);
     }
 
@@ -236,9 +220,10 @@ public class OogiriController {
      * @return
      */
     private List<OogiriResponse> createInitResList(List<OogiriResponse> responses, List<OogiriTheme> themes) {
-        // お題ごとにレスポンスを追加
         Set<Integer> addedThemeIds = new HashSet<>();
+        // お題ごとにレスポンスを追加
         for (OogiriTheme theme : themes) {
+            // お題と紐づく回答3件をレスポンスに追加
             if (!addedThemeIds.contains(theme.getThemeId())) {
                 List<OogiriAnswerResponse> answers = oogiriRepository.getThreeAnswers(theme.getThemeId(),
                         AppConst.oogiri_answer_disp_num);
@@ -271,12 +256,31 @@ public class OogiriController {
      * 
      * @param themes
      * @param themeIds
-     * @return
+     * @return themes お題リスト
      */
     private List<OogiriTheme> getThemesByThemeId(List<OogiriTheme> themes, List<Integer> themeIds) {
         for (int themeId : themeIds) {
             themes.add(oogiriRepository.getTheme(themeId));
         }
         return themes;
+    }
+
+    /**
+     * ページ数によって要素をセットしなおす
+     * 
+     * @param responses
+     * @param page
+     * @return responses
+     */
+    private List<OogiriResponse> resetResByPage(List<OogiriResponse> responses, int page) {
+        // レスポンスリストの要素数
+        int totalElements = responses.size();
+        // 抽出開始位置、終了位置
+        int fromInd = (page - 1) * AppConst.oogiri_theme_disp_num;
+        int toInd = fromInd + AppConst.oogiri_theme_disp_num;
+        // 該当ページの最大数に要素数が満たない場合
+        if (toInd > totalElements)
+            toInd = totalElements;
+        return responses.subList(fromInd, toInd);
     }
 }

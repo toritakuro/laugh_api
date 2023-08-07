@@ -33,6 +33,7 @@ public class OogiriRequest {
 
     /**
      * ユーザーIDを取得します。
+     * 
      * @return ユーザーID
      */
     public int getUserId() {
@@ -41,6 +42,7 @@ public class OogiriRequest {
 
     /**
      * ユーザーIDを設定します。
+     * 
      * @param userId ユーザーID
      */
     public void setUserId(int userId) {
@@ -49,6 +51,7 @@ public class OogiriRequest {
 
     /**
      * お題IDを取得します。
+     * 
      * @return お題ID
      */
     public int getThemeId() {
@@ -57,6 +60,7 @@ public class OogiriRequest {
 
     /**
      * お題IDを設定します。
+     * 
      * @param themeId お題ID
      */
     public void setThemeId(int themeId) {
@@ -65,6 +69,7 @@ public class OogiriRequest {
 
     /**
      * お題ユーザーIDを取得します。
+     * 
      * @return お題ユーザーID
      */
     public int getThemeUserId() {
@@ -73,6 +78,7 @@ public class OogiriRequest {
 
     /**
      * お題ユーザーIDを設定します。
+     * 
      * @param themeUserId お題ユーザーID
      */
     public void setThemeUserId(int themeUserId) {
@@ -81,6 +87,7 @@ public class OogiriRequest {
 
     /**
      * お題内容を取得します。
+     * 
      * @return お題内容
      */
     public String getThemeContent() {
@@ -89,6 +96,7 @@ public class OogiriRequest {
 
     /**
      * お題内容を設定します。
+     * 
      * @param themeContent お題内容
      */
     public void setThemeContent(String themeContent) {
@@ -97,6 +105,7 @@ public class OogiriRequest {
 
     /**
      * 回答IDを取得します。
+     * 
      * @return 回答ID
      */
     public int getAnswerId() {
@@ -105,6 +114,7 @@ public class OogiriRequest {
 
     /**
      * 回答IDを設定します。
+     * 
      * @param answerId 回答ID
      */
     public void setAnswerId(int answerId) {
@@ -113,6 +123,7 @@ public class OogiriRequest {
 
     /**
      * 回答内容を取得します。
+     * 
      * @return 回答内容
      */
     public String getAnswerContent() {
@@ -121,6 +132,7 @@ public class OogiriRequest {
 
     /**
      * 回答内容を設定します。
+     * 
      * @param answerContent 回答内容
      */
     public void setAnswerContent(String answerContent) {
@@ -129,6 +141,7 @@ public class OogiriRequest {
 
     /**
      * 回答リストを取得します。
+     * 
      * @return 回答リスト
      */
     public List<OogiriAnswerResponse> getAnswers() {
@@ -137,6 +150,7 @@ public class OogiriRequest {
 
     /**
      * 回答リストを設定します。
+     * 
      * @param answers 回答リスト
      */
     public void setAnswers(List<OogiriAnswerResponse> answers) {
@@ -145,6 +159,7 @@ public class OogiriRequest {
 
     /**
      * リアクションIDを取得します。
+     * 
      * @return リアクションID
      */
     public int getReactionId() {
@@ -153,6 +168,7 @@ public class OogiriRequest {
 
     /**
      * リアクションIDを設定します。
+     * 
      * @param reactionId リアクションID
      */
     public void setReactionId(int reactionId) {
@@ -161,6 +177,7 @@ public class OogiriRequest {
 
     /**
      * リアクションユーザーIDを取得します。
+     * 
      * @return リアクションユーザーID
      */
     public int getReactionUserId() {
@@ -169,6 +186,7 @@ public class OogiriRequest {
 
     /**
      * リアクションユーザーIDを設定します。
+     * 
      * @param reactionUserId リアクションユーザーID
      */
     public void setReactionUserId(int reactionUserId) {
@@ -177,6 +195,7 @@ public class OogiriRequest {
 
     /**
      * リアクションステータスを取得します。
+     * 
      * @return リアクションステータス
      */
     public int getReactionStatus() {
@@ -185,6 +204,7 @@ public class OogiriRequest {
 
     /**
      * リアクションステータスを設定します。
+     * 
      * @param reactionStatus リアクションステータス
      */
     public void setReactionStatus(int reactionStatus) {

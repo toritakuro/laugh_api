@@ -124,7 +124,7 @@
         oogiri_theme_id = #{themeId}
     ORDER BY
         create_at DESC
-    LIMIT 3
+    LIMIT #{limit}
 </select>
 
 <!-- お題を登録する -->

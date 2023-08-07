@@ -19,6 +19,7 @@ import com.c4ccup.laugh.domain.OogiriTheme;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.OogiriRepository;
 import com.c4ccup.laugh.repository.UserRepository;
+import com.c4ccup.laugh.util.AppConst;
 
 /**
  * 大喜利Controllerクラス
@@ -47,7 +48,7 @@ public class OogiriController {
         // レスポンスリスト
         List<OogiriResponse> responses = new ArrayList<>();
         // お題を50件取得
-        List<OogiriTheme> oogiriThemes = oogiriRepository.getLatestOogiriThemes(50);
+        List<OogiriTheme> oogiriThemes = oogiriRepository.getLatestOogiriThemes(AppConst.oogiri_theme_disp_num);
 
         // レスポンスリストを生成
         responses = createInitResList(responses, oogiriThemes);
@@ -191,7 +192,7 @@ public class OogiriController {
         // お題作成者で検索
         // お題作成者用お題リスト
         List<OogiriTheme> themeResponses = new ArrayList<>();
-        if (!themeUserName.equals("")) {
+        if (!themeUserName.isEmpty()) {
             // 検索お題ユーザーIDを取得
             List<Integer> themeUserIds = getUserIdsByName(themeUserName);
             // 取得したIDでお題リストを取得
@@ -209,7 +210,7 @@ public class OogiriController {
         // 回答者で検索
         // 回答者検索用お題リスト
         List<OogiriTheme> answerResponses = new ArrayList<>();
-        if (!answerUserName.equals("")) {
+        if (!answerUserName.isEmpty()) {
             // 回答者ユーザーIDを取得
             List<Integer> answerUserIds = getUserIdsByName(answerUserName);
             // 取得したIDでお題リストを取得
@@ -239,7 +240,8 @@ public class OogiriController {
         Set<Integer> addedThemeIds = new HashSet<>();
         for (OogiriTheme theme : themes) {
             if (!addedThemeIds.contains(theme.getThemeId())) {
-                List<OogiriAnswerResponse> answers = oogiriRepository.getThreeAnswers(theme.getThemeId());
+                List<OogiriAnswerResponse> answers = oogiriRepository.getThreeAnswers(theme.getThemeId(),
+                        AppConst.oogiri_answer_disp_num);
                 OogiriResponse response = OogiriResponse.themeAndAnswers(theme, answers);
                 responses.add(response);
                 addedThemeIds.add(theme.getThemeId()); // 重複を防ぐためにセットに追加

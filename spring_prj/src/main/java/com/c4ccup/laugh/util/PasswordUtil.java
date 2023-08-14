@@ -2,6 +2,7 @@ package com.c4ccup.laugh.util;
 
 import javax.security.auth.login.LoginException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -11,6 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class PasswordUtil {
 
     private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    MessageUtil msgUtil;
 
     /**
      * パスワードのハッシュ化
@@ -29,7 +33,7 @@ public class PasswordUtil {
      * @param encodedPassword ハッシュ化されたパスワード
      * @param messageSource   メッセージソース
      */
-    public static void matches(String rawPassword, String encodedPassword, MessageUtil msgUtil) throws LoginException {
+    public void matches(String rawPassword, String encodedPassword) throws LoginException {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             String errMsg = msgUtil.getMessage("e001", "パスワード認証");
             throw new LoginException(errMsg);

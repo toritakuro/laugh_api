@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.JwtUtil;
-import com.c4ccup.laugh.util.MessageUtil;
 import com.c4ccup.laugh.util.PasswordUtil;
 
 /**
@@ -26,12 +25,12 @@ public class LoginController extends _CmnController {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
-    private final MessageUtil messageUtil;
+    private final PasswordUtil pwdUtil;
 
-    public LoginController(UserRepository userRepository, JwtUtil jwtUtil, MessageUtil messageUtil) {
+    public LoginController(UserRepository userRepository, JwtUtil jwtUtil, PasswordUtil pwdUtil) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
-        this.messageUtil = messageUtil;
+        this.pwdUtil = pwdUtil;
     }
 
     /**
@@ -55,7 +54,7 @@ public class LoginController extends _CmnController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         // パスワードチェック
-        PasswordUtil.matches(password, user.getPassword(), messageUtil);
+        pwdUtil.matches(password, user.getPassword());
 
         // ログイン日時を更新
         user.setLoginAt(now);

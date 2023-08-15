@@ -3,7 +3,7 @@ package com.c4ccup.laugh.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.c4ccup.laugh.domain.OogiriTheme;
+import com.c4ccup.laugh.domain.Oogiri;
 
 /**
  * 大喜利関連 レスポンスクラス
@@ -130,7 +130,7 @@ public class OogiriResponse {
      * @param answers
      * @return
      */
-    public static OogiriResponse themeAndAnswers(OogiriTheme theme, List<OogiriAnswerResponse> answers) {
+    public static OogiriResponse themeAndAnswers(Oogiri theme, List<OogiriAnswerResponse> answers) {
         OogiriResponse response = new OogiriResponse();
         response.setThemeId(theme.getThemeId());
         response.setThemeUserId(theme.getThemeUserId());
@@ -148,7 +148,7 @@ public class OogiriResponse {
      * @param answers
      * @return
      */
-    public static OogiriResponse oogiriDetails(OogiriTheme theme, List<OogiriAnswerResponse> answers) {
+    public static OogiriResponse oogiriDetails(Oogiri theme, List<OogiriAnswerResponse> answers) {
         OogiriResponse response = new OogiriResponse();
         response.setThemeId(theme.getThemeId());
         response.setThemeUserId(theme.getThemeUserId());

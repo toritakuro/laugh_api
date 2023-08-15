@@ -3,7 +3,7 @@
 <mapper namespace="com.c4ccup.laugh.repository.OogiriRepository">
 
 <!-- OogiriThemeのResultMap -->
-<resultMap id="OogiriThemeResultMap" type="com.c4ccup.laugh.domain.OogiriTheme">
+<resultMap id="OogiriThemeResultMap" type="com.c4ccup.laugh.domain.Oogiri">
     <id property="themeId" column="theme_id"/>
     <result property="themeUserId" column="theme_user_id"/>
     <result property="themeContent" column="theme_content"/>
@@ -12,7 +12,7 @@
 </resultMap>
 
 <!-- OogiriAnswerのResultMap -->
-<resultMap id="OogiriAnswerResultMap" type="com.c4ccup.laugh.domain.OogiriAnswer">
+<resultMap id="OogiriAnswerResultMap" type="com.c4ccup.laugh.domain.Oogiri">
     <id property="answerId" column="answer_id"/>
     <result property="answerUserId" column="answer_user_id"/>
     <result property="answerContent" column="answer_content"/>

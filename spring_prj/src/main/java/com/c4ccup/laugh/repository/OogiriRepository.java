@@ -7,8 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.c4ccup.laugh.controller.OogiriAnswerResponse;
 import com.c4ccup.laugh.controller.OogiriReactionResponse;
-import com.c4ccup.laugh.domain.OogiriAnswer;
-import com.c4ccup.laugh.domain.OogiriTheme;
+import com.c4ccup.laugh.domain.Oogiri;
 
 /**
  * 大喜利 I/Fクラス
@@ -20,25 +19,25 @@ public interface OogiriRepository {
      * 大喜利お題を1件取得
      * 
      * @param themeId お題ID
-     * @return OogiriTheme
+     * @return Oogiri
      */
-    public OogiriTheme getTheme(int themeId);
+    public Oogiri getTheme(int themeId);
 
     /**
      * ユーザーIDでお題を取得
      * 
      * @param themeUserId お題ユーザーID
-     * @return OogiriTheme
+     * @return Oogiri
      */
-    public List<OogiriTheme> getThemeByUser(int themeUserId);
+    public List<Oogiri> getThemeByUser(int themeUserId);
 
     /**
      * お題を更新順に取得
      * 
      * @param limit 件数
-     * @return List<OogiriTheme>
+     * @return List<Oogiri>
      */
-    public List<OogiriTheme> getLatestOogiriThemes(int limit);
+    public List<Oogiri> getLatestOogiriThemes(int limit);
 
     /**
      * お題に対する回答を全件取得
@@ -77,9 +76,9 @@ public interface OogiriRepository {
      * 回答を1件取得
      * 
      * @param answerId 回答ID
-     * @return
+     * @return Oogiri
      */
-    public OogiriAnswer getAnswer(int answerId);
+    public Oogiri getAnswer(int answerId);
 
     /**
      * 回答を登録する

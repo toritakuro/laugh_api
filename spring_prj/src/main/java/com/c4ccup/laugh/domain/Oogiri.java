@@ -36,12 +36,16 @@ public class Oogiri {
     // リアクション情報
     /** リアクションID */
     private int reactionId;
+    /** リアクションIDリスト(文字列) */
+    private String reactionIds;
     /** リアクションユーザーID */
     private int reactionUserId;
     /** リアクションユーザーIDリスト(文字列) */
     private String reactionUserIds;
     /** リアクションステータス */
     private int reactionStatus;
+    /** リアクションステータスリスト（文字列） */
+    private String reactionStatuses;
     /** リアクション作成日時 */
     private LocalDateTime reactionCreatedAt;
     /** リアクション更新日時 */
@@ -51,7 +55,6 @@ public class Oogiri {
 
     /**
      * お題IDを取得します。
-     * 
      * @return お題ID
      */
     public int getThemeId() {
@@ -60,7 +63,6 @@ public class Oogiri {
 
     /**
      * お題IDを設定します。
-     * 
      * @param themeId お題ID
      */
     public void setThemeId(int themeId) {
@@ -69,7 +71,6 @@ public class Oogiri {
 
     /**
      * お題ユーザーIDを取得します。
-     * 
      * @return お題ユーザーID
      */
     public int getThemeUserId() {
@@ -78,7 +79,6 @@ public class Oogiri {
 
     /**
      * お題ユーザーIDを設定します。
-     * 
      * @param themeUserId お題ユーザーID
      */
     public void setThemeUserId(int themeUserId) {
@@ -87,7 +87,6 @@ public class Oogiri {
 
     /**
      * お題内容を取得します。
-     * 
      * @return お題内容
      */
     public String getThemeContent() {
@@ -96,7 +95,6 @@ public class Oogiri {
 
     /**
      * お題内容を設定します。
-     * 
      * @param themeContent お題内容
      */
     public void setThemeContent(String themeContent) {
@@ -105,7 +103,6 @@ public class Oogiri {
 
     /**
      * お題作成日時を取得します。
-     * 
      * @return お題作成日時
      */
     public LocalDateTime getThemeCreatedAt() {
@@ -114,7 +111,6 @@ public class Oogiri {
 
     /**
      * お題作成日時を設定します。
-     * 
      * @param themeCreatedAt お題作成日時
      */
     public void setThemeCreatedAt(LocalDateTime themeCreatedAt) {
@@ -123,7 +119,6 @@ public class Oogiri {
 
     /**
      * お題更新日時を取得します。
-     * 
      * @return お題更新日時
      */
     public LocalDateTime getThemeUpdatedAt() {
@@ -132,7 +127,6 @@ public class Oogiri {
 
     /**
      * お題更新日時を設定します。
-     * 
      * @param themeUpdatedAt お題更新日時
      */
     public void setThemeUpdatedAt(LocalDateTime themeUpdatedAt) {
@@ -141,7 +135,6 @@ public class Oogiri {
 
     /**
      * 回答IDを取得します。
-     * 
      * @return 回答ID
      */
     public int getAnswerId() {
@@ -150,7 +143,6 @@ public class Oogiri {
 
     /**
      * 回答IDを設定します。
-     * 
      * @param answerId 回答ID
      */
     public void setAnswerId(int answerId) {
@@ -159,7 +151,6 @@ public class Oogiri {
 
     /**
      * 回答投稿ユーザーIDを取得します。
-     * 
      * @return 回答投稿ユーザーID
      */
     public int getAnswerUserId() {
@@ -168,7 +159,6 @@ public class Oogiri {
 
     /**
      * 回答投稿ユーザーIDを設定します。
-     * 
      * @param answerUserId 回答投稿ユーザーID
      */
     public void setAnswerUserId(int answerUserId) {
@@ -177,7 +167,6 @@ public class Oogiri {
 
     /**
      * 回答内容を取得します。
-     * 
      * @return 回答内容
      */
     public String getAnswerContent() {
@@ -186,7 +175,6 @@ public class Oogiri {
 
     /**
      * 回答内容を設定します。
-     * 
      * @param answerContent 回答内容
      */
     public void setAnswerContent(String answerContent) {
@@ -195,7 +183,6 @@ public class Oogiri {
 
     /**
      * 回答作成日時を取得します。
-     * 
      * @return 回答作成日時
      */
     public LocalDateTime getAnswerCreatedAt() {
@@ -204,7 +191,6 @@ public class Oogiri {
 
     /**
      * 回答作成日時を設定します。
-     * 
      * @param answerCreatedAt 回答作成日時
      */
     public void setAnswerCreatedAt(LocalDateTime answerCreatedAt) {
@@ -213,7 +199,6 @@ public class Oogiri {
 
     /**
      * 回答削除日時を取得します。
-     * 
      * @return 回答削除日時
      */
     public LocalDateTime getAnswerDeletedAt() {
@@ -222,7 +207,6 @@ public class Oogiri {
 
     /**
      * 回答削除日時を設定します。
-     * 
      * @param answerDeletedAt 回答削除日時
      */
     public void setAnswerDeletedAt(LocalDateTime answerDeletedAt) {
@@ -231,7 +215,6 @@ public class Oogiri {
 
     /**
      * 回答リストを取得します。
-     * 
      * @return 回答リスト
      */
     public List<OogiriAnswerResponse> getAnswers() {
@@ -240,7 +223,6 @@ public class Oogiri {
 
     /**
      * 回答リストを設定します。
-     * 
      * @param answers 回答リスト
      */
     public void setAnswers(List<OogiriAnswerResponse> answers) {
@@ -249,7 +231,6 @@ public class Oogiri {
 
     /**
      * リアクションIDを取得します。
-     * 
      * @return リアクションID
      */
     public int getReactionId() {
@@ -258,7 +239,6 @@ public class Oogiri {
 
     /**
      * リアクションIDを設定します。
-     * 
      * @param reactionId リアクションID
      */
     public void setReactionId(int reactionId) {
@@ -266,8 +246,23 @@ public class Oogiri {
     }
 
     /**
+     * リアクションIDリスト(文字列)を取得します。
+     * @return リアクションIDリスト(文字列)
+     */
+    public String getReactionIds() {
+        return reactionIds;
+    }
+
+    /**
+     * リアクションIDリスト(文字列)を設定します。
+     * @param reactionIds リアクションIDリスト(文字列)
+     */
+    public void setReactionIds(String reactionIds) {
+        this.reactionIds = reactionIds;
+    }
+
+    /**
      * リアクションユーザーIDを取得します。
-     * 
      * @return リアクションユーザーID
      */
     public int getReactionUserId() {
@@ -276,7 +271,6 @@ public class Oogiri {
 
     /**
      * リアクションユーザーIDを設定します。
-     * 
      * @param reactionUserId リアクションユーザーID
      */
     public void setReactionUserId(int reactionUserId) {
@@ -285,7 +279,6 @@ public class Oogiri {
 
     /**
      * リアクションユーザーIDリスト(文字列)を取得します。
-     * 
      * @return リアクションユーザーIDリスト(文字列)
      */
     public String getReactionUserIds() {
@@ -294,7 +287,6 @@ public class Oogiri {
 
     /**
      * リアクションユーザーIDリスト(文字列)を設定します。
-     * 
      * @param reactionUserIds リアクションユーザーIDリスト(文字列)
      */
     public void setReactionUserIds(String reactionUserIds) {
@@ -303,7 +295,6 @@ public class Oogiri {
 
     /**
      * リアクションステータスを取得します。
-     * 
      * @return リアクションステータス
      */
     public int getReactionStatus() {
@@ -312,7 +303,6 @@ public class Oogiri {
 
     /**
      * リアクションステータスを設定します。
-     * 
      * @param reactionStatus リアクションステータス
      */
     public void setReactionStatus(int reactionStatus) {
@@ -320,8 +310,23 @@ public class Oogiri {
     }
 
     /**
+     * リアクションステータスリスト（文字列）を取得します。
+     * @return リアクションステータスリスト（文字列）
+     */
+    public String getReactionStatuses() {
+        return reactionStatuses;
+    }
+
+    /**
+     * リアクションステータスリスト（文字列）を設定します。
+     * @param reactionStatuses リアクションステータスリスト（文字列）
+     */
+    public void setReactionStatuses(String reactionStatuses) {
+        this.reactionStatuses = reactionStatuses;
+    }
+
+    /**
      * リアクション作成日時を取得します。
-     * 
      * @return リアクション作成日時
      */
     public LocalDateTime getReactionCreatedAt() {
@@ -330,7 +335,6 @@ public class Oogiri {
 
     /**
      * リアクション作成日時を設定します。
-     * 
      * @param reactionCreatedAt リアクション作成日時
      */
     public void setReactionCreatedAt(LocalDateTime reactionCreatedAt) {
@@ -339,7 +343,6 @@ public class Oogiri {
 
     /**
      * リアクション更新日時を取得します。
-     * 
      * @return リアクション更新日時
      */
     public LocalDateTime getReactionUpdatedAt() {
@@ -348,7 +351,6 @@ public class Oogiri {
 
     /**
      * リアクション更新日時を設定します。
-     * 
      * @param reactionUpdatedAt リアクション更新日時
      */
     public void setReactionUpdatedAt(LocalDateTime reactionUpdatedAt) {
@@ -357,7 +359,6 @@ public class Oogiri {
 
     /**
      * リアクション数を取得します。
-     * 
      * @return リアクション数
      */
     public int getReactionNum() {
@@ -366,7 +367,6 @@ public class Oogiri {
 
     /**
      * リアクション数を設定します。
-     * 
      * @param reactionNum リアクション数
      */
     public void setReactionNum(int reactionNum) {

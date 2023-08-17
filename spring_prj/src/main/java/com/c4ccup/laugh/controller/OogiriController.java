@@ -46,12 +46,10 @@ public class OogiriController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<OogiriResponse>> getOogiriThemes() {
-        // レスポンスリスト
-        List<OogiriResponse> responses = new ArrayList<>();
         // お題を50件取得
         List<Oogiri> oogiriThemes = oogiriRepository.getLatestOogiriThemes(AppConst.oogiri_theme_disp_num);
-
         // レスポンスリストを生成
+        List<OogiriResponse> responses = new ArrayList<>();
         responses = createInitResList(responses, oogiriThemes);
 
         return ResponseEntity.ok(responses);
@@ -65,19 +63,14 @@ public class OogiriController {
      */
     @RequestMapping(path = "/detail", method = RequestMethod.GET)
     public ResponseEntity<OogiriResponse> getOogiriAnswers(@RequestParam int themeId) {
-        // お題取得
-        Oogiri theme = oogiriRepository.getTheme(themeId);
         // お題に紐づく回答リストを取得
-        List<OogiriAnswerResponse> answers = oogiriRepository.getAllAnswers(themeId);
-        // 回答に紐づくリアクションリストをレスポンスに追加
-        List<OogiriReactionResponse> reactions = new ArrayList<OogiriReactionResponse>();
-        for (OogiriAnswerResponse answer : answers) {
-            reactions = oogiriRepository.getAllReactions(answer.getAnswerId());
-            answer.setReactions(reactions);
-        }
-        // 詳細用レスポンスを生成
-        OogiriResponse response = OogiriResponse.oogiriDetails(theme, answers);
-        return ResponseEntity.ok(response);
+        List<Oogiri> oogiriList = oogiriRepository.getAllAnswers(themeId);
+        OogiriResponse oogiriRes = new OogiriResponse();
+        // お題情報をセット
+        oogiriRes = oogiriRes.setThemeInfo(oogiriRes, oogiriList);
+        // 回答、リアクションをセット
+        oogiriRes = oogiriRes.setAnswerInfo(oogiriRes, oogiriList);
+        return ResponseEntity.ok(oogiriRes);
     }
 
     /**
@@ -227,7 +220,7 @@ public class OogiriController {
             if (!addedThemeIds.contains(theme.getThemeId())) {
                 List<OogiriAnswerResponse> answers = oogiriRepository.getThreeAnswers(theme.getThemeId(),
                         AppConst.oogiri_answer_disp_num);
-                OogiriResponse response = OogiriResponse.themeAndAnswers(theme, answers);
+                OogiriResponse response = OogiriResponse.setThemeAndAnswers(theme, answers);
                 responses.add(response);
                 addedThemeIds.add(theme.getThemeId()); // 重複を防ぐためにセットに追加
             }
@@ -283,4 +276,5 @@ public class OogiriController {
             toInd = totalElements;
         return responses.subList(fromInd, toInd);
     }
+
 }

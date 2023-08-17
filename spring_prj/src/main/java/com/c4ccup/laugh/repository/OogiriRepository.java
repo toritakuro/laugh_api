@@ -45,7 +45,7 @@ public interface OogiriRepository {
      * @param themeId お題ID
      * @return List<OogiriAnswerResponse>
      */
-    public List<OogiriAnswerResponse> getAllAnswers(int themeId);
+    public List<Oogiri> getAllAnswers(int themeId);
 
     /**
      * お題に対する回答を3件取得

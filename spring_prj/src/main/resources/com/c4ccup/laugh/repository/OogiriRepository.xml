@@ -20,6 +20,20 @@
     <result property="answerDeletedAt" column="answer_deleted_at"/>
 </resultMap>
 
+<!-- OogiriAnswersのResultMap -->
+<resultMap id="OogiriAnswersResultMap" type="com.c4ccup.laugh.domain.Oogiri">
+    <id property="answerId" column="answer_id"/>
+    <result property="answerUserId" column="answer_user_id"/>
+    <result property="answerContent" column="answer_content"/>
+    <result property="answerCreatedAt" column="answer_create_at"/>
+    <result property="answerDeletedAt" column="answer_delete_at"/>
+    <result property="themeUserId" column="theme_user_id"/>
+    <result property="themeCreatedAt" column="theme_create_at"/>
+    <result property="reactionIds" column="reaction_ids"/>
+    <result property="reactionUserIds" column="reaction_user_ids"/>
+    <result property="reactionStatuses" column="reaction_status"/>
+</resultMap>
+
 <!-- OogiriAnswerResponseのResultMap -->
 <resultMap id="OogiriAnswerResponseResultMap" type="com.c4ccup.laugh.controller.OogiriAnswerResponse">
     <id property="answerId" column="answer_id"/>
@@ -51,6 +65,10 @@
     <result property="themeContent" column="theme_content"/>
     <result property="themeCreatedAt" column="theme_created_at"/>
     <result property="themeUpdatedAt" column="theme_updated_at"/>
+    <result property="answerId" column="answer_id"/>
+    <result property="answerUserId" column="answer_user_id"/>
+    <result property="answerContent" column="answer_content"/>
+    <result property="reactionNum" column="reaction_num"/>
     <collection property="answers" ofType="com.c4ccup.laugh.controller.OogiriAnswerResponse" resultMap="OogiriAnswerResponseResultMap"/>
     <collection property="reactions" ofType="com.c4ccup.laugh.controller.OogiriReactionResponse" resultMap="OogiriReactionResponseResultMap"/>
 </resultMap>
@@ -97,18 +115,34 @@
 </select>
 
 <!-- お題に紐づく全ての回答を取得する -->
-<select id="getAllAnswers" resultMap="OogiriAnswerResponseResultMap">
+<select id="getAllAnswers" resultMap="OogiriAnswersResultMap">
     SELECT
-        oogiri_answer.id AS answer_id,
-        oogiri_answer.user_id AS answer_user_id,
-        answer_content AS answer_content,
-        oogiri_answer.create_at AS answer_created_at
+        a.id as answer_id,
+        a.answer_content,
+        a.user_id as answer_user_id,
+        a.create_at as answer_create_at,
+        a.delete_at as answer_delete_at,
+        t.id as theme_id,
+        t.user_id as theme_user_id,
+        t.theme_content,
+        t.create_at as theme_create_at,
+        COUNT(r.id) as reaction_num,
+        GROUP_CONCAT(r.id ORDER BY r.user_id ASC) as reaction_ids,
+        GROUP_CONCAT(r.user_id) as reaction_user_ids,
+        GROUP_CONCAT(r.reaction_status ORDER BY r.user_id ASC) as reaction_status
     FROM
-        oogiri_answer
+        oogiri_theme t
+    LEFT JOIN
+        oogiri_answer a on
+        t.id = a.oogiri_theme_id
+    LEFT JOIN
+        oogiri_reaction r on
+        a.id = r.oogiri_answer_id
     WHERE
-        oogiri_theme_id = #{themeId}
+        t.id = #{themeId}
+    GROUP BY a.id, t.id
     ORDER BY
-        create_at DESC
+        reaction_num DESC
 </select>
 
 <!-- お題に紐づく回答を3件取得する -->

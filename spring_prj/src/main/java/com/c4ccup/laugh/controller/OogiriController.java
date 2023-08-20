@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.c4ccup.laugh.controller.bean.res.OogiriResources;
+import com.c4ccup.laugh.controller.bean.res._Messages;
 import com.c4ccup.laugh.domain.Oogiri;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.OogiriRepository;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.AppConst;
+import com.c4ccup.laugh.util.MessageUtil;
 
 /**
  * 大喜利Controllerクラス
@@ -25,7 +28,7 @@ import com.c4ccup.laugh.util.AppConst;
  */
 @RequestMapping(value = "oogiri")
 @RestController
-public class OogiriController {
+public class OogiriController extends _CmnController {
 
     private final OogiriRepository oogiriRepository;
     private final UserRepository userRepository;
@@ -36,6 +39,9 @@ public class OogiriController {
         this.oogiriRepository = oogiriRepository;
         this.userRepository = userRepository;
     }
+
+    @Autowired
+    MessageUtil msgUtil;
 
     /**
      * 一覧用大喜利データ取得
@@ -76,14 +82,13 @@ public class OogiriController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> regTheme(@RequestBody OogiriRequest request) {
+    public ResponseEntity<OogiriResources> regTheme(@RequestBody OogiriRequest request) {
 
         int userId = request.getUserId();
         String themeContent = request.getThemeContent();
-
         // お題登録
         oogiriRepository.regTheme(userId, themeContent, now);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(createMsg("お題", "登録"));
     }
 
     /**
@@ -94,7 +99,7 @@ public class OogiriController {
      */
     @RequestMapping(path = "/answer", method = RequestMethod.POST)
     @Transactional
-    public ResponseEntity<?> regAnswer(@RequestBody OogiriRequest request) {
+    public ResponseEntity<OogiriResources> regAnswer(@RequestBody OogiriRequest request) {
 
         int themeId = request.getThemeId();
         int userId = request.getUserId();
@@ -105,7 +110,7 @@ public class OogiriController {
 
         // お題の更新日時を更新
         oogiriRepository.updTheme(themeId, now);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(createMsg("回答", "登録"));
     }
 
     /**
@@ -115,13 +120,13 @@ public class OogiriController {
      * @return
      */
     @RequestMapping(path = "/answer/delete", method = RequestMethod.POST)
-    public ResponseEntity<?> delAnswer(@RequestBody OogiriRequest request) {
+    public ResponseEntity<OogiriResources> delAnswer(@RequestBody OogiriRequest request) {
 
         int answerId = request.getAnswerId();
 
         // 回答削除処理
         oogiriRepository.delAnswer(answerId, now);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(createMsg("回答", "削除"));
     }
 
     /**
@@ -131,7 +136,7 @@ public class OogiriController {
      * @return
      */
     @RequestMapping(path = "/reaction", method = RequestMethod.POST)
-    public ResponseEntity<?> regReaction(@RequestBody OogiriRequest request) {
+    public ResponseEntity<OogiriResources> regReaction(@RequestBody OogiriRequest request) {
 
         int answerId = request.getAnswerId();
         int userId = request.getUserId();
@@ -139,7 +144,7 @@ public class OogiriController {
 
         // リアクション登録
         oogiriRepository.regReaction(answerId, userId, reactionStatus, now);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(createMsg("リアクション", "登録"));
     }
 
     /**
@@ -149,14 +154,14 @@ public class OogiriController {
      * @return
      */
     @RequestMapping(path = "/reaction/edit", method = RequestMethod.POST)
-    public ResponseEntity<?> editReaction(@RequestBody OogiriRequest request) {
+    public ResponseEntity<OogiriResources> editReaction(@RequestBody OogiriRequest request) {
 
         int reactionId = request.getReactionId();
         int reactionStatus = request.getReactionStatus();
 
         // リアクション更新
         oogiriRepository.editReaction(reactionId, reactionStatus, now);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(createMsg("リアクション", "更新"));
     }
 
     /**
@@ -286,4 +291,10 @@ public class OogiriController {
         return responses.subList(fromInd, toInd);
     }
 
+    private OogiriResources createMsg(String str1, String str2) {
+        OogiriResources oogiri = new OogiriResources();
+        _Messages returnMsg = super.getReturnMsg(msgUtil.getMessage("s001", str1, str2));
+        oogiri.setMessages(returnMsg);
+        return oogiri;
+    }
 }

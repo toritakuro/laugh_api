@@ -2,6 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.c4ccup.laugh.repository.OogiriRepository">
 
+<!-- OogiriのResultMap -->
+<resultMap id="OogiriResultMap" type="com.c4ccup.laugh.domain.Oogiri">
+    <id property="answerId" column="answer_id"/>
+    <result property="answerUserId" column="answer_user_id"/>
+    <result property="answerContent" column="answer_content"/>
+    <result property="answerCreatedAt" column="answer_create_at"/>
+    <result property="answerDeletedAt" column="answer_delete_at"/>
+    <result property="themeUserId" column="theme_user_id"/>
+    <result property="themeCreatedAt" column="theme_create_at"/>
+    <result property="reactionIds" column="reaction_ids"/>
+    <result property="reactionUserIds" column="reaction_user_ids"/>
+    <result property="reactionStatuses" column="reaction_status"/>
+</resultMap>
+
 <!-- OogiriThemeのResultMap -->
 <resultMap id="OogiriThemeResultMap" type="com.c4ccup.laugh.domain.Oogiri">
     <id property="themeId" column="theme_id"/>
@@ -88,6 +102,7 @@
          oogiri_theme.id = #{themeId}
 </select>
 
+<!-- ユーザーIDでお題を取得 -->
 <select id="getThemeByUser" resultMap="OogiriThemeResultMap">
     SELECT
         oogiri_theme.id AS theme_id,
@@ -98,6 +113,31 @@
         oogiri_theme
     WHERE
          oogiri_theme.user_id = #{themeUserId}
+</select>
+
+<select id="getAllOogiri" resultMap="OogiriResultMap">
+    SELECT
+        a.id as answer_id,
+        a.answer_content,
+        a.user_id as answer_user_id,
+        a.create_at as answer_create_at,
+        a.delete_at as answer_delete_at,
+        t.id as theme_id,
+        t.user_id as theme_user_id,
+        t.theme_content,
+        t.update_at as theme_updated_at,
+        COUNT(r.id) as reaction_num
+    FROM
+        oogiri_theme t
+    LEFT JOIN
+        oogiri_answer a on
+        t.id = a.oogiri_theme_id
+    LEFT JOIN
+        oogiri_reaction r on
+        a.id = r.oogiri_answer_id
+    GROUP BY a.id, t.id
+    ORDER BY
+        t.id DESC
 </select>
 
 <!-- 最新の50件の大喜利お題を取得する -->

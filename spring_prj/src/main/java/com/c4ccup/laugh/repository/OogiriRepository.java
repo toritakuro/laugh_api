@@ -40,6 +40,13 @@ public interface OogiriRepository {
     public List<Oogiri> getLatestOogiriThemes(int limit);
 
     /**
+     * 大喜利お題と紐づく回答をすべて取得
+     * 
+     * @return
+     */
+    public List<Oogiri> getAllOogiri();
+
+    /**
      * お題に対する回答を全件取得
      * 
      * @param themeId お題ID

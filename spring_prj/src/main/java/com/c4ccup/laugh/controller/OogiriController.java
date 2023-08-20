@@ -2,9 +2,7 @@ package com.c4ccup.laugh.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,14 +43,16 @@ public class OogiriController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<OogiriResponse>> getOogiriThemes() {
-        // お題を50件取得
-        List<Oogiri> oogiriThemes = oogiriRepository.getLatestOogiriThemes(AppConst.oogiri_theme_disp_num);
-        // レスポンスリストを生成
-        List<OogiriResponse> responses = new ArrayList<>();
-        responses = createInitResList(responses, oogiriThemes);
-
-        return ResponseEntity.ok(responses);
+    public ResponseEntity<List<OogiriResponse>> getOogiri(@RequestParam int page) {
+        // お題を全件取得
+        List<Oogiri> oogiriList = oogiriRepository.getAllOogiri();
+        List<OogiriResponse> resList = new ArrayList<>();
+        resList = createInitResList(resList, oogiriList);
+        // お題の更新順に並び替え
+        resList.sort((o1, o2) -> o2.getThemeUpdatedAt().compareTo(o1.getThemeUpdatedAt()));
+        // ページング
+        resList = resetResByPage(resList, page);
+        return ResponseEntity.ok(resList);
     }
 
     /**
@@ -65,11 +65,7 @@ public class OogiriController {
     public ResponseEntity<OogiriResponse> getOogiriAnswers(@RequestParam int themeId) {
         // お題に紐づく回答リストを取得
         List<Oogiri> oogiriList = oogiriRepository.getAllAnswers(themeId);
-        OogiriResponse oogiriRes = new OogiriResponse();
-        // お題情報をセット
-        oogiriRes = oogiriRes.setThemeInfo(oogiriRes, oogiriList);
-        // 回答、リアクションをセット
-        oogiriRes = oogiriRes.setAnswerInfo(oogiriRes, oogiriList);
+        OogiriResponse oogiriRes = new OogiriResponse(oogiriList);
         return ResponseEntity.ok(oogiriRes);
     }
 
@@ -212,20 +208,33 @@ public class OogiriController {
      * @param themes
      * @return
      */
-    private List<OogiriResponse> createInitResList(List<OogiriResponse> responses, List<Oogiri> themes) {
-        Set<Integer> addedThemeIds = new HashSet<>();
-        // お題ごとにレスポンスを追加
-        for (Oogiri theme : themes) {
-            // お題と紐づく回答3件をレスポンスに追加
-            if (!addedThemeIds.contains(theme.getThemeId())) {
-                List<OogiriAnswerResponse> answers = oogiriRepository.getThreeAnswers(theme.getThemeId(),
-                        AppConst.oogiri_answer_disp_num);
-                OogiriResponse response = OogiriResponse.setThemeAndAnswers(theme, answers);
-                responses.add(response);
-                addedThemeIds.add(theme.getThemeId()); // 重複を防ぐためにセットに追加
+    private List<OogiriResponse> createInitResList(List<OogiriResponse> resList, List<Oogiri> oogiriList) {
+
+        OogiriResponse res = null;
+        int prevId = 0;
+        for (Oogiri o : oogiriList) {
+            int themeId = o.getThemeId();
+            // お題IDが変わったら新しいOogiriResponseを作成
+            if (prevId != themeId) {
+                // 最初以外はここでレスポンスリストに追加する
+                if (res != null)
+                    resList.add(res);
+                res = new OogiriResponse();
+                res = res.setThemeInfo(o);
             }
+            // 回答が3件セットされている場合スキップ
+            if (res.getAnswers().size() >= AppConst.oogiri_answer_disp_num) {
+                continue;
+            }
+            // 回答が削除済みでなければセット
+            if (o.getAnswerDeletedAt() == null) {
+                res = res.setAnswerInfo(res, o);
+            }
+            prevId = themeId;
         }
-        return responses;
+        // 最後の大喜利情報をここで追加
+        resList.add(res);
+        return resList;
     }
 
     /**

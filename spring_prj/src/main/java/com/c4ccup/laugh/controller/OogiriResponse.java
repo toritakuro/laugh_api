@@ -12,6 +12,20 @@ import com.c4ccup.laugh.domain.Oogiri;
  */
 public class OogiriResponse {
 
+    public OogiriResponse() {
+
+    }
+
+    /**
+     * 大喜利詳細用コンストラクタ
+     * 
+     * @param oogiriList
+     */
+    public OogiriResponse(List<Oogiri> oogiriList) {
+        this.setThemeInfo(this, oogiriList);
+        this.setAnswerInfo(this, oogiriList);
+    }
+
     // お題情報
     /** お題ID */
     private int themeId;
@@ -125,25 +139,7 @@ public class OogiriResponse {
     }
 
     /**
-     * 大喜利レスポンスを生成
-     * 
-     * @param theme
-     * @param answers
-     * @return
-     */
-    public static OogiriResponse setThemeAndAnswers(Oogiri theme, List<OogiriAnswerResponse> answers) {
-        OogiriResponse response = new OogiriResponse();
-        response.setThemeId(theme.getThemeId());
-        response.setThemeUserId(theme.getThemeUserId());
-        response.setThemeContent(theme.getThemeContent());
-        response.setThemeCreatedAt(theme.getThemeCreatedAt());
-        response.setThemeUpdatedAt(theme.getThemeUpdatedAt());
-        response.setAnswers(answers);
-        return response;
-    }
-
-    /**
-     * お題情報をセットする
+     * お題情報をセットする（詳細用）
      * 
      * @param oogiriRes
      * @param responses
@@ -158,7 +154,7 @@ public class OogiriResponse {
     }
 
     /**
-     * 回答情報をセットする
+     * 回答情報をセットする（詳細用）
      * 
      * @param oogiriRes
      * @param responses
@@ -211,6 +207,39 @@ public class OogiriResponse {
             oogiriReacResList.add(oogiriReacRes);
         }
         return oogiriReacResList;
+    }
+
+    /**
+     * お題情報をセットする（初期表示時用）
+     * 
+     * @param o
+     * @return
+     */
+    public OogiriResponse setThemeInfo(Oogiri o) {
+        this.setThemeId(o.getThemeId());
+        this.setThemeUserId(o.getThemeUserId());
+        this.setThemeContent(o.getThemeContent());
+        this.setThemeUpdatedAt(o.getThemeUpdatedAt());
+        this.setAnswers(new ArrayList<>());
+        return this;
+    }
+
+    /**
+     * 回答情報をセットする(初期表示時用)
+     * 
+     * @param res
+     * @param o
+     * @return
+     */
+    public OogiriResponse setAnswerInfo(OogiriResponse res, Oogiri o) {
+        OogiriAnswerResponse ansRes = new OogiriAnswerResponse();
+        ansRes.setAnswerId(o.getAnswerId());
+        ansRes.setAnswerUserId(o.getAnswerUserId());
+        ansRes.setAnswerContent(o.getAnswerContent());
+        ansRes.setAnswerCreatedAt(o.getAnswerCreatedAt());
+        ansRes.setAnswerDeletedAt(o.getAnswerDeletedAt());
+        res.getAnswers().add(ansRes);
+        return res;
     }
 
     /**

@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.c4ccup.laugh.domain.Oogiri;
 import com.c4ccup.laugh.util.Util;
 
@@ -14,9 +12,6 @@ import com.c4ccup.laugh.util.Util;
  *
  */
 public class OogiriResponse {
-
-    @Autowired
-    Util util;
 
     public OogiriResponse() {
 
@@ -28,8 +23,8 @@ public class OogiriResponse {
      * @param oogiriList
      */
     public OogiriResponse(List<Oogiri> oogiriList) {
-        this.setThemeInfo(this, oogiriList);
-        this.setAnswerInfo(this, oogiriList);
+        this.setThemeInfo(oogiriList);
+        this.setAnswerInfo(oogiriList);
     }
 
     // お題情報
@@ -151,12 +146,12 @@ public class OogiriResponse {
      * @param responses
      * @return
      */
-    public OogiriResponse setThemeInfo(OogiriResponse oogiriRes, List<Oogiri> oogiriList) {
-        oogiriRes.setThemeId(oogiriList.get(0).getThemeId());
-        oogiriRes.setThemeUserId(oogiriList.get(0).getThemeUserId());
-        oogiriRes.setThemeContent(oogiriList.get(0).getThemeContent());
-        oogiriRes.setThemeCreatedAt(oogiriList.get(0).getThemeCreatedAt());
-        return oogiriRes;
+    private void setThemeInfo(List<Oogiri> oogiriList) {
+        Oogiri oogiri = oogiriList.get(0);
+        this.themeId = oogiri.getThemeId();
+        this.themeUserId = oogiri.getThemeUserId();
+        this.themeContent = oogiri.getThemeContent();
+        this.themeCreatedAt = oogiri.getThemeCreatedAt();
     }
 
     /**
@@ -166,9 +161,8 @@ public class OogiriResponse {
      * @param responses
      * @return
      */
-    public OogiriResponse setAnswerInfo(OogiriResponse oogiriRes, List<Oogiri> oogiriList) {
+    private void setAnswerInfo(List<Oogiri> oogiriList) {
         // 回答情報を詰めていく
-        oogiriRes.setAnswers(new ArrayList<>());
         for (Oogiri oogiri : oogiriList) {
             OogiriAnswerResponse ansRes = new OogiriAnswerResponse();
             List<OogiriReactionResponse> oogiriReacResList = new ArrayList<>();
@@ -180,9 +174,8 @@ public class OogiriResponse {
             // 回答に紐づくリアクションを取得
             oogiriReacResList = setReacInfo(oogiri, oogiriReacResList);
             ansRes.setReactions(oogiriReacResList);
-            oogiriRes.getAnswers().add(ansRes);
+            this.answers.add(ansRes);
         }
-        return oogiriRes;
     }
 
     /**
@@ -201,9 +194,9 @@ public class OogiriResponse {
         String[] reactionUserIdStrList = res.getReactionUserIds().split(","); // リアクションユーザーID
         String[] reactionStatusStrList = res.getReactionStatuses().split(","); // リアクションステータス
         // int型に変換
-        List<Integer> ids = chgToInt(reactionIdStrList);
-        List<Integer> userIds = chgToInt(reactionUserIdStrList);
-        List<Integer> statuses = chgToInt(reactionStatusStrList);
+        List<Integer> ids = Util.chgToInt(reactionIdStrList);
+        List<Integer> userIds = Util.chgToInt(reactionUserIdStrList);
+        List<Integer> statuses = Util.chgToInt(reactionStatusStrList);
         // リアクションリストに追加
         for (int i = 0; i < ids.size(); i++) {
             OogiriReactionResponse oogiriReacRes = new OogiriReactionResponse();

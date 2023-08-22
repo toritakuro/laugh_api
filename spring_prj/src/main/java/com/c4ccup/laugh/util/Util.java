@@ -3,13 +3,10 @@ package com.c4ccup.laugh.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 /**
  * 共通メソッドUtilクラス
  *
  */
-@Component
 public class Util {
 
     /**
@@ -18,7 +15,7 @@ public class Util {
      * @param strs
      * @return
      */
-    public List<Integer> chgToInt(String[] strs) {
+    public static List<Integer> chgToInt(String[] strs) {
         List<Integer> intList = new ArrayList<>();
         if (strs != null) {
             for (String str : strs) {

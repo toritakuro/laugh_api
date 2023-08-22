@@ -4,13 +4,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.c4ccup.laugh.domain.Oogiri;
+import com.c4ccup.laugh.util.Util;
 
 /**
  * 大喜利関連 レスポンスクラス
  *
  */
 public class OogiriResponse {
+
+    @Autowired
+    Util util;
 
     public OogiriResponse() {
 
@@ -195,9 +201,9 @@ public class OogiriResponse {
         String[] reactionUserIdStrList = res.getReactionUserIds().split(","); // リアクションユーザーID
         String[] reactionStatusStrList = res.getReactionStatuses().split(","); // リアクションステータス
         // int型に変換
-        List<Integer> ids = chgToInt(reactionIdStrList);
-        List<Integer> userIds = chgToInt(reactionUserIdStrList);
-        List<Integer> statuses = chgToInt(reactionStatusStrList);
+        List<Integer> ids = util.chgToInt(reactionIdStrList);
+        List<Integer> userIds = util.chgToInt(reactionUserIdStrList);
+        List<Integer> statuses = util.chgToInt(reactionStatusStrList);
         // リアクションリストに追加
         for (int i = 0; i < ids.size(); i++) {
             OogiriReactionResponse oogiriReacRes = new OogiriReactionResponse();
@@ -254,17 +260,4 @@ public class OogiriResponse {
         return response;
     }
 
-    /**
-     * 文字列配列をint型のリストに変換
-     * 
-     * @param strs
-     * @return
-     */
-    private List<Integer> chgToInt(String[] strs) {
-        List<Integer> intList = new ArrayList<>();
-        for (String str : strs) {
-            intList.add(Integer.parseInt(str));
-        }
-        return intList;
-    }
 }

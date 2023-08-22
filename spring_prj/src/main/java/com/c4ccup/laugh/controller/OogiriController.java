@@ -262,20 +262,6 @@ public class OogiriController extends _CmnController {
     }
 
     /**
-     * お題IDでお題リストを取得
-     * 
-     * @param themes
-     * @param themeIds
-     * @return themes お題リスト
-     */
-    private List<Oogiri> getThemesByThemeId(List<Oogiri> themes, List<Integer> themeIds) {
-        for (int themeId : themeIds) {
-            themes.add(oogiriRepository.getTheme(themeId));
-        }
-        return themes;
-    }
-
-    /**
      * ページ数によって要素をセットしなおす
      * 
      * @param responses
@@ -297,6 +283,7 @@ public class OogiriController extends _CmnController {
     /**
      * メッセージを生成する
      * 
+     * @param code
      * @param str1
      * @param str2
      * @return

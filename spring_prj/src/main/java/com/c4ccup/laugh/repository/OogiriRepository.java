@@ -24,12 +24,12 @@ public interface OogiriRepository {
     public Oogiri getTheme(int themeId);
 
     /**
-     * ユーザーIDでお題を取得
+     * ユーザーIDでお題IDを取得
      * 
      * @param themeUserId お題ユーザーID
-     * @return Oogiri
+     * @return List<Integer>
      */
-    public List<Oogiri> getThemeByUser(int themeUserId);
+    public List<Integer> getThemeIdByUser(int themeUserId);
 
     /**
      * お題を更新順に取得
@@ -44,13 +44,13 @@ public interface OogiriRepository {
      * 
      * @return
      */
-    public List<Oogiri> getAllOogiri();
+    public List<Oogiri> getAllOogiri(List<Integer> themeIds);
 
     /**
      * お題に対する回答を全件取得
      * 
      * @param themeId お題ID
-     * @return List<OogiriAnswerResponse>
+     * @return List<Oogiri>
      */
     public List<Oogiri> getAllAnswers(int themeId);
 
@@ -132,5 +132,11 @@ public interface OogiriRepository {
      */
     public void editReaction(int reactionId, int reactionStatus, LocalDateTime now);
 
-    public List<Integer> getThemeIds(int userId);
+    /**
+     * ユーザーが回答したお題のIDを全件取得
+     * 
+     * @param userId
+     * @return
+     */
+    public List<Integer> getAnsweredThemeId(int userId);
 }

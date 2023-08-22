@@ -51,9 +51,9 @@ public class OogiriController extends _CmnController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<OogiriResponse>> getOogiri(@RequestParam int page) {
         // お題を全件取得
-        List<Oogiri> oogiriList = oogiriRepository.getAllOogiri();
-        List<OogiriResponse> resList = new ArrayList<>();
-        resList = createInitResList(resList, oogiriList);
+        List<Integer> themeIds = new ArrayList<>();
+        List<Oogiri> oogiriList = oogiriRepository.getAllOogiri(themeIds);
+        List<OogiriResponse> resList = createInitResList(oogiriList);
         // お題の更新順に並び替え
         resList.sort((o1, o2) -> o2.getThemeUpdatedAt().compareTo(o1.getThemeUpdatedAt()));
         // ページング
@@ -88,7 +88,7 @@ public class OogiriController extends _CmnController {
         String themeContent = request.getThemeContent();
         // お題登録
         oogiriRepository.regTheme(userId, themeContent, now);
-        return ResponseEntity.ok(createMsg("お題", "登録"));
+        return ResponseEntity.ok(createMsg("s001", "お題", "登録"));
     }
 
     /**
@@ -110,7 +110,7 @@ public class OogiriController extends _CmnController {
 
         // お題の更新日時を更新
         oogiriRepository.updTheme(themeId, now);
-        return ResponseEntity.ok(createMsg("回答", "登録"));
+        return ResponseEntity.ok(createMsg("s001", "回答", "登録"));
     }
 
     /**
@@ -126,7 +126,7 @@ public class OogiriController extends _CmnController {
 
         // 回答削除処理
         oogiriRepository.delAnswer(answerId, now);
-        return ResponseEntity.ok(createMsg("回答", "削除"));
+        return ResponseEntity.ok(createMsg("s001", "回答", "削除"));
     }
 
     /**
@@ -144,7 +144,7 @@ public class OogiriController extends _CmnController {
 
         // リアクション登録
         oogiriRepository.regReaction(answerId, userId, reactionStatus, now);
-        return ResponseEntity.ok(createMsg("リアクション", "登録"));
+        return ResponseEntity.ok(createMsg("s001", "リアクション", "登録"));
     }
 
     /**
@@ -161,7 +161,7 @@ public class OogiriController extends _CmnController {
 
         // リアクション更新
         oogiriRepository.editReaction(reactionId, reactionStatus, now);
-        return ResponseEntity.ok(createMsg("リアクション", "更新"));
+        return ResponseEntity.ok(createMsg("s001", "リアクション", "更新"));
     }
 
     /**
@@ -172,20 +172,17 @@ public class OogiriController extends _CmnController {
      * @return
      */
     @RequestMapping(path = "/user", method = RequestMethod.GET)
-    public ResponseEntity<List<OogiriResponse>> getOogiriByUser(@RequestParam String themeUserName,
-            String answerUserName, int page) {
-        // レスポンスリスト
-        List<OogiriResponse> responses = new ArrayList<>();
-        // お題リスト
-        List<Oogiri> themes = new ArrayList<>();
+    public ResponseEntity<?> getOogiriByUser(@RequestParam String themeUserName, String answerUserName, int page) {
+        // お題IDリスト
+        List<Integer> themeIds = new ArrayList<>();
 
         // お題作成者で検索
         if (!themeUserName.isEmpty()) {
             // ユーザーIDを取得
             List<Integer> themeUserIds = getUserIdsByName(themeUserName);
-            // お題リストを取得
+            // ユーザーが作成したお題のIDをリストに追加
             for (int userId : themeUserIds) {
-                themes.addAll(oogiriRepository.getThemeByUser(userId));
+                themeIds.addAll(oogiriRepository.getThemeIdByUser(userId));
             }
         }
 
@@ -194,16 +191,21 @@ public class OogiriController extends _CmnController {
             // ユーザーIDを取得
             List<Integer> answerUserIds = getUserIdsByName(answerUserName);
             // お題リストを取得
-            List<Oogiri> answerResponses = new ArrayList<>();
             for (int userId : answerUserIds) {
-                themes.addAll(getThemesByThemeId(answerResponses, oogiriRepository.getThemeIds(userId)));
+                themeIds.addAll(oogiriRepository.getAnsweredThemeId(userId));
             }
         }
 
+        // ユーザーの投稿がなかった場合
+        if (themeIds.isEmpty()) {
+            return ResponseEntity.ok(createMsg("s002", "検索結果", "0件"));
+        }
+
         // レスポンスを生成する
-        responses = createInitResList(responses, themes);
-        responses = resetResByPage(responses, page);
-        return ResponseEntity.ok(responses);
+        List<Oogiri> oogiriList = oogiriRepository.getAllOogiri(themeIds);
+        List<OogiriResponse> resList = createInitResList(oogiriList);
+        resList = resetResByPage(resList, page);
+        return ResponseEntity.ok(resList);
     }
 
     /**
@@ -213,15 +215,16 @@ public class OogiriController extends _CmnController {
      * @param themes
      * @return
      */
-    private List<OogiriResponse> createInitResList(List<OogiriResponse> resList, List<Oogiri> oogiriList) {
+    private List<OogiriResponse> createInitResList(List<Oogiri> oogiriList) {
 
+        List<OogiriResponse> resList = new ArrayList<>();
         OogiriResponse res = null;
         int prevId = 0;
         for (Oogiri o : oogiriList) {
             int themeId = o.getThemeId();
             // お題IDが変わったら新しいOogiriResponseを作成
             if (prevId != themeId) {
-                // 最初以外はここでレスポンスリストに追加する
+                // 最後以外はここでレスポンスリストに追加する
                 if (res != null)
                     resList.add(res);
                 res = new OogiriResponse();
@@ -291,9 +294,16 @@ public class OogiriController extends _CmnController {
         return responses.subList(fromInd, toInd);
     }
 
-    private OogiriResources createMsg(String str1, String str2) {
+    /**
+     * メッセージを生成する
+     * 
+     * @param str1
+     * @param str2
+     * @return
+     */
+    private OogiriResources createMsg(String code, String str1, String str2) {
         OogiriResources oogiri = new OogiriResources();
-        _Messages returnMsg = super.getReturnMsg(msgUtil.getMessage("s001", str1, str2));
+        _Messages returnMsg = super.getReturnMsg(msgUtil.getMessage(code, str1, str2));
         oogiri.setMessages(returnMsg);
         return oogiri;
     }

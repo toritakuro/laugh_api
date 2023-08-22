@@ -102,13 +102,10 @@
          oogiri_theme.id = #{themeId}
 </select>
 
-<!-- ユーザーIDでお題を取得 -->
-<select id="getThemeByUser" resultMap="OogiriThemeResultMap">
+<!-- ユーザーIDでお題IDを取得 -->
+<select id="getThemeIdByUser" resultMap="ThemeIdsResultMap">
     SELECT
-        oogiri_theme.id AS theme_id,
-        oogiri_theme.user_id AS theme_user_id,
-        theme_content AS theme_content,
-        oogiri_theme.update_at AS theme_updated_at
+        oogiri_theme.id AS theme_id
     FROM
         oogiri_theme
     WHERE
@@ -135,6 +132,14 @@
     LEFT JOIN
         oogiri_reaction r on
         a.id = r.oogiri_answer_id
+    <where>
+        <if test="themeIds != null and themeIds.size() > 0">
+            AND t.id IN
+            <foreach item="themeId" collection="themeIds" open="(" separator="," close=")">
+                #{themeId}
+            </foreach>
+        </if>
+    </where>
     GROUP BY a.id, t.id
     ORDER BY
         t.id DESC
@@ -281,7 +286,7 @@
     WHERE id = #{reactionId}
 </update>
 
-<select id="getThemeIds" resultMap="ThemeIdsResultMap">
+<select id="getAnsweredThemeId" resultMap="ThemeIdsResultMap">
     SELECT DISTINCT
         oogiri_theme_id
     FROM

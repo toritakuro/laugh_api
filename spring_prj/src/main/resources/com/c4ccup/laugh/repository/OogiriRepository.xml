@@ -72,21 +72,6 @@
     <result property="reactionUpdatedAt" column="reaction_updated_at"/>
 </resultMap>
 
-<!-- OogiriResponseのResultMap -->
-<resultMap id="OogiriResponseResultMap" type="com.c4ccup.laugh.controller.OogiriResponse">
-    <id property="themeId" column="theme_id"/>
-    <result property="themeUserId" column="theme_user_id"/>
-    <result property="themeContent" column="theme_content"/>
-    <result property="themeCreatedAt" column="theme_created_at"/>
-    <result property="themeUpdatedAt" column="theme_updated_at"/>
-    <result property="answerId" column="answer_id"/>
-    <result property="answerUserId" column="answer_user_id"/>
-    <result property="answerContent" column="answer_content"/>
-    <result property="reactionNum" column="reaction_num"/>
-    <collection property="answers" ofType="com.c4ccup.laugh.controller.OogiriAnswerResponse" resultMap="OogiriAnswerResponseResultMap"/>
-    <collection property="reactions" ofType="com.c4ccup.laugh.controller.OogiriReactionResponse" resultMap="OogiriReactionResponseResultMap"/>
-</resultMap>
-
 <resultMap id="ThemeIdsResultMap" type="java.lang.Integer" />
 
 <!-- 大喜利お題を1件取得する -->

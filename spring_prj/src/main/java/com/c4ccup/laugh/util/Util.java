@@ -20,8 +20,10 @@ public class Util {
      */
     public List<Integer> chgToInt(String[] strs) {
         List<Integer> intList = new ArrayList<>();
-        for (String str : strs) {
-            intList.add(Integer.parseInt(str));
+        if (strs != null) {
+            for (String str : strs) {
+                intList.add(Integer.parseInt(str));
+            }
         }
         return intList;
     }

@@ -30,11 +30,14 @@ public interface UserRepository {
      */
     public User findByMail(String mail);
 
-    public List<User> getComposerList(UserBean userBean);
-    public List<User> getComedianList(UserBean userBean);
+    public List<User> getComposerList(int userBean);
+    public List<User> getComedianList(int userBean);
     public List<User> getSkillList(UserBean userBean);
     public List<User> initByid(UserBean userBean);
     
+    public List<User> getComposerList2(int userBean);
+    public List<User> getComedianList2(int userBean);
     public List<User> init();
+    public List<User> getOwnSpecialSkillList2();
 }
 

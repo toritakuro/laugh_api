@@ -44,8 +44,12 @@ public class User {
     private Composer composerProfile;
     /** 芸人詳細 */
     private Comedian comedianProfile;
-//    /** 特殊スキルリスト */
-//    private  List<OwnSpecialSkill> ownSpecialSkillList;
+    
+    private String specialSkillIds;
+    private String specialSkillNames;
+    private String anotherSkillNames;
+    private String comedyStyleIds;
+    private String comedyStyleNames;
 
     /**
      * @return id
@@ -263,16 +267,64 @@ public class User {
     public void setComedianProfile(Comedian comedianProfile) {
         this.comedianProfile = comedianProfile;
     }
-//    /**
-//     * @return ownSpecialSkillList
-//     */
-//    public List<OwnSpecialSkill> getOwnSpecialSkillList() {
-//        return ownSpecialSkillList;
-//    }
-//    /**
-//     * @param ownSpecialSkillList セットする ownSpecialSkillList
-//     */
-//    public void setOwnSpecialSkillList(List<OwnSpecialSkill> ownSpecialSkillList) {
-//        this.ownSpecialSkillList = ownSpecialSkillList;
-//    }
+    /**
+     * @return specialSkillIds
+     */
+    public String getSpecialSkillIds() {
+        return specialSkillIds;
+    }
+    /**
+     * @param specialSkillIds セットする specialSkillIds
+     */
+    public void setSpecialSkillIds(String specialSkillIds) {
+        this.specialSkillIds = specialSkillIds;
+    }
+    /**
+     * @return specialSkillNames
+     */
+    public String getSpecialSkillNames() {
+        return specialSkillNames;
+    }
+    /**
+     * @param specialSkillNames セットする specialSkillNames
+     */
+    public void setSpecialSkillNames(String specialSkillNames) {
+        this.specialSkillNames = specialSkillNames;
+    }
+    /**
+     * @return anotherSkillNames
+     */
+    public String getAnotherSkillNames() {
+        return anotherSkillNames;
+    }
+    /**
+     * @param anotherSkillNames セットする anotherSkillNames
+     */
+    public void setAnotherSkillNames(String anotherSkillNames) {
+        this.anotherSkillNames = anotherSkillNames;
+    }
+    /**
+     * @return comedyStyleIds
+     */
+    public String getComedyStyleIds() {
+        return comedyStyleIds;
+    }
+    /**
+     * @param comedyStyleIds セットする comedyStyleIds
+     */
+    public void setComedyStyleIds(String comedyStyleIds) {
+        this.comedyStyleIds = comedyStyleIds;
+    }
+    /**
+     * @return comedyStyleNames
+     */
+    public String getComedyStyleNames() {
+        return comedyStyleNames;
+    }
+    /**
+     * @param comedyStyleNames セットする comedyStyleNames
+     */
+    public void setComedyStyleNames(String comedyStyleNames) {
+        this.comedyStyleNames = comedyStyleNames;
+    }
 }

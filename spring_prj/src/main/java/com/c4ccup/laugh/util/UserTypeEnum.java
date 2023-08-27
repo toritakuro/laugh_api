@@ -2,7 +2,9 @@ package com.c4ccup.laugh.util;
 
 public enum UserTypeEnum {
 
+    // 作家
     COMPOSER(1),
+    // 芸人
     COMEDIAN(2);
 
     /** ユーザータイプ */

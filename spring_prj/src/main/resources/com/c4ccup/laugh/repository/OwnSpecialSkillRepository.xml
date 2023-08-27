@@ -9,6 +9,7 @@
     <result column="create_at" property="createAt"/>
     <result column="update_at" property="updateAt"/>
     <association property="specialSkillId" resultMap="SpecialSkillResultMap"/>
+<!--     <association property="userId" resultMap="UserResultMap"/> -->
   </resultMap>
     <resultMap id="SpecialSkillResultMap" type="com.c4ccup.laugh.domain.SpecialSkill">
       <id column="id" property="id" />
@@ -16,6 +17,22 @@
       <result column="create_at" property="createAt"/>
       <result column="update_at" property="updateAt"/>
     </resultMap>
+  <resultMap id="UserResultMap" type="com.c4ccup.laugh.domain.User">
+    <id column="id" property="id" />
+    <result column="mail_address" property="mail"/>
+    <result column="user_name" property="userName"/>
+    <result column="user_name_kana" property="userNameKana"/>
+    <result column="user_type" property="userType"/>
+    <result column="password" property="password"/>
+    <result column="debut_dt" property="debutDt"/>
+    <result column="gender" property="gender"/>
+    <result column="self_introduction" property="selfIntoroduction"/>
+    <result column="profile_img_path" property="porfileImg"/>
+    <result column="delete_flg" property="deleteFlg"/>
+    <result column="login_at" property="loginAt"/>
+    <result column="create_at" property="createAt"/>
+    <result column="update_at" property="updateAt"/>
+  </resultMap>
 
   <select id="getOwnSpecialSkillList" resultMap="OwnSpecialSkillResultMap">
     SELECT
@@ -31,5 +48,24 @@
       special_skill
     ON
       own_special_skill.special_skill_id = special_skill.id
+  </select>
+  <select id="getOwnSpecialSkillList2" resultMap="OwnSpecialSkillResultMap">
+    SELECT
+      user.user_name,
+      user.id,
+      GROUP_CONCAT(special_skill.special_skill_name),
+      GROUP_CONCAT(own_special_skill.another_skill)
+    FROM
+      user
+    LEFT JOIN
+      own_special_skill
+    ON
+      user.id = own_special_skill.user_id
+    LEFT JOIN
+      special_skill
+    ON
+      special_skill.id = own_special_skill.special_skill_id
+    GROUP BY 
+      user.id 
   </select>
 </mapper>

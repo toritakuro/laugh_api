@@ -10,4 +10,5 @@ import com.c4ccup.laugh.domain.OwnSpecialSkill;
 public interface OwnSpecialSkillRepository {
 
     public List<OwnSpecialSkill> getOwnSpecialSkillList();
+//    public List<OwnSpecialSkill> getOwnSpecialSkillList2();
 }

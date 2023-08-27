@@ -36,4 +36,11 @@ public interface UserRepository {
      * @return User
      */
     public List<User> findByName(String name);
+
+    /**
+     * ログイン日時を更新
+     * 
+     * @param User
+     */
+    public void updateLoginAt(User user);
 }

@@ -3,6 +3,8 @@ package com.c4ccup.laugh.zzerr;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.security.auth.login.LoginException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -33,5 +35,21 @@ public class ApiExceptionHandler {
             err.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
         return new ResponseEntity<>(new ValidationErrBean(err), HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * ログイン認証エラーを返却する
+     * 
+     * @param e
+     * @return
+     * @throws Exception
+     */
+    @ExceptionHandler(LoginException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> handleError(LoginException e) throws Exception {
+        Map<String, String> err = new HashMap<>();
+        err.put("loginError", e.getMessage());
+        return new ResponseEntity<>(err, HttpStatus.UNAUTHORIZED);
     }
 }

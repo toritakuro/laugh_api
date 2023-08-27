@@ -3,9 +3,10 @@
 <mapper namespace="com.c4ccup.laugh.repository.UserRepository">
 
   <resultMap id="UserResultMap" type="com.c4ccup.laugh.domain.User">
-    <result column="ID" property="id"/>
-    <result column="mail_address" property="mail"/>
+    <result column="id" property="id"/>
+    <result column="user_address" property="userAddress"/>
     <result column="password" property="password"/>
+    <result column="user_name" property="userName"/>
   </resultMap>
 
   <select id="findById" parameterType="int" resultMap="UserResultMap">
@@ -24,5 +25,14 @@
       user
     WHERE
       user_address = #{mail}
+  </select>
+
+  <select id="findByName" parameterType="String" resultMap="UserResultMap">
+    SELECT
+      *
+    FROM
+      user
+    WHERE
+      user_name LIKE CONCAT('%', #{name}, '%')
   </select>
 </mapper>

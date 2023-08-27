@@ -1,5 +1,7 @@
 package com.c4ccup.laugh.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.c4ccup.laugh.domain.User;
@@ -26,6 +28,14 @@ public interface UserRepository {
      * @return User
      */
     public User findByMail(String mail);
+
+    /**
+     * 氏名でユーザーを取得
+     * 
+     * @param name
+     * @return User
+     */
+    public List<User> findByName(String name);
 
     /**
      * ログイン日時を更新

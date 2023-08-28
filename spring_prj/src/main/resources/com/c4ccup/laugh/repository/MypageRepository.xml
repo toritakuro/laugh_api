@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.c4ccup.laugh.repository.MyPageRepository">
+
+  <resultMap id="LaughResultMap" type="com.c4ccup.laugh.domain.Laugh">
+    <id column="id" property="id"/>
+    <result column="match_status" property="status"/>
+    <result column="send_user_id" property="sendUserId"/>
+    <result column="receive_user_id" property="receiveUserId"/>
+    <result column="user_id_send" property="userIdSend"/>
+    <result column="user_name_send" property="userNameSend"/>
+    <result column="user_debut_dt_send" property="uerDebutAtSend"/>
+    <result column="user_id_receive" property="userIdReceive"/>
+    <result column="user_name_receive" property="userNameReceive"/>
+    <result column="user_debut_dt_receive" property="userDebutAtReceive"/>
+  </resultMap>
+
+  <select id="selectLaugh" parameterType="int" resultMap="LaughResultMap">
+		SELECT
+			ms.id,
+			ms.match_status,
+			ms.send_user_id,
+			ms.receive_user_id,
+			s_user.id AS user_id_send,
+			s_user.user_name AS user_name_send,
+			s_user.debut_dt AS user_debut_dt_send,
+			r_user.id AS user_id_receive,
+			r_user.user_name AS user_name_receive,
+			r_user.debut_dt AS user_debut_dt_receive
+		FROM
+			match_status ms
+		INNER JOIN user s_user ON
+			ms.send_user_id = s_user.id AND s_user.delete_flg = 0
+		INNER JOIN user r_user ON
+			ms.receive_user_id = r_user.id AND r_user.delete_flg = 0
+		WHERE (ms.send_user_id = #{userId} OR ms.receive_user_id = #{userId}) AND ms.match_status != 20
+		ORDER BY
+			ms.create_at DESC
+  </select>
+</mapper>

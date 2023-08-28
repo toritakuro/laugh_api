@@ -71,11 +71,11 @@ public class UserBean {
 
     // own_comedy_styleテーブル用
     /** 特殊スキル */
-    private int specialSkillId;
+    private Integer specialSkillId;
     /** 特殊スキル(その他) */
     private String anotherSkill;
     /** 特殊スキル一覧 */
-    private int[] specialSkillIdList;
+    private Integer[] specialSkillIdList;
 
 
 
@@ -239,21 +239,19 @@ public class UserBean {
      * @return profileImg
      */
     public String getProfileImg() {
-        if(profileImg == null) {
-            return null;
-        } else {
+        if(profileImg != null) {
             return Base64.getEncoder().encodeToString(profileImg);
         }
+        return null;
     }
     /**
      * @param profileImg セットする profileImg
      */
     public void setProfileImg(String profileImg) {
-        if(profileImg == null) {
-            this.profileImg = null;
-        } else {
+        if(profileImg != null) {
             this.profileImg = Base64.getDecoder().decode(profileImg);
         }
+        this.profileImg = null;
     }
     /**
      * @return deleteFlg
@@ -378,13 +376,13 @@ public class UserBean {
     /**
      * @return specialSkillId
      */
-    public int getSpecialSkillId() {
+    public Integer getSpecialSkillId() {
         return specialSkillId;
     }
     /**
      * @param specialSkillId セットする specialSkillId
      */
-    public void setSpecialSkillId(int specialSkillId) {
+    public void setSpecialSkillId(Integer specialSkillId) {
         this.specialSkillId = specialSkillId;
     }
     /**
@@ -402,13 +400,13 @@ public class UserBean {
     /**
      * @return specialSkillIdList
      */
-    public int[] getSpecialSkillIdList() {
+    public Integer[] getSpecialSkillIdList() {
         return specialSkillIdList;
     }
     /**
      * @param specialSkillIdList セットする specialSkillIdList
      */
-    public void setSpecialSkillIdList(int[] specialSkillIdList) {
+    public void setSpecialSkillIdList(Integer[] specialSkillIdList) {
         this.specialSkillIdList = specialSkillIdList;
     }
 

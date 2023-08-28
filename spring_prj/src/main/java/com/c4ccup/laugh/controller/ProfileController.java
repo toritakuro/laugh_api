@@ -1,6 +1,8 @@
 package com.c4ccup.laugh.controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.c4ccup.laugh.controller.bean.UserBean;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
-import com.c4ccup.laugh.util.AppConst.specialSkillEnum;
 import com.c4ccup.laugh.util.AwsSesUtil;
+import com.c4ccup.laugh.util.PropBean;
 
 /**
  * CRUDを操作するProfileクラス
@@ -34,12 +36,12 @@ public class ProfileController {
      * @return
      */
     @RequestMapping(path = "/init", method = RequestMethod.POST)
-    public void init(@RequestBody UserBean userBean) {
-        String userMailAddress = userBean.getUserAddress();
+    public void init(@RequestBody PropBean propBean) {
+        String userMailAddress = propBean.getEmail();
         String Title = "Laughの登録";
         String Text = "<p>以下のURLから登録をお願いします。</p><br>"
                      + "http://localhost:3000/profile/register/"
-                     + userBean.getUserAddress().replace(".", "+");
+                     + propBean.getEmail().replace(".", "+");
         awsSesUtil.send(userMailAddress, Title, Text);
     }
 
@@ -57,8 +59,11 @@ public class ProfileController {
         cal.set(userBean.getDebutYear(), userBean.getDebutMonth() - 1, 1);
         userBean.setDebutDt(cal);
 
-        // ユーザーをuserテーブルに登録する。また、採番されたidを取得しregisterUserIdに入れる
-        int registerUserId = userRepository.register(userBean);
+        // ユーザーをuserテーブルに登録する。
+        userRepository.register(userBean);
+
+        // 採番されたidを取得しregisterUserIdに入れる
+        int registerUserId = userBean.getId();
 
         // 登録したユーザーのuserIdをセットしておく
         userBean.setUserId(registerUserId);
@@ -83,14 +88,22 @@ public class ProfileController {
 
         // 特殊スキルの登録(作家のみ)
         if (userBean.getUserType() == UserEnum.COMPOSER.getId() && userBean.getSpecialSkillIdList() != null) {
-            String tmp_another_skill = userBean.getAnotherSkill();
+            List<UserBean> userBeanList = new ArrayList<>();
             for(int specialSkillId: userBean.getSpecialSkillIdList()) {
-                userBean.setSpecialSkillId(specialSkillId);
-                // 「その他」選択されてたらanother_skillカラムに内容登録
-                String another_skill = specialSkillId == specialSkillEnum.OTHERS.getId() ? tmp_another_skill : "";
-                userBean.setAnotherSkill(another_skill);
-                userRepository.registerOwnSpecialSkill(userBean);
+                UserBean user = new UserBean();
+                user.setUserId(registerUserId);
+                user.setSpecialSkillId(specialSkillId);
+                userBeanList.add(user);
             }
+
+            // 「その他」で自由入力された内容は、specialSkillId = nullで登録する
+            if(!userBean.getAnotherSkill().isEmpty()) {
+                UserBean user = new UserBean();
+                user.setUserId(registerUserId);
+                user.setAnotherSkill(userBean.getAnotherSkill());
+                userBeanList.add(user);
+            }
+            userRepository.registerOwnSpecialSkill(userBeanList);
         }
     }
 

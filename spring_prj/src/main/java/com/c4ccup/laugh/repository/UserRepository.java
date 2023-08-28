@@ -1,6 +1,9 @@
 package com.c4ccup.laugh.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.c4ccup.laugh.controller.bean.UserBean;
 import com.c4ccup.laugh.domain.User;
@@ -33,7 +36,7 @@ public interface UserRepository {
      * @param UserBean
      * @return user_id
      */
-    public int register(UserBean userBean);
+    public void register(UserBean userBean);
 
     /**
      * comedian_profileテーブルにデータを追加する
@@ -57,6 +60,6 @@ public interface UserRepository {
      * own_special_skillテーブルにデータを追加する
      * @param UserBean
      */
-    public void registerOwnSpecialSkill(UserBean userBean);
+    public void registerOwnSpecialSkill(@Param("userBeanList") List<UserBean> userBeanList);
 
 }

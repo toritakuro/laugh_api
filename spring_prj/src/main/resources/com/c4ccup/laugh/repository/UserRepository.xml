@@ -110,7 +110,7 @@
       );
   </insert>
 
-  <insert id="registerOwnSpecialSkill">
+  <insert id="registerOwnSpecialSkill" parameterType="java.util.List">
     INSERT INTO
       own_special_skill
         (
@@ -119,11 +119,13 @@
         ,another_skill
         )
     VALUES
+    <foreach collection="userBeanList" item="user" separator=",">
       (
-      #{userId}
-      ,#{specialSkillId}
-      ,#{anotherSkill}
-      );
+      #{user.userId}
+      ,#{user.specialSkillId}
+      ,#{user.anotherSkill}
+      )
+    </foreach>
   </insert>
 
 </mapper>

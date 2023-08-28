@@ -1,3 +1,4 @@
+
 package com.c4ccup.laugh.repository;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import com.c4ccup.laugh.domain.Laugh;
 public interface MyPageRepository {
 
     /**
+     * Laugh一覧を取得
      *
      * @param userId
      * @return

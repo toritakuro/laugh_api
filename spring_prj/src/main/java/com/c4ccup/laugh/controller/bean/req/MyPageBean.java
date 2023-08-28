@@ -1,12 +1,14 @@
 package com.c4ccup.laugh.controller.bean.req;
 
 /**
- * マイページリクエスト
- *
+ * マイページBean
  */
 public class MyPageBean {
+
     /** ユーザID */
     private int userId;
+
+
 
     /**
      * ユーザIDを取得します。
@@ -15,7 +17,6 @@ public class MyPageBean {
     public int getUserId() {
         return userId;
     }
-
     /**
      * ユーザIDを設定します。
      * @param userId ユーザID

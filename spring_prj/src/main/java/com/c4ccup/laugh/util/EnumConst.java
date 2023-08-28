@@ -1,5 +1,8 @@
 package com.c4ccup.laugh.util;
 
+/**
+ * Enum定義クラス
+ */
 public class EnumConst {
 
     /** マッチングステータスEnum */
@@ -17,7 +20,7 @@ public class EnumConst {
         }
         public int getStatus() { return this.k; }
         public String getStatusStr() { return this.v; }
-        public static String getVakByKey(int key) {
+        public static String getValByKey(int key) {
             String val = "";
             for (MatchStatus status : MatchStatus.values()) {
                 if (status.getStatus() == key) {

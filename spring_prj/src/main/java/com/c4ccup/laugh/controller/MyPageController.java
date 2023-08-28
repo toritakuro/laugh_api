@@ -1,6 +1,7 @@
 package com.c4ccup.laugh.controller;
 
 import java.time.LocalDate;
+
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,9 @@ import com.c4ccup.laugh.controller.bean.res.LaughResource;
 import com.c4ccup.laugh.domain.Laugh;
 import com.c4ccup.laugh.repository.MyPageRepository;
 import static com.c4ccup.laugh.util.EnumConst.*;
+
 /**
- * マイページContorollerクラス
- *
+ * マイページ Controllerクラス
  */
 @RequestMapping(value = "mypage")
 @RestController
@@ -46,12 +47,12 @@ public class MyPageController {
 
             r.setId(l.getId());
             r.setStatus(l.getStatus());
-            r.setStatusStr(MatchStatus.getVakByKey(l.getStatus()));
+            r.setStatusStr(MatchStatus.getValByKey(l.getStatus()));
 
             if (l.getReceiveUserId() == bean.getUserId()) {
                 r.setName(l.getUserNameSend());
                 r.setTargetUserId(l.getUserIdSend());
-                r.setMySendLough(false);    
+                r.setMySendLough(false);
                 activeTerm= getActiveTerm(l.getUerDebutAtSend());
             }
             if (l.getSendUserId() == bean.getUserId()) {

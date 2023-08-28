@@ -3,6 +3,9 @@ package com.c4ccup.laugh.controller.bean.res;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 共通Messagesクラス
+ */
 public class Messages {
 
     /** メッセージ */
@@ -15,7 +18,6 @@ public class Messages {
     public void setMessages(List<String> messages) {
         this.messages = messages;
     }
-
     /**
      * メッセージを取得します。
      * @return
@@ -24,4 +26,5 @@ public class Messages {
     {
         return messages;
     }
+
 }

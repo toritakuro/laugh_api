@@ -1,5 +1,8 @@
 package com.c4ccup.laugh.controller.bean.res;
 
+/**
+ * LaughResourceクラス
+ */
 public class LaughResource {
 
     /** id */
@@ -91,7 +94,6 @@ public class LaughResource {
     public void setName(String name) {
         this.name = name;
     }
-
     /**
      * 活動歴(年)を取得します。
      * @return 活動歴(年)

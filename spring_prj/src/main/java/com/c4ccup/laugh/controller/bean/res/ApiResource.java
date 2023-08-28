@@ -5,11 +5,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * APIの
- * @param <T>
+ * APIの共通リソース
  */
 public class ApiResource<T> {
-
     public ApiResource(T data, Messages message) {
         if (data instanceof Messages) {
             this.data = null;
@@ -29,6 +27,8 @@ public class ApiResource<T> {
     /** レスポンスデータ */
     private T data;
 
+
+
     /**
      *  メッセージクラスを取得します。
      * @return message
@@ -36,7 +36,6 @@ public class ApiResource<T> {
     public List<String> getMessage() {
         return message == null ? null : message.getMessages();
     }
-
     /**
      * レスポンスデータを取得します。
      * @return data
@@ -44,4 +43,5 @@ public class ApiResource<T> {
     public T getData() {
         return data;
     }
+
 }

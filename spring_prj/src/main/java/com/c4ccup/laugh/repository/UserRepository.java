@@ -62,4 +62,18 @@ public interface UserRepository {
      */
     public void registerOwnSpecialSkill(@Param("userBeanList") List<UserBean> userBeanList);
 
+    /**
+     * 氏名でユーザーを取得
+     *
+     * @param name
+     * @return User
+     */
+    public List<User> findByName(String name);
+
+    /**
+     * ログイン日時を更新
+     *
+     * @param User
+     */
+    public void updateLoginAt(User user);
 }

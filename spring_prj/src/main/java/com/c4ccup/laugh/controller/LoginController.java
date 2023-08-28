@@ -1,5 +1,9 @@
 package com.c4ccup.laugh.controller;
 
+import java.time.LocalDateTime;
+
+import javax.security.auth.login.LoginException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,18 +17,20 @@ import com.c4ccup.laugh.util.JwtUtil;
 import com.c4ccup.laugh.util.PasswordUtil;
 
 /**
- * ログインContorollerクラス
+ * ログインControllerクラス
  *
  */
 @RestController
-public class LoginController {
+public class LoginController extends _CmnController {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final PasswordUtil pwdUtil;
 
-    public LoginController(UserRepository userRepository, JwtUtil jwtUtil) {
+    public LoginController(UserRepository userRepository, JwtUtil jwtUtil, PasswordUtil pwdUtil) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
+        this.pwdUtil = pwdUtil;
     }
 
     /**
@@ -34,25 +40,30 @@ public class LoginController {
      * @return JWTとユーザー情報を含むレスポンスエンティティ
      */
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws LoginException {
 
         String email = request.getEmail();
         String password = request.getPassword();
+        LocalDateTime now = LocalDateTime.now();
 
         // メールアドレスを使用してデータベースからユーザーを取得
         User user = userRepository.findByMail(email);
 
-        // ユーザーが取得できるかつ、パスワードの検証がOK
-        if (user != null && PasswordUtil.matches(password, user.getPassword())) {
-            // JWTを発行する処理
-            String jwt = jwtUtil.generateToken(email);
-            LoginResponse response = new LoginResponse(jwt, user);
-            // レスポンスとしてJWTとユーザー情報を返す
-            return ResponseEntity.ok(response);
-        } else {
-            // 認証が失敗した場合は401 Unauthorizedを返す
+        // ユーザーが取得できない場合エラーを返す
+        if (user == null)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+
+        // パスワードチェック
+        pwdUtil.matches(password, user.getPassword());
+
+        // ログイン日時を更新
+        user.setLoginAt(now);
+        userRepository.updateLoginAt(user);
+        // JWTを発行する処理
+        String jwt = jwtUtil.generateToken(email);
+        LoginResponse response = new LoginResponse(jwt, user);
+        // レスポンスとしてJWTとユーザー情報を返す
+        return ResponseEntity.ok(response);
     }
 
 }

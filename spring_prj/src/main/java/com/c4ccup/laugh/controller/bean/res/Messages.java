@@ -3,12 +3,9 @@ package com.c4ccup.laugh.controller.bean.res;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-public class _Messages {
+public class Messages {
 
     /** メッセージ */
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> messages = new ArrayList<>();
 
     /**

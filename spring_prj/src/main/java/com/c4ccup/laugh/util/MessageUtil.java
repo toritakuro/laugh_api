@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-import com.c4ccup.laugh.controller.bean.res._Messages;
+import com.c4ccup.laugh.controller.bean.res.Messages;
 
 /**
  * メッセージUtilクラス
@@ -54,8 +54,8 @@ public class MessageUtil {
      * @param msgs
      * @return
      */
-    public _Messages getReturnMsg(List<String> msgs) {
-        _Messages messages = new _Messages();
+    public Messages getReturnMsg(List<String> msgs) {
+        Messages messages = new Messages();
         messages.setMessages(msgs);
         return messages;
     }
@@ -65,7 +65,7 @@ public class MessageUtil {
      * @param msg
      * @return
      */
-    public _Messages getReturnMsg(String msg) {
+    public Messages getReturnMsg(String msg) {
         return this.getReturnMsg(Collections.singletonList(msg));
     }
 }

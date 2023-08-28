@@ -3,7 +3,7 @@ package com.c4ccup.laugh.controller;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.c4ccup.laugh.controller.bean.res._Messages;
+import com.c4ccup.laugh.controller.bean.res.Messages;
 import com.c4ccup.laugh.util.MessageUtil;
 
 /**
@@ -40,7 +40,7 @@ public class _CmnController {
      * @param msgs
      * @return
      */
-    public _Messages getReturnMsg(List<String> msgs) {
+    public Messages getReturnMsg(List<String> msgs) {
         return msgUtil.getReturnMsg(msgs);
     }
 
@@ -49,7 +49,7 @@ public class _CmnController {
      * @param msg
      * @return
      */
-    public _Messages getReturnMsg(String msg) {
+    public Messages getReturnMsg(String msg) {
         return msgUtil.getReturnMsg(Collections.singletonList(msg));
     }
 

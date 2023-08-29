@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.c4ccup.laugh.controller.bean.res.OogiriResources;
-import com.c4ccup.laugh.controller.bean.res._Messages;
+import com.c4ccup.laugh.controller.bean.res.ApiResource;
+import com.c4ccup.laugh.controller.bean.res.Messages;
 import com.c4ccup.laugh.domain.Oogiri;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.OogiriRepository;
@@ -82,7 +82,7 @@ public class OogiriController extends _CmnController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<OogiriResources> regTheme(@RequestBody OogiriRequest request) {
+    public ResponseEntity<ApiResource<Messages>> regTheme(@RequestBody OogiriRequest request) {
 
         int userId = request.getUserId();
         String themeContent = request.getThemeContent();
@@ -99,7 +99,7 @@ public class OogiriController extends _CmnController {
      */
     @RequestMapping(path = "/answer", method = RequestMethod.POST)
     @Transactional
-    public ResponseEntity<OogiriResources> regAnswer(@RequestBody OogiriRequest request) {
+    public ResponseEntity<ApiResource<Messages>> regAnswer(@RequestBody OogiriRequest request) {
 
         int themeId = request.getThemeId();
         int userId = request.getUserId();
@@ -120,7 +120,7 @@ public class OogiriController extends _CmnController {
      * @return
      */
     @RequestMapping(path = "/answer/delete", method = RequestMethod.POST)
-    public ResponseEntity<OogiriResources> delAnswer(@RequestBody OogiriRequest request) {
+    public ResponseEntity<ApiResource<Messages>> delAnswer(@RequestBody OogiriRequest request) {
 
         int answerId = request.getAnswerId();
 
@@ -136,7 +136,7 @@ public class OogiriController extends _CmnController {
      * @return
      */
     @RequestMapping(path = "/reaction", method = RequestMethod.POST)
-    public ResponseEntity<OogiriResources> regReaction(@RequestBody OogiriRequest request) {
+    public ResponseEntity<ApiResource<Messages>> regReaction(@RequestBody OogiriRequest request) {
 
         int answerId = request.getAnswerId();
         int userId = request.getUserId();
@@ -154,7 +154,7 @@ public class OogiriController extends _CmnController {
      * @return
      */
     @RequestMapping(path = "/reaction/edit", method = RequestMethod.POST)
-    public ResponseEntity<OogiriResources> editReaction(@RequestBody OogiriRequest request) {
+    public ResponseEntity<ApiResource<Messages>> editReaction(@RequestBody OogiriRequest request) {
 
         int reactionId = request.getReactionId();
         int reactionStatus = request.getReactionStatus();
@@ -288,10 +288,9 @@ public class OogiriController extends _CmnController {
      * @param str2
      * @return
      */
-    private OogiriResources createMsg(String code, String str1, String str2) {
-        OogiriResources oogiri = new OogiriResources();
-        _Messages returnMsg = super.getReturnMsg(msgUtil.getMessage(code, str1, str2));
-        oogiri.setMessages(returnMsg);
+    private ApiResource<Messages> createMsg(String code, String str1, String str2) {
+        Messages returnMsg = super.getReturnMsg(msgUtil.getMessage(code, str1, str2));
+        ApiResource<Messages> oogiri = new ApiResource<>(returnMsg);
         return oogiri;
     }
 }

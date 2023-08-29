@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.c4ccup.laugh.domain.User;
-import com.c4ccup.laugh.util.UserTypeEnum;
 
 public class UserBean {
 
@@ -67,7 +66,6 @@ public class UserBean {
         this.userType = user.getUserType();
         this.debutDt = user.getDebutDt();
         this.gender = user.getGender();
-//        this.comedyStyleId = 
         this.comedyStyleName = user.getComedyStyleNames();
         this.officeId = user.getOfficeId().getId();
         this.officeName = user.getOfficeId().getOfficeName();
@@ -77,15 +75,10 @@ public class UserBean {
         this.profileImg = user.getProfileImg();
         this.loginAt = user.getLoginAt();
         this.updateAt = user.getUpdateAt();
-        // 作家用
-        if (this.userType == UserTypeEnum.COMPOSER.getUserType()) {
-            this.skillName = user.getSpecialSkillNames();
-            this.feeType = user.getComposerProfile().getFeeType();
-            this.fee = user.getComposerProfile().getFee();
-        } else {
-            // 芸人用
-            this.memberNum = user.getComedianProfile().getMemberNum();
-        }
+        this.skillName = user.getSpecialSkillNames();
+        this.feeType = user.getComposerProfile().getFeeType();
+        this.fee = user.getComposerProfile().getFee();
+        this.memberNum = user.getComedianProfile().getMemberNum();
     }
 
     /**

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.UserBean;
@@ -28,10 +29,10 @@ public class TopController {
     private UserRepository userRepository;
 
     @RequestMapping(path = "/init", method = RequestMethod.GET)
-//    public ResponseEntity<List<UserBean>> init(@RequestParam int userType) {
-    public ResponseEntity<List<UserBean>> init() {
+    public ResponseEntity<List<UserBean>> init(@RequestParam int userType) {
+//    public ResponseEntity<List<UserBean>> init() {
         
-        int userType = UserTypeEnum.COMEDIAN.getUserType();
+//        int userType = UserTypeEnum.COMEDIAN.getUserType();
 //        int userType = UserTypeEnum.COMPOSER.getUserType();
         
         List<UserBean> topUserList = new ArrayList<>();

@@ -162,6 +162,7 @@ public class OogiriResponse {
      * @return
      */
     private void setAnswerInfo(List<Oogiri> oogiriList) {
+        this.answers = new ArrayList<>();
         // 回答情報を詰めていく
         for (Oogiri oogiri : oogiriList) {
             OogiriAnswerResponse ansRes = new OogiriAnswerResponse();

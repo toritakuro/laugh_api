@@ -30,10 +30,6 @@ public class TopController {
 
     @RequestMapping(path = "/init", method = RequestMethod.GET)
     public ResponseEntity<List<UserBean>> init(@RequestParam int userType) {
-//    public ResponseEntity<List<UserBean>> init() {
-        
-//        int userType = UserTypeEnum.COMEDIAN.getUserType();
-//        int userType = UserTypeEnum.COMPOSER.getUserType();
         
         List<UserBean> topUserList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
@@ -43,7 +39,7 @@ public class TopController {
             // 作家一覧を取得
             userList = userRepository.getComposerList2(UserTypeEnum.COMPOSER.getUserType());
         } else {
-         // 芸人一覧を取得
+            // 芸人一覧を取得
             userList = userRepository.getComedianList2(UserTypeEnum.COMEDIAN.getUserType());
         }
         // 取得した値を表示用にセット
@@ -85,17 +81,16 @@ public class TopController {
     /**
      * 活動年月のセット処理  作家・芸人共通
      * @param users
-     * @param ownComedyStyleList
      */
     private void setActivityNum(UserBean users) {
         LocalDate date = LocalDate.now();
-        LocalDate date1 = date.minusYears(users.getDebutDt().getYear());
-        LocalDate date2 = date1.minusMonths(users.getDebutDt().getMonthValue());
-        String activityYear = Integer.valueOf(date2.getYear()).toString();
-        String activityMonth = Integer.valueOf(date2.getMonthValue()).toString();
+        LocalDate differenceYear = date.minusYears(users.getDebutDt().getYear());
+        LocalDate differenceDate = differenceYear.minusMonths(users.getDebutDt().getMonthValue());
+        String activityYear = Integer.valueOf(differenceDate.getYear()).toString();
+        String activityMonth = Integer.valueOf(differenceDate.getMonthValue()).toString();
         String activityDate;
-        int activityNum = date2.getYear();
-        if (0 < date2.getYear()) {
+        int activityNum = differenceDate.getYear();
+        if (0 < differenceDate.getYear()) {
             activityDate = activityYear + " 年 " + activityMonth + " ヶ月 " ;
         } else {
             activityDate = activityMonth + " ヶ月 " ;

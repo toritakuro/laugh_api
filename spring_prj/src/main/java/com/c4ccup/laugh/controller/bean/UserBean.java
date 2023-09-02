@@ -1,8 +1,9 @@
 package com.c4ccup.laugh.controller.bean;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
-import java.util.Calendar;
+import java.util.List;
 
 import com.c4ccup.laugh.util.PasswordUtil;
 
@@ -29,7 +30,7 @@ public class UserBean {
     /** 活動開始月 */
     private int debutMonth;
     /** 活動開始年月 */
-    private Calendar debutDt;
+    private LocalDate debutDt;
     /** 性別 */
     private int gender;
     /** 事務所ID */
@@ -67,7 +68,7 @@ public class UserBean {
     /** 得意分野 */
     private int comedyStyleId;
     /** 得意分野一覧 */
-    private int[] comedyStyleIdList;
+    private List<Integer> comedyStyleIdList;
 
     // own_comedy_styleテーブル用
     /** 特殊スキル */
@@ -75,7 +76,7 @@ public class UserBean {
     /** 特殊スキル(その他) */
     private String anotherSkill;
     /** 特殊スキル一覧 */
-    private Integer[] specialSkillIdList;
+    private List<Integer> specialSkillIdList;
 
 
 
@@ -178,13 +179,13 @@ public class UserBean {
     /**
      * @return debutDt
      */
-    public Calendar getDebutDt() {
+    public LocalDate getDebutDt() {
         return debutDt;
     }
     /**
      * @param debutDt セットする debutDt
      */
-    public void setDebutDt(Calendar debutDt) {
+    public void setDebutDt(LocalDate debutDt) {
         this.debutDt = debutDt;
     }
     /**
@@ -364,13 +365,13 @@ public class UserBean {
     /**
      * @return comedyStyleIdList
      */
-    public int[] getComedyStyleIdList() {
+    public List<Integer> getComedyStyleIdList() {
         return comedyStyleIdList;
     }
     /**
      * @param comedyStyleIdList セットする comedyStyleIdList
      */
-    public void setComedyStyleIdList(int[] comedyStyleIdList) {
+    public void setComedyStyleIdList(List<Integer> comedyStyleIdList) {
         this.comedyStyleIdList = comedyStyleIdList;
     }
     /**
@@ -400,13 +401,13 @@ public class UserBean {
     /**
      * @return specialSkillIdList
      */
-    public Integer[] getSpecialSkillIdList() {
+    public List<Integer> getSpecialSkillIdList() {
         return specialSkillIdList;
     }
     /**
      * @param specialSkillIdList セットする specialSkillIdList
      */
-    public void setSpecialSkillIdList(Integer[] specialSkillIdList) {
+    public void setSpecialSkillIdList(List<Integer> specialSkillIdList) {
         this.specialSkillIdList = specialSkillIdList;
     }
 

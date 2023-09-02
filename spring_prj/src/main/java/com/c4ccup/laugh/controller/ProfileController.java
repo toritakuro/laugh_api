@@ -1,16 +1,18 @@
 package com.c4ccup.laugh.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.UserBean;
+import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
 import com.c4ccup.laugh.util.AwsSesUtil;
@@ -55,9 +57,8 @@ public class ProfileController {
     public void register(@RequestBody UserBean userBean) {
 
         //debutDtをセット
-        Calendar cal = Calendar.getInstance();
-        cal.set(userBean.getDebutYear(), userBean.getDebutMonth() - 1, 1);
-        userBean.setDebutDt(cal);
+        LocalDate debutDt = LocalDate.of(userBean.getDebutYear(), userBean.getDebutMonth(), 1);
+        userBean.setDebutDt(debutDt);
 
         // ユーザーをuserテーブルに登録する。
         userRepository.register(userBean);
@@ -108,7 +109,16 @@ public class ProfileController {
     }
 
 
-
+    /**
+     * 編集画面を返すメソッド
+     * @param userBean
+     * @return
+     */
+    @RequestMapping(path = "/editInit", method = RequestMethod.GET)
+    public ResponseEntity<User> editInit(@RequestBody int userId) {
+        User user = userRepository.findById(1);
+        return ResponseEntity.ok(user);
+    }
 
 
 }

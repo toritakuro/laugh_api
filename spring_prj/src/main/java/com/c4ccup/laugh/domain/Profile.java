@@ -1,17 +1,18 @@
 package com.c4ccup.laugh.domain;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 
 /**
- * Userテーブルのカラムの値をJavaオブジェクトで扱うためのクラス
+ *Profileテーブルのカラムの値をJavaオブジェクトで扱うためのクラス
  */
-public class User {
+public class Profile {
 
-    /** id */
+    // userテーブル用
+    /** ID */
     private int id;
     /** ユーザアドレス */
-    private String mail;
+    private String userAddress;
     /** ユーザ名 */
     private String userName;
     /** ユーザ名(かな) */
@@ -20,18 +21,22 @@ public class User {
     private int userType;
     /** パスワード */
     private String password;
+    /** 活動開始年 */
+    private int debutYear;
+    /** 活動開始月 */
+    private int debutMonth;
     /** 活動開始年月 */
-    private LocalDate debutDt;
+    private Calendar debutDt;
     /** 性別 */
     private int gender;
-    /** 事務所 */
-    private Office officeId;
-    /** 活動場所 */
-    private Area areaId;
+    /** 事務所ID */
+    private int officeId;
+    /** 活動場所ID */
+    private int areaId;
     /** 自己紹介文 */
     private String selfIntroduction;
     /** プロフィール画像 */
-    private byte[] profileImgPath;
+    private String profileImgPath;
     /** 退会フラグ */
     private int deleteFlg;
     /** ログイン日時 */
@@ -40,20 +45,34 @@ public class User {
     private LocalDateTime createAt;
     /** 更新日時 */
     private LocalDateTime updateAt;
-    /** 作家詳細 */
-    private Composer composerProfile;
-    /** 芸人詳細 */
-    private Comedian comedianProfile;
-    /** 特殊スキルID */
-    private String specialSkillIds;
-    /** 特殊スキル名 */
-    private String specialSkillNames;
-    /** 特殊スキル名(その他) */
-    private String anotherSkillNames;
-    /** 芸風ID */
-    private String comedyStyleIds;
-    /** 芸風名 */
-    private String comedyStyleNames;
+
+    // userテーブル以外用
+    /** ユーザID */
+    private int userId;
+
+    // comedian_profileテーブル用
+    /** 活動人数 */
+    private int memberNum;
+
+    // composer_profileテーブル用
+    /** 料金体系 */
+    private int feeType;
+    /** 料金 */
+    private int fee;
+
+    // own_comedy_styleテーブル用
+    /** 得意分野 */
+    private int comedyStyleId;
+    /** 得意分野一覧 */
+    private int[] comedyStyleIdList;
+
+    // own_comedy_styleテーブル用
+    /** 特殊スキル */
+    private int specialSkillId;
+    /** 特殊スキル(その他) */
+    private String anotherSkill;
+    /** 特殊スキル一覧 */
+    private int[] specialSkillIdList;
 
 
 
@@ -72,14 +91,14 @@ public class User {
     /**
      * @return userAddress
      */
-    public String getMail() {
-        return mail;
+    public String getUserAddress() {
+        return userAddress;
     }
     /**
-     * @param mail セットする mail
+     * @param userAddress セットする userAddress
      */
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
     /**
      * @return userName
@@ -130,15 +149,39 @@ public class User {
         this.password = password;
     }
     /**
+     * @return debutYear
+     */
+    public int getDebutYear() {
+        return debutYear;
+    }
+    /**
+     * @param debutYear セットする debutYear
+     */
+    public void setDebutYear(int debutYear) {
+        this.debutYear = debutYear;
+    }
+    /**
+     * @return debutMonth
+     */
+    public int getDebutMonth() {
+        return debutMonth;
+    }
+    /**
+     * @param debutMonth セットする debutMonth
+     */
+    public void setDebutMonth(int debutMonth) {
+        this.debutMonth = debutMonth;
+    }
+    /**
      * @return debutDt
      */
-    public LocalDate getDebutDt() {
+    public Calendar getDebutDt() {
         return debutDt;
     }
     /**
      * @param debutDt セットする debutDt
      */
-    public void setDebutDt(LocalDate debutDt) {
+    public void setDebutDt(Calendar debutDt) {
         this.debutDt = debutDt;
     }
     /**
@@ -156,25 +199,25 @@ public class User {
     /**
      * @return officeId
      */
-    public Office getOfficeId() {
+    public int getOfficeId() {
         return officeId;
     }
     /**
      * @param officeId セットする officeId
      */
-    public void setOfficeId(Office officeId) {
+    public void setOfficeId(int officeId) {
         this.officeId = officeId;
     }
     /**
      * @return areaId
      */
-    public Area getAreaId() {
+    public int getAreaId() {
         return areaId;
     }
     /**
      * @param areaId セットする areaId
      */
-    public void setAreaId(Area areaId) {
+    public void setAreaId(int areaId) {
         this.areaId = areaId;
     }
     /**
@@ -190,24 +233,18 @@ public class User {
         this.selfIntroduction = selfIntroduction;
     }
     /**
-     * profileImgPathを取得
-     *
      * @return profileImgPath
      */
-    public byte[] getProfileImgPath() {
+    public String getProfileImgPath() {
         return profileImgPath;
     }
-
     /**
      * @param profileImgPath セットする profileImgPath
      */
-    public void setProfileImgPath(byte[] profileImgPath) {
+    public void setProfileImgPath(String profileImgPath) {
         this.profileImgPath = profileImgPath;
     }
-
     /**
-     * deleteFlgを取得
-     *
      * @return deleteFlg
      */
     public int getDeleteFlg() {
@@ -256,87 +293,112 @@ public class User {
         this.updateAt = updateAt;
     }
     /**
-     * @return composerProfile
+     * @return userId
      */
-    public Composer getComposerProfile() {
-        return composerProfile;
+    public int getUserId() {
+        return userId;
     }
     /**
-     * @param composerList セットする composerList
+     * @param userId セットする userId
      */
-    public void setComposerProfile(Composer composerProfile) {
-        this.composerProfile = composerProfile;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
     /**
-     * @return comedianList
+     * @return memberNum
      */
-    public Comedian getComedianProfile() {
-        return comedianProfile;
+    public int getMemberNum() {
+        return memberNum;
     }
     /**
-     * @param comedianList セットする comedianList
+     * @param memberNum セットする memberNum
      */
-    public void setComedianProfile(Comedian comedianProfile) {
-        this.comedianProfile = comedianProfile;
+    public void setMemberNum(int memberNum) {
+        this.memberNum = memberNum;
     }
     /**
-     * @return specialSkillIds
+     * @return feeType
      */
-    public String getSpecialSkillIds() {
-        return specialSkillIds;
+    public int getFeeType() {
+        return feeType;
     }
     /**
-     * @param specialSkillIds セットする specialSkillIds
+     * @param feeType セットする feeType
      */
-    public void setSpecialSkillIds(String specialSkillIds) {
-        this.specialSkillIds = specialSkillIds;
+    public void setFeeType(int feeType) {
+        this.feeType = feeType;
     }
     /**
-     * @return specialSkillNames
+     * @return fee
      */
-    public String getSpecialSkillNames() {
-        return specialSkillNames;
+    public int getFee() {
+        return fee;
     }
     /**
-     * @param specialSkillNames セットする specialSkillNames
+     * @param fee セットする fee
      */
-    public void setSpecialSkillNames(String specialSkillNames) {
-        this.specialSkillNames = specialSkillNames;
+    public void setFee(int fee) {
+        this.fee = fee;
     }
     /**
-     * @return anotherSkillNames
+     * @return comedyStyleId
      */
-    public String getAnotherSkillNames() {
-        return anotherSkillNames;
+    public int getComedyStyleId() {
+        return comedyStyleId;
     }
     /**
-     * @param anotherSkillNames セットする anotherSkillNames
+     * @param comedyStyleId セットする comedyStyleId
      */
-    public void setAnotherSkillNames(String anotherSkillNames) {
-        this.anotherSkillNames = anotherSkillNames;
+    public void setComedyStyleId(int comedyStyleId) {
+        this.comedyStyleId = comedyStyleId;
     }
     /**
-     * @return comedyStyleIds
+     * @return comedyStyleIdList
      */
-    public String getComedyStyleIds() {
-        return comedyStyleIds;
+    public int[] getComedyStyleIdList() {
+        return comedyStyleIdList;
     }
     /**
-     * @param comedyStyleIds セットする comedyStyleIds
+     * @param comedyStyleIdList セットする comedyStyleIdList
      */
-    public void setComedyStyleIds(String comedyStyleIds) {
-        this.comedyStyleIds = comedyStyleIds;
+    public void setComedyStyleIdList(int[] comedyStyleIdList) {
+        this.comedyStyleIdList = comedyStyleIdList;
     }
     /**
-     * @return comedyStyleNames
+     * @return specialSkillId
      */
-    public String getComedyStyleNames() {
-        return comedyStyleNames;
+    public int getSpecialSkillId() {
+        return specialSkillId;
     }
     /**
-     * @param comedyStyleNames セットする comedyStyleNames
+     * @param specialSkillId セットする specialSkillId
      */
-    public void setComedyStyleNames(String comedyStyleNames) {
-        this.comedyStyleNames = comedyStyleNames;
+    public void setSpecialSkillId(int specialSkillId) {
+        this.specialSkillId = specialSkillId;
     }
+    /**
+     * @return anotherSkill
+     */
+    public String getAnotherSkill() {
+        return anotherSkill;
+    }
+    /**
+     * @param anotherSkill セットする anotherSkill
+     */
+    public void setAnotherSkill(String anotherSkill) {
+        this.anotherSkill = anotherSkill;
+    }
+    /**
+     * @return specialSkillIdList
+     */
+    public int[] getSpecialSkillIdList() {
+        return specialSkillIdList;
+    }
+    /**
+     * @param specialSkillIdList セットする specialSkillIdList
+     */
+    public void setSpecialSkillIdList(int[] specialSkillIdList) {
+        this.specialSkillIdList = specialSkillIdList;
+    }
+
 }

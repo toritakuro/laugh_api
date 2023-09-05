@@ -2,7 +2,7 @@ version: '3'
 
 services:
   java:
-    container_name: "java"
+    container_name: java
     build:
       context: .
       dockerfile: ./infra/docker/java/Dockerfile
@@ -13,7 +13,7 @@ services:
         source: ./spring_prj
         target: /opt/spring_prj
       - type: bind
-        source: credentials
+        source: ./credentials/credentials
         target: /root/.aws/credentials
       - type: volume
         source: m2
@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
   db:
-    container_name: "db"
+    container_name: db
     build:
       context: .
       dockerfile: ./infra/docker/mysql/Dockerfile
@@ -38,10 +38,13 @@ services:
         mode: host
     volumes:
       - type: bind
+        source: ./data/docker-entrypoint-initdb.d
+        target: /docker-entrypoint-initdb.d
+      - type: bind
         source: ./infra/docker/mysql/my.cnf
         target: /etc/mysql/conf.d/my.cnf
-      - type: bind
-        source: ./infra/docker/mysql/db
+      - type: volume
+        source: mysql-local
         target: /var/lib/mysql
 
     environment:
@@ -53,3 +56,5 @@ services:
 volumes:
   m2:
     external: true
+  mysql-local:
+    name: mysql-local

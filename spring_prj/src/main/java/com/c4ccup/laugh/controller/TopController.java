@@ -8,13 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.c4ccup.laugh.controller.bean.UserBean;
+import com.c4ccup.laugh.controller.bean.req.TopBean;
+import com.c4ccup.laugh.controller.bean.res.ApiResource;
+import com.c4ccup.laugh.controller.bean.res.TopResource;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.UserRepository;
-import com.c4ccup.laugh.util.UserTypeEnum;
+import com.c4ccup.laugh.util.AppConst.UserEnum;
+import com.c4ccup.laugh.util.Util;
 
 
 /**
@@ -29,67 +31,64 @@ public class TopController {
     private UserRepository userRepository;
 
     @RequestMapping(path = "/init", method = RequestMethod.GET)
-    public ResponseEntity<List<UserBean>> init(@RequestParam int userType) {
-        
-        List<UserBean> topUserList = new ArrayList<>();
+    public ResponseEntity<ApiResource<List<TopResource>>> init(TopBean bean) {
+
+        List<TopResource> topUserList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
-        
+        int loginUserType = bean.getUserType();
+
         // ユーザーの一覧を取得
-        if (userType == UserTypeEnum.COMEDIAN.getUserType()) {
+        if (loginUserType == UserEnum.COMEDIAN.getId()) {
             // 作家一覧を取得
-            userList = userRepository.getComposerList2(UserTypeEnum.COMPOSER.getUserType());
+            userList = userRepository.getComposerList(UserEnum.COMPOSER.getId());
         } else {
             // 芸人一覧を取得
-            userList = userRepository.getComedianList2(UserTypeEnum.COMEDIAN.getUserType());
+            userList = userRepository.getComedianList(UserEnum.COMEDIAN.getId());
         }
         // 取得した値を表示用にセット
         for (User user : userList) {
             // 作家・芸人共通処理
-            UserBean users = new UserBean(user);
+            TopResource users = new TopResource(user);
             this.setActivityNum(users);
-            List<Integer> comedyIdList = new ArrayList<>();
-            comedyIdList = this.strToIntegerList(user.getComedyStyleIds());
-            users.setComedyStyleId(comedyIdList);
+            // 文字列を分割し配列に格納
+            String[] comedyIdStrList = user.getComedyStyleIds().split(",");
+            // int型に変換
+            List<Integer> comedyIdList = Util.chgToInt(comedyIdStrList);
+            users.setComedyStyleIdList(comedyIdList);
+
             // 作家用
-            if (users.getUserType() == UserTypeEnum.COMPOSER.getUserType()) {
-                List<Integer> specialSkillIdList = new ArrayList<>();
-                specialSkillIdList = this.strToIntegerList(user.getSpecialSkillIds());
-                users.setSkillId(specialSkillIdList);
+            if (users.getUserType() == UserEnum.COMPOSER.getId()) {
+                // 文字列を分割し配列に格納
+                String[] specialSkillIdStrList = user.getSpecialSkillIds().split(",");
+                // int型に変換
+                List<Integer> specialSkillIdList = Util.chgToInt(specialSkillIdStrList);
+                users.setSpecialSkillIdList(specialSkillIdList);
             } else {
                 // 芸人用
                 this.setActivityNum(users);
             }
             topUserList.add(users);
         }
-        return ResponseEntity.ok(topUserList);
-    }
-
-    /**
-     * idをString型からInteger型のリストに変換する
-     * @param ids
-     * @return idList
-     */
-    private List<Integer> strToIntegerList(String ids) {
-        String[] strIds = ids.split(",");
-        List<Integer> idList = new ArrayList<>();
-        for (String str : strIds) {
-            idList.add(Integer.parseInt(str));
-        }
-        return idList;
+        return ResponseEntity.ok(new ApiResource<>(topUserList));
     }
 
     /**
      * 活動年月のセット処理  作家・芸人共通
      * @param users
      */
-    private void setActivityNum(UserBean users) {
+    private void setActivityNum(TopResource users) {
+        // 現在日付を取得
         LocalDate date = LocalDate.now();
+        // 現在日付と活動開始年月の差分を取得
         LocalDate differenceYear = date.minusYears(users.getDebutDt().getYear());
         LocalDate differenceDate = differenceYear.minusMonths(users.getDebutDt().getMonthValue());
+        // String型に変換
         String activityYear = Integer.valueOf(differenceDate.getYear()).toString();
         String activityMonth = Integer.valueOf(differenceDate.getMonthValue()).toString();
         String activityDate;
+        // 活動年数
         int activityNum = differenceDate.getYear();
+        // 画面表示用にセット
         if (0 < differenceDate.getYear()) {
             activityDate = activityYear + " 年 " + activityMonth + " ヶ月 " ;
         } else {

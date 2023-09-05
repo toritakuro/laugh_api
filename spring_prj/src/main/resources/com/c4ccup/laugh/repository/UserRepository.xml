@@ -4,6 +4,7 @@
 
   <resultMap id="UserResultMap" type="com.c4ccup.laugh.domain.User">
     <id column="user_id" property="id" />
+    <result column="id" property="id"/>
     <result column="mail_address" property="mail"/>
     <result column="user_name" property="userName"/>
     <result column="user_name_kana" property="userNameKana"/>
@@ -87,124 +88,124 @@
       user_address = #{mail}
   </select>
 
-  <select id="initByid" parameterType="int" resultMap="UserResultMap">
-    SELECT
-      *
-    FROM
+  <insert id="register" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO
       user
-    WHERE
-      user_type != #{userType}
-  </select>
-  
-  <select id="init" parameterType="int" resultMap="UserResultMap">
-    SELECT
-      *
-    FROM
-      User
-  </select>
+        (
+        user_address
+        ,user_name
+        ,user_name_kana
+        ,user_type
+        ,password
+        ,debut_dt
+        ,gender
+        ,office_id
+        ,area_id
+        ,self_introduction
+        ,profile_img
+        )
+    VALUES
+      (
+      #{userAddress}
+      ,#{userName}
+      ,#{userNameKana}
+      ,#{userType}
+      ,#{password}
+      ,#{debutDt}
+      ,#{gender}
+      ,#{officeId}
+      ,#{areaId}
+      ,#{selfIntroduction}
+      ,#{profileImg}
+      );
+  </insert>
 
-  <select id="getComposerList" parameterType="int" resultMap="UserResultMap">
-    SELECT
-      user.id as user_id
-      ,user.user_address
-      ,user.user_name
-      ,user.user_name_kana
-      ,user.user_type
-      ,user.debut_dt
-      ,user.gender
-      ,user.office_id
-      ,user.area_id
-      ,user.self_introduction
-      ,user.profile_img_path
-      ,user.login_at
-      ,user.create_at
-      ,user.update_at
-      ,composer_profile.fee_type
-      ,composer_profile.fee
-      ,office.id as office_id
-      ,office.office_name
-      ,area.id as area_id
-      ,area.area
-    FROM
-      user
-    LEFT JOIN
-      composer_profile
-    ON
-      user.id = composer_profile.user_id
-    LEFT JOIN
-      office
-    ON
-      user.office_id = office.id
-    LEFT JOIN
-      area
-    ON
-      user.area_id = area.id
-    WHERE
-      user.user_type = #{userType}
-    AND
-      user.delete_flg = 0
-  </select>
-
-  <select id="getComedianList" parameterType="int" resultMap="UserResultMap">
-    SELECT
-      user.id as user_id
-      ,user.user_address
-      ,user.user_name
-      ,user.user_name_kana
-      ,user.user_type
-      ,user.debut_dt
-      ,user.gender
-      ,user.office_id
-      ,user.area_id
-      ,user.self_introduction
-      ,user.profile_img_path
-      ,user.login_at
-      ,user.create_at
-      ,user.update_at
-      ,comedian_profile.member_num
-      ,office.id as office_id
-      ,office.office_name
-      ,area.id as area_id
-      ,area.area
-    FROM
-      user
-    LEFT JOIN
+  <insert id="registerComedian">
+    INSERT INTO
       comedian_profile
-    ON
-      user.id = comedian_profile.user_id
-    LEFT JOIN
-      office
-    ON
-      user.office_id = office.id
-    LEFT JOIN
-      area
-    ON
-      user.area_id = area.id
-    WHERE
-      user.user_type = #{userType}
-    AND
-      user.delete_flg = 0
-  </select>
-  <select id="getOwnSpecialSkillList2" resultMap="UserResultMap">
+        (
+        user_id
+        ,member_num
+        )
+    VALUES
+      (
+      #{userId}
+      ,#{memberNum}
+      );
+  </insert>
+
+  <insert id="registerComposer">
+    INSERT INTO
+      composer_profile
+        (
+        user_id
+        ,fee_type
+        ,fee
+        )
+    VALUES
+      (
+      #{userId}
+      ,#{feeType}
+      ,#{fee}
+      );
+  </insert>
+
+  <select id="getMaxUserId" resultType="int">
     SELECT
-      user.id,
-      GROUP_CONCAT(DISTINCT special_skill.id order by special_skill.id ASC) as special_skill_ids,
-      GROUP_CONCAT(DISTINCT special_skill.special_skill_name ORDER BY special_skill.id ASC) AS special_skill_names,
-      GROUP_CONCAT(own_special_skill.another_skill) as another_skill_names
+      max(user.id)
     FROM
       user
-    RIGHT JOIN
-      own_special_skill
-    ON
-      user.id = own_special_skill.user_id
-    LEFT JOIN
-      special_skill
-    ON
-      special_skill.id = own_special_skill.special_skill_id
-    GROUP BY 
-      user.id 
+      ;
   </select>
-  <select id="getComposerList2" parameterType="int" resultMap="UserResultMap">
+
+  <insert id="registerOwnComedyStyle">
+    INSERT INTO
+      own_comedy_style
+        (
+        comedy_style_id
+        ,user_id
+        )
+    VALUES
+      (
+      #{comedyStyleId}
+      ,#{userId}
+      );
+  </insert>
+
+  <insert id="registerOwnSpecialSkill" parameterType="java.util.List">
+    INSERT INTO
+      own_special_skill
+        (
+        user_id
+        ,special_skill_id
+        ,another_skill
+        )
+    VALUES
+    <foreach collection="userBeanList" item="user" separator=",">
+      (
+      #{user.userId}
+      ,#{user.specialSkillId}
+      ,#{user.anotherSkill}
+      )
+    </foreach>
+  </insert>
+
+  <select id="findByName" parameterType="String" resultMap="UserResultMap">
+    SELECT
+      *
+    FROM
+      user
+    WHERE
+      user_name LIKE CONCAT('%', #{name}, '%')
+  </select>
+
+  <update id="updateLoginAt" parameterType="com.c4ccup.laugh.domain.User">
+    UPDATE user
+    SET login_at = #{loginAt}
+    WHERE id = #{id}
+  </update>
+
+   <select id="getComposerList" parameterType="int" resultMap="UserResultMap">
     SELECT
       user.id as user_id
       ,user.user_address
@@ -266,7 +267,8 @@
     GROUP BY
       composer_profile.id
   </select>
-  <select id="getComedianList2" parameterType="int" resultMap="UserResultMap">
+
+  <select id="getComedianList" parameterType="int" resultMap="UserResultMap">
     SELECT
       user.id as user_id
       ,user.user_address

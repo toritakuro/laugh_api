@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.c4ccup.laugh.repository.OogiriRepository">
+
+<!-- OogiriのResultMap -->
+<resultMap id="OogiriResultMap" type="com.c4ccup.laugh.domain.Oogiri">
+    <id property="answerId" column="answer_id"/>
+    <result property="answerUserId" column="answer_user_id"/>
+    <result property="answerContent" column="answer_content"/>
+    <result property="answerCreatedAt" column="answer_create_at"/>
+    <result property="answerDeletedAt" column="answer_delete_at"/>
+    <result property="themeUserId" column="theme_user_id"/>
+    <result property="themeCreatedAt" column="theme_create_at"/>
+    <result property="reactionIds" column="reaction_ids"/>
+    <result property="reactionUserIds" column="reaction_user_ids"/>
+    <result property="reactionStatuses" column="reaction_status"/>
+</resultMap>
+
+<!-- OogiriThemeのResultMap -->
+<resultMap id="OogiriThemeResultMap" type="com.c4ccup.laugh.domain.Oogiri">
+    <id property="themeId" column="theme_id"/>
+    <result property="themeUserId" column="theme_user_id"/>
+    <result property="themeContent" column="theme_content"/>
+    <result property="themeCreatedAt" column="theme_created_at"/>
+    <result property="themeUpdatedAt" column="theme_updated_at"/>
+</resultMap>
+
+<!-- OogiriAnswerのResultMap -->
+<resultMap id="OogiriAnswerResultMap" type="com.c4ccup.laugh.domain.Oogiri">
+    <id property="answerId" column="answer_id"/>
+    <result property="answerUserId" column="answer_user_id"/>
+    <result property="answerContent" column="answer_content"/>
+    <result property="answerCreatedAt" column="answer_created_at"/>
+    <result property="answerDeletedAt" column="answer_deleted_at"/>
+</resultMap>
+
+<!-- OogiriAnswersのResultMap -->
+<resultMap id="OogiriAnswersResultMap" type="com.c4ccup.laugh.domain.Oogiri">
+    <id property="answerId" column="answer_id"/>
+    <result property="answerUserId" column="answer_user_id"/>
+    <result property="answerContent" column="answer_content"/>
+    <result property="answerCreatedAt" column="answer_create_at"/>
+    <result property="answerDeletedAt" column="answer_delete_at"/>
+    <result property="themeUserId" column="theme_user_id"/>
+    <result property="themeCreatedAt" column="theme_create_at"/>
+    <result property="reactionIds" column="reaction_ids"/>
+    <result property="reactionUserIds" column="reaction_user_ids"/>
+    <result property="reactionStatuses" column="reaction_status"/>
+</resultMap>
+
+<!-- OogiriAnswerResponseのResultMap -->
+<resultMap id="OogiriAnswerResponseResultMap" type="com.c4ccup.laugh.controller.OogiriAnswerResponse">
+    <id property="answerId" column="answer_id"/>
+    <result property="answerUserId" column="answer_user_id"/>
+    <result property="answerContent" column="answer_content"/>
+    <result property="answerCreatedAt" column="answer_created_at"/>
+    <collection property="reactions" ofType="com.c4ccup.laugh.controller.OogiriReactionResponse">
+        <id property="reactionId" column="reaction_id"/>
+        <result property="reactionUserId" column="reaction_user_id"/>
+        <result property="reactionStatus" column="reaction_status"/>
+        <result property="reactionCreatedAt" column="reaction_created_at"/>
+        <result property="reactionUpdatedAt" column="reaction_updated_at"/>
+    </collection>
+</resultMap>
+
+<!-- OogiriReactionResponseのResultMap -->
+<resultMap id="OogiriReactionResponseResultMap" type="com.c4ccup.laugh.controller.OogiriReactionResponse">
+    <id property="reactionId" column="reaction_id"/>
+    <result property="reactionUserId" column="reaction_user_id"/>
+    <result property="reactionStatus" column="reaction_status"/>
+    <result property="reactionCreatedAt" column="reaction_created_at"/>
+    <result property="reactionUpdatedAt" column="reaction_updated_at"/>
+</resultMap>
+
+<resultMap id="ThemeIdsResultMap" type="java.lang.Integer" />
+
+<!-- 大喜利お題を1件取得する -->
+<select id="getTheme" resultMap="OogiriThemeResultMap">
+    SELECT
+        oogiri_theme.id AS theme_id,
+        oogiri_theme.user_id AS theme_user_id,
+        theme_content AS theme_content,
+        oogiri_theme.update_at AS theme_updated_at
+    FROM
+        oogiri_theme
+    WHERE
+         oogiri_theme.id = #{themeId}
+</select>
+
+<!-- ユーザーIDでお題IDを取得 -->
+<select id="getThemeIdByUser" resultMap="ThemeIdsResultMap">
+    SELECT
+        oogiri_theme.id AS theme_id
+    FROM
+        oogiri_theme
+    WHERE
+         oogiri_theme.user_id = #{themeUserId}
+</select>
+
+<select id="getAllOogiri" resultMap="OogiriResultMap">
+    SELECT
+        a.id as answer_id,
+        a.answer_content,
+        a.user_id as answer_user_id,
+        a.create_at as answer_create_at,
+        a.delete_at as answer_delete_at,
+        t.id as theme_id,
+        t.user_id as theme_user_id,
+        t.theme_content,
+        t.update_at as theme_updated_at,
+        COUNT(r.id) as reaction_num
+    FROM
+        oogiri_theme t
+    LEFT JOIN
+        oogiri_answer a on
+        t.id = a.oogiri_theme_id
+    LEFT JOIN
+        oogiri_reaction r on
+        a.id = r.oogiri_answer_id
+    <where>
+        <if test="themeIds != null and themeIds.size() > 0">
+            AND t.id IN
+            <foreach item="themeId" collection="themeIds" open="(" separator="," close=")">
+                #{themeId}
+            </foreach>
+        </if>
+    </where>
+    GROUP BY a.id, t.id
+    ORDER BY
+        t.id DESC
+</select>
+
+<!-- 最新の50件の大喜利お題を取得する -->
+<select id="getLatestOogiriThemes" resultMap="OogiriThemeResultMap">
+    SELECT
+        oogiri_theme.id AS theme_id,
+        oogiri_theme.user_id AS theme_user_id,
+        theme_content AS theme_content,
+        oogiri_theme.update_at AS theme_updated_at
+    FROM
+        oogiri_theme
+    ORDER BY
+        oogiri_theme.update_at DESC
+    LIMIT #{limit}
+</select>
+
+<!-- お題に紐づく全ての回答を取得する -->
+<select id="getAllAnswers" resultMap="OogiriAnswersResultMap">
+    SELECT
+        a.id as answer_id,
+        a.answer_content,
+        a.user_id as answer_user_id,
+        a.create_at as answer_create_at,
+        a.delete_at as answer_delete_at,
+        t.id as theme_id,
+        t.user_id as theme_user_id,
+        t.theme_content,
+        t.create_at as theme_create_at,
+        COUNT(r.id) as reaction_num,
+        GROUP_CONCAT(r.id ORDER BY r.user_id ASC) as reaction_ids,
+        GROUP_CONCAT(r.user_id) as reaction_user_ids,
+        GROUP_CONCAT(r.reaction_status ORDER BY r.user_id ASC) as reaction_status
+    FROM
+        oogiri_theme t
+    LEFT JOIN
+        oogiri_answer a on
+        t.id = a.oogiri_theme_id
+    LEFT JOIN
+        oogiri_reaction r on
+        a.id = r.oogiri_answer_id
+    WHERE
+        t.id = #{themeId}
+    GROUP BY a.id, t.id
+    ORDER BY
+        reaction_num DESC
+</select>
+
+<!-- お題に紐づく回答を3件取得する -->
+<select id="getThreeAnswers" resultMap="OogiriAnswerResponseResultMap">
+    SELECT
+        oogiri_answer.id AS answer_id,
+        oogiri_answer.user_id AS answer_user_id,
+        answer_content AS answer_content,
+        oogiri_answer.create_at AS answer_created_at
+    FROM
+        oogiri_answer
+    WHERE
+        oogiri_theme_id = #{themeId}
+    ORDER BY
+        create_at DESC
+    LIMIT #{limit}
+</select>
+
+<!-- お題を登録する -->
+<insert id="regTheme">
+    INSERT INTO
+        oogiri_theme(user_id, theme_content, create_at, update_at)
+    VALUES
+        (#{userId}, #{themeContent}, #{now}, #{now})
+</insert>
+
+<!-- お題の更新日時を更新する -->
+<insert id="updTheme">
+    UPDATE
+        oogiri_theme
+    SET
+        oogiri_theme.update_at = #{now}
+    WHERE
+        oogiri_theme.id = #{themeId}
+</insert>
+
+<!-- 回答を1件取得 -->
+<select id="getAnswer" resultMap="OogiriAnswerResultMap">
+    SELECT
+        oogiri_answer.id AS answer_id,
+        oogiri_answer.user_id AS answer_user_id,
+        answer_content AS answer_content,
+        oogiri_answer.create_at AS answer_created_at
+    FROM
+        oogiri_answer
+    WHERE
+        oogiri_answer.id = #{answerId}
+</select>
+
+<!-- 回答を登録する -->
+<insert id="regAnswer">
+    INSERT INTO
+        oogiri_answer(oogiri_theme_id, user_id, answer_content, create_at)
+    VALUES
+        (#{themeId}, #{userId}, #{answerContent}, #{now})
+</insert>
+
+<!-- 回答を削除する -->
+<update id="delAnswer">
+    UPDATE
+        oogiri_answer
+    SET
+        delete_at = #{now}
+    WHERE id = #{answerId}
+</update>
+
+<!-- 回答に紐づく全てのリアクションを取得する -->
+<select id="getAllReactions" resultMap="OogiriReactionResponseResultMap">
+    SELECT
+        oogiri_reaction.id AS reaction_id,
+        oogiri_reaction.user_id AS reaction_user_id,
+        reaction_status AS reaction_status
+    FROM
+        oogiri_reaction
+    WHERE
+        oogiri_answer_id = #{answerId}
+    ORDER BY
+        create_at DESC
+</select>
+
+<!-- リアクションを登録する -->
+<insert id="regReaction">
+    INSERT INTO
+        oogiri_reaction(oogiri_answer_id, user_id, reaction_status, create_at, update_at)
+    VALUES
+        (#{answerId}, #{userId}, #{reactionStatus}, #{now}, #{now})
+</insert>
+
+<!-- リアクションを更新する -->
+<update id="editReaction">
+    UPDATE
+        oogiri_reaction
+    SET
+        reaction_status = #{reactionStatus},
+        update_at = #{now}
+    WHERE id = #{reactionId}
+</update>
+
+<select id="getAnsweredThemeId" resultMap="ThemeIdsResultMap">
+    SELECT DISTINCT
+        oogiri_theme_id
+    FROM
+        oogiri_answer
+    WHERE
+        user_id = #{userId};
+</select>
+</mapper>

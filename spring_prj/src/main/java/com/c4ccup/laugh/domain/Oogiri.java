@@ -12,6 +12,8 @@ public class Oogiri {
     private int themeId;
     /** お題ユーザーID */
     private int themeUserId;
+    /** お題ユーザーネーム */
+    private String themeUserName;
     /** お題内容 */
     private String themeContent;
     /** お題作成日時 */
@@ -24,6 +26,8 @@ public class Oogiri {
     private int answerId;
     /** 回答投稿ユーザーID */
     private int answerUserId;
+    /** 回答ユーザーネーム */
+    private String answerUserName;
     /** 回答内容 */
     private String answerContent;
     /** 回答作成日時 */
@@ -83,6 +87,22 @@ public class Oogiri {
      */
     public void setThemeUserId(int themeUserId) {
         this.themeUserId = themeUserId;
+    }
+
+    /**
+     * お題ユーザーネームを取得します。
+     * @return お題ユーザーネーム
+     */
+    public String getThemeUserName() {
+        return themeUserName;
+    }
+
+    /**
+     * お題ユーザーネームを設定します。
+     * @param themeUserName お題ユーザーネーム
+     */
+    public void setThemeUserName(String themeUserName) {
+        this.themeUserName = themeUserName;
     }
 
     /**
@@ -163,6 +183,22 @@ public class Oogiri {
      */
     public void setAnswerUserId(int answerUserId) {
         this.answerUserId = answerUserId;
+    }
+
+    /**
+     * 回答ユーザーネームを取得します。
+     * @return 回答ユーザーネーム
+     */
+    public String getAnswerUserName() {
+        return answerUserName;
+    }
+
+    /**
+     * 回答ユーザーネームを設定します。
+     * @param answerUserName 回答ユーザーネーム
+     */
+    public void setAnswerUserName(String answerUserName) {
+        this.answerUserName = answerUserName;
     }
 
     /**

@@ -39,6 +39,8 @@
     <id property="answerId" column="answer_id"/>
     <result property="answerUserId" column="answer_user_id"/>
     <result property="answerContent" column="answer_content"/>
+    <result property="answerUserName" column="answer_user_name"/>
+    <result property="themeUserName" column="theme_user_name"/>
     <result property="answerCreatedAt" column="answer_create_at"/>
     <result property="answerDeletedAt" column="answer_delete_at"/>
     <result property="themeUserId" column="theme_user_id"/>
@@ -150,6 +152,8 @@
         a.id as answer_id,
         a.answer_content,
         a.user_id as answer_user_id,
+        au.user_name as answer_user_name,
+        tu.user_name as theme_user_name,
         a.create_at as answer_create_at,
         a.delete_at as answer_delete_at,
         t.id as theme_id,
@@ -168,6 +172,12 @@
     LEFT JOIN
         oogiri_reaction r on
         a.id = r.oogiri_answer_id
+    LEFT JOIN
+        user au on
+        a.user_id = au.id
+    LEFT JOIN
+        user tu on
+        t.user_id = tu.id
     WHERE
         t.id = #{themeId}
     GROUP BY a.id, t.id

@@ -198,6 +198,7 @@ public class OogiriResponse {
     public OogiriResponse setThemeInfo(Oogiri o) {
         this.setThemeId(o.getThemeId());
         this.setThemeUserId(o.getThemeUserId());
+        this.setThemeUserName(o.getThemeUserName());
         this.setThemeContent(o.getThemeContent());
         this.setThemeUpdatedAt(o.getThemeUpdatedAt());
         this.setAnswers(new ArrayList<>());
@@ -215,6 +216,7 @@ public class OogiriResponse {
         OogiriAnswerResponse ansRes = new OogiriAnswerResponse();
         ansRes.setAnswerId(o.getAnswerId());
         ansRes.setAnswerUserId(o.getAnswerUserId());
+        ansRes.setAnswerUserName(o.getAnswerUserName());
         ansRes.setAnswerContent(o.getAnswerContent());
         ansRes.setAnswerCreatedAt(o.getAnswerCreatedAt());
         ansRes.setAnswerDeletedAt(o.getAnswerDeletedAt());

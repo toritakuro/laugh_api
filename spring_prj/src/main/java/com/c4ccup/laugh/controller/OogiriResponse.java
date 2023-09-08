@@ -144,6 +144,9 @@ public class OogiriResponse {
         this.answers = new ArrayList<>();
         // 回答情報を詰めていく
         for (Oogiri oogiri : oogiriList) {
+            if (oogiri.getAnswerDeletedAt() != null) {
+                continue;
+            }
             OogiriAnswerResponse ansRes = new OogiriAnswerResponse();
             List<OogiriReactionResponse> oogiriReacResList = new ArrayList<>();
             ansRes.setAnswerId(oogiri.getAnswerId());

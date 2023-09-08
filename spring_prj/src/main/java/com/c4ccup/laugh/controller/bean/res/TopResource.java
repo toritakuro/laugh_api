@@ -38,7 +38,7 @@ public class TopResource {
     /** 自己紹介文 */
     private String selfIntroduction;
     /** プロフィール画像 */
-//    private byte[] profileImg;
+    private byte[] profileImg;
     /** ログイン日時 */
     private LocalDateTime loginAt;
     /** 更新日時 */
@@ -76,7 +76,7 @@ public class TopResource {
         this.areaId = user.getAreaId().getId();
         this.areaName = user.getAreaId().getAreaName();
         this.selfIntroduction = user.getSelfIntroduction();
-//        this.profileImg = user.getProfileImgPath();
+        this.profileImg = user.getProfileImgPath();
         this.loginAt = user.getLoginAt();
         this.updateAt = user.getUpdateAt();
         this.specialSkillName = user.getSpecialSkillNames();
@@ -268,19 +268,19 @@ public class TopResource {
         this.selfIntroduction = selfIntroduction;
     }
 
-//    /**
-//     * @return profileImg
-//     */
-//    public byte[] getProfileImg() {
-//        return profileImg;
-//    }
-//
-//    /**
-//     * @param profileImg セットする profileImg
-//     */
-//    public void setProfileImg(byte[] profileImg) {
-//        this.profileImg = profileImg;
-//    }
+    /**
+     * @return profileImg
+     */
+    public byte[] getProfileImg() {
+        return profileImg;
+    }
+
+    /**
+     * @param profileImg セットする profileImg
+     */
+    public void setProfileImg(byte[] profileImg) {
+        this.profileImg = profileImg;
+    }
 
     /**
      * @return loginAt

@@ -2,6 +2,8 @@ package com.c4ccup.laugh.controller.bean;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  *画面から取得した値をJavaオブジェクトで扱うためのクラス
  */
@@ -15,7 +17,8 @@ public class DemoBean {
     private String title;
     /** detailIds */
     private int detailIds;
-
+    /** デモファイル */
+    private MultipartFile file;
 
 	/**
      * idを取得します。
@@ -57,4 +60,32 @@ public class DemoBean {
 	public void setDetailIds(int detailIds) {
 		this.detailIds = detailIds;
 	}
+//    /**
+//     * fileを取得します。
+//     * @return file
+//     */
+//    public MultipartFile getFile() {
+//        return file;
+//    }
+//    /**
+//     * fileを設定します。
+//     * @param file file
+//     */
+//    public void setFile(MultipartFile file) {
+//        this.file = file;
+//    }
+    /**
+     * fileを取得します。
+     * @return file
+     */
+    public MultipartFile getFile() {
+        return file;
+    }
+    /**
+     * fileを設定します。
+     * @param file file
+     */
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 }

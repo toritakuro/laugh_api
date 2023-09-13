@@ -11,6 +11,8 @@ public class Messages {
     /** メッセージ */
     private List<String> messages = new ArrayList<>();
 
+
+
     /**
      * メッセージを設定します。
      * @param メッセージ

@@ -31,7 +31,6 @@ public class MyPageController {
 
     /**
      * laughの一覧を取得する。自分が送ったlaughと送られたlaughを取得する
-     *
      * @param bean
      * @return
      */

@@ -58,9 +58,9 @@ public class TopResource {
     /** 特殊スキル名 */
     private String specialSkillName;
 
-    
+
     public TopResource() {
-        
+
     }
 
     public TopResource(User user) {
@@ -86,325 +86,330 @@ public class TopResource {
     }
 
 
+
     /**
-     * @return id
+     * IDを取得します。
+     * @return ID
      */
     public int getId() {
         return id;
     }
-
     /**
-     * @param id セットする id
+     * IDを設定します。
+     * @param id ID
      */
     public void setId(int id) {
         this.id = id;
     }
-
     /**
-     * @return userName
+     * ユーザ名を取得します。
+     * @return ユーザ名
      */
     public String getUserName() {
         return userName;
     }
-
     /**
-     * @param userName セットする userName
+     * ユーザ名を設定します。
+     * @param userName ユーザ名
      */
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
     /**
-     * @return userNameKana
+     * ユーザ名(かな)を取得します。
+     * @return ユーザ名(かな)
      */
     public String getUserNameKana() {
         return userNameKana;
     }
-
     /**
-     * @param userNameKana セットする userNameKana
+     * ユーザ名(かな)を設定します。
+     * @param userNameKana ユーザ名(かな)
      */
     public void setUserNameKana(String userNameKana) {
         this.userNameKana = userNameKana;
     }
-
     /**
-     * @return userType
+     * 活動種別を取得します。
+     * @return 活動種別
      */
     public int getUserType() {
         return userType;
     }
-
     /**
-     * @param userType セットする userType
+     * 活動種別を設定します。
+     * @param userType 活動種別
      */
     public void setUserType(int userType) {
         this.userType = userType;
     }
-
     /**
-     * @return debutDt
+     * 活動開始年月を取得します。
+     * @return 活動開始年月
      */
     public LocalDate getDebutDt() {
         return debutDt;
     }
-
     /**
-     * @param debutDt セットする debutDt
+     * 活動開始年月を設定します。
+     * @param debutDt 活動開始年月
      */
     public void setDebutDt(LocalDate debutDt) {
         this.debutDt = debutDt;
     }
-
     /**
-     * @return activityDt
+     * 活動年月を取得します。
+     * @return 活動年月
      */
     public String getActivityDt() {
         return activityDt;
     }
-
     /**
-     * @param activityDt セットする activityDt
+     * 活動年月を設定します。
+     * @param activityDt 活動年月
      */
     public void setActivityDt(String activityDt) {
         this.activityDt = activityDt;
     }
-
     /**
-     * @return activityNum
+     * 活動年数を取得します。
+     * @return 活動年数
      */
     public int getActivityNum() {
         return activityNum;
     }
-
     /**
-     * @param activityNum セットする activityNum
+     * 活動年数を設定します。
+     * @param activityNum 活動年数
      */
     public void setActivityNum(int activityNum) {
         this.activityNum = activityNum;
     }
-
     /**
-     * @return gender
+     * 性別を取得します。
+     * @return 性別
      */
     public int getGender() {
         return gender;
     }
-
     /**
-     * @param gender セットする gender
+     * 性別を設定します。
+     * @param gender 性別
      */
     public void setGender(int gender) {
         this.gender = gender;
     }
-
     /**
-     * @return officeId
+     * 事務所IDを取得します。
+     * @return 事務所ID
      */
     public int getOfficeId() {
         return officeId;
     }
-
     /**
-     * @param officeId セットする officeId
+     * 事務所IDを設定します。
+     * @param officeId 事務所ID
      */
     public void setOfficeId(int officeId) {
         this.officeId = officeId;
     }
-
     /**
-     * @return officeName
+     * オフィス名を取得します。
+     * @return オフィス名
      */
     public String getOfficeName() {
         return officeName;
     }
-
     /**
-     * @param officeName セットする officeName
+     * オフィス名を設定します。
+     * @param officeName オフィス名
      */
     public void setOfficeName(String officeName) {
         this.officeName = officeName;
     }
-
     /**
-     * @return areaId
+     * 活動場所IDを取得します。
+     * @return 活動場所ID
      */
     public int getAreaId() {
         return areaId;
     }
 
     /**
-     * @param areaId セットする areaId
+     * 活動場所IDを設定します。
+     * @param areaId 活動場所ID
      */
     public void setAreaId(int areaId) {
         this.areaId = areaId;
     }
-
     /**
-     * @return areaName
+     * 活動地域名を取得します。
+     * @return 活動地域名
      */
     public String getAreaName() {
         return areaName;
     }
-
     /**
-     * @param areaName セットする areaName
+     * 活動地域名を設定します。
+     * @param areaName 活動地域名
      */
     public void setAreaName(String areaName) {
         this.areaName = areaName;
     }
-
     /**
-     * @return selfIntroduction
+     * 自己紹介文を取得します。
+     * @return 自己紹介文
      */
     public String getSelfIntroduction() {
         return selfIntroduction;
     }
-
     /**
-     * @param selfIntroduction セットする selfIntroduction
+     * 自己紹介文を設定します。
+     * @param selfIntroduction 自己紹介文
      */
     public void setSelfIntroduction(String selfIntroduction) {
         this.selfIntroduction = selfIntroduction;
     }
-
     /**
-     * @return profileImg
+     * プロフィール画像を取得します。
+     * @return プロフィール画像
      */
     public byte[] getProfileImg() {
         return profileImg;
     }
-
     /**
-     * @param profileImg セットする profileImg
+     * プロフィール画像を設定します。
+     * @param profileImg プロフィール画像
      */
     public void setProfileImg(byte[] profileImg) {
         this.profileImg = profileImg;
     }
-
     /**
-     * @return loginAt
+     * ログイン日時を取得します。
+     * @return ログイン日時
      */
     public LocalDateTime getLoginAt() {
         return loginAt;
     }
-
     /**
-     * @param loginAt セットする loginAt
+     * ログイン日時を設定します。
+     * @param loginAt ログイン日時
      */
     public void setLoginAt(LocalDateTime loginAt) {
         this.loginAt = loginAt;
     }
-
     /**
-     * @return updateAt
+     * 更新日時を取得します。
+     * @return 更新日時
      */
     public LocalDateTime getUpdateAt() {
         return updateAt;
     }
-
     /**
-     * @param updateAt セットする updateAt
+     * 更新日時を設定します。
+     * @param updateAt 更新日時
      */
     public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
     }
-
     /**
-     * @return memberNum
+     * 活動人数を取得します。
+     * @return 活動人数
      */
     public int getMemberNum() {
         return memberNum;
     }
-
     /**
-     * @param memberNum セットする memberNum
+     * 活動人数を設定します。
+     * @param memberNum 活動人数
      */
     public void setMemberNum(int memberNum) {
         this.memberNum = memberNum;
     }
-
     /**
-     * @return feeType
+     * 料金体系を取得します。
+     * @return 料金体系
      */
     public int getFeeType() {
         return feeType;
     }
-
     /**
-     * @param feeType セットする feeType
+     * 料金体系を設定します。
+     * @param feeType 料金体系
      */
     public void setFeeType(int feeType) {
         this.feeType = feeType;
     }
-
     /**
-     * @return fee
+     * 料金を取得します。
+     * @return 料金
      */
     public int getFee() {
         return fee;
     }
-
     /**
-     * @param fee セットする fee
+     * 料金を設定します。
+     * @param fee 料金
      */
     public void setFee(int fee) {
         this.fee = fee;
     }
-
     /**
-     * @return comedyStyleIdList
+     * 得意分野一覧を取得します。
+     * @return 得意分野一覧
      */
     public List<Integer> getComedyStyleIdList() {
         return comedyStyleIdList;
     }
-
     /**
-     * @param comedyStyleIdList セットする comedyStyleIdList
+     * 得意分野一覧を設定します。
+     * @param comedyStyleIdList 得意分野一覧
      */
     public void setComedyStyleIdList(List<Integer> comedyStyleIdList) {
         this.comedyStyleIdList = comedyStyleIdList;
     }
-
     /**
-     * @return comedyStyleName
+     * コメディスタイル名を取得します。
+     * @return コメディスタイル名
      */
     public String getComedyStyleName() {
         return comedyStyleName;
     }
-
     /**
-     * @param comedyStyleName セットする comedyStyleName
+     * コメディスタイル名を設定します。
+     * @param comedyStyleName コメディスタイル名
      */
     public void setComedyStyleName(String comedyStyleName) {
         this.comedyStyleName = comedyStyleName;
     }
-
     /**
-     * @return specialSkillIdList
+     * 特殊スキル一覧を取得します。
+     * @return 特殊スキル一覧
      */
     public List<Integer> getSpecialSkillIdList() {
         return specialSkillIdList;
     }
-
     /**
-     * @param specialSkillIdList セットする specialSkillIdList
+     * 特殊スキル一覧を設定します。
+     * @param specialSkillIdList 特殊スキル一覧
      */
     public void setSpecialSkillIdList(List<Integer> specialSkillIdList) {
         this.specialSkillIdList = specialSkillIdList;
     }
-
     /**
-     * @return specialSkillName
+     * 特殊スキル名を取得します。
+     * @return 特殊スキル名
      */
     public String getSpecialSkillName() {
         return specialSkillName;
     }
-
     /**
-     * @param specialSkillName セットする specialSkillName
+     * 特殊スキル名を設定します。
+     * @param specialSkillName 特殊スキル名
      */
     public void setSpecialSkillName(String specialSkillName) {
         this.specialSkillName = specialSkillName;
     }
+
+
 }

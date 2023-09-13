@@ -10,6 +10,8 @@ public class DemoResources extends _Cmn {
     private String title;
     private List<Demo> demolist;
 
+
+
     /**
      * idを取得します。
      * @return id

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.JwtUtil;
@@ -40,7 +41,7 @@ public class LoginController extends _CmnController {
      * @return JWTとユーザー情報を含むレスポンスエンティティ
      */
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) throws LoginException {
+    public ResponseEntity<ApiResource<LoginResponse>> login(@RequestBody LoginRequest request) throws LoginException {
 
         String email = request.getEmail();
         String password = request.getPassword();
@@ -63,7 +64,8 @@ public class LoginController extends _CmnController {
         String jwt = jwtUtil.generateToken(email);
         LoginResponse response = new LoginResponse(jwt, user);
         // レスポンスとしてJWTとユーザー情報を返す
-        return ResponseEntity.ok(response);
+        ApiResource<LoginResponse> res = new ApiResource<>(response);
+        return ResponseEntity.ok(res);
     }
 
 }

@@ -61,10 +61,6 @@ public class JwtUtil {
      * @return トークンが有効であればtrue、無効であればfalse
      */
     public boolean isValidToken(String token) {
-        // TODO:トークンのnullチェック。フロント実装完了までtrueで返す。(tori)
-        if (token == null) {
-            return true;
-        }
         // トークンの値のみを抽出
         String tokenVal = "";
         String[] parts = token.split(" ");

@@ -37,9 +37,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (jwtUtil.isValidToken(token)) {
             return true;
         } else {
-            // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-            // TODO:フロントの処理が実装されるまでtrueを返すようにしておく(tori)
-            return true;
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            return false;
         }
     }
 }

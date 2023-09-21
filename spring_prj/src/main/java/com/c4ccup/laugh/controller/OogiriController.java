@@ -219,28 +219,36 @@ public class OogiriController extends _CmnController {
 
         List<OogiriResponse> resList = new ArrayList<>();
         OogiriResponse res = null;
-        int prevId = 0;
+        int prevId = 0; // お題ID判定用
+        int answerCount = 0; // 回答数カウント用
         for (Oogiri o : oogiriList) {
             int themeId = o.getThemeId();
             // お題IDが変わったら新しいOogiriResponseを作成
             if (prevId != themeId) {
                 // 最後以外はここでレスポンスリストに追加する
-                if (res != null)
+                if (res != null) {
+                    res.setAnswerCount(answerCount);
                     resList.add(res);
+                }
                 res = new OogiriResponse();
                 res = res.setThemeInfo(o);
+                answerCount = 0;
             }
             // 回答が3件セットされている場合スキップ
             if (res.getAnswers().size() >= AppConst.oogiri_answer_disp_num) {
+                if (o.getAnswerDeletedAt() == null)
+                    answerCount++;
                 continue;
             }
             // 回答が削除済みでなければセット
             if (o.getAnswerDeletedAt() == null) {
+                answerCount++;
                 res = res.setAnswerInfo(res, o);
             }
             prevId = themeId;
         }
         // 最後の大喜利情報をここで追加
+        res.setAnswerCount(answerCount);
         resList.add(res);
         return resList;
     }

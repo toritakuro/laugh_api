@@ -243,14 +243,10 @@ public class OogiriResources extends _Cmn {
         // リアクション情報がない場合、終了
         if (res.getReactionIds() == null)
             return oogiriReacResList;
-        // 文字列を分割し配列に格納
-        String[] reactionIdStrList = res.getReactionIds().split(","); // リアクションID
-        String[] reactionUserIdStrList = res.getReactionUserIds().split(","); // リアクションユーザーID
-        String[] reactionStatusStrList = res.getReactionStatuses().split(","); // リアクションステータス
-        // int型に変換
-        List<Integer> ids = Util.chgToInt(reactionIdStrList);
-        List<Integer> userIds = Util.chgToInt(reactionUserIdStrList);
-        List<Integer> statuses = Util.chgToInt(reactionStatusStrList);
+        // 文字列を分割しInteger型のリストに変換
+        List<Integer> ids = Util.toIntList(res.getReactionIds());
+        List<Integer> userIds = Util.toIntList(res.getReactionUserIds());
+        List<Integer> statuses = Util.toIntList(res.getReactionStatuses());
         // リアクションリストに追加
         for (int i = 0; i < ids.size(); i++) {
             OogiriReactionResources oogiriReacRes = new OogiriReactionResources();

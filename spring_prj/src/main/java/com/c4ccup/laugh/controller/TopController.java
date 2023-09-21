@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.req.TopBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
-import com.c4ccup.laugh.controller.bean.res.TopResource;
+import com.c4ccup.laugh.controller.bean.res.UserResource;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
@@ -29,15 +29,14 @@ public class TopController {
     private UserRepository userRepository;
 
     @RequestMapping(path = "/init", method = RequestMethod.GET)
-    public ResponseEntity<ApiResource<List<TopResource>>> init(TopBean bean) {
+    public ResponseEntity<ApiResource<List<UserResource>>> init(TopBean bean) {
 
-        List<TopResource> topUserList = new ArrayList<>();
+        List<UserResource> topUserList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
         int loginUserType = bean.getUserType();
 
         // ユーザーの一覧を取得
         if (loginUserType == UserEnum.COMEDIAN.getId()) {
-            // TODO:
             // 作家一覧を取得
             userList = userRepository.getComposerList(UserEnum.COMPOSER.getId(), null);
         } else {
@@ -46,7 +45,7 @@ public class TopController {
         }
         // ユーザーの情報をセット
         for (User user : userList) {
-            TopResource users = new TopResource(user);
+            UserResource users = new UserResource(user);
             topUserList.add(users);
         }
         return ResponseEntity.ok(new ApiResource<>(topUserList));

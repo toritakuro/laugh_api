@@ -3,7 +3,9 @@ package com.c4ccup.laugh.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 共通メソッドUtilクラス
@@ -17,33 +19,30 @@ public class Util {
     public static DateTimeFormatter formatDateF = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     /**
-     * 文字列配列をint型のリストに変換
+     * 文字列をInteger型のリストに変換
      *
-     * @param strs
-     * @return
+     * @param str
+     * @return intList
      */
-    public static List<Integer> chgToInt(String[] strs) {
-        // スプリット、
-        List<Integer> intList = new ArrayList<>();
-        if (strs != null) {
-            for (String str : strs) {
-                intList.add(Integer.parseInt(str));
-            }
-        }
-        return intList;
+    public static List<Integer> toIntList(String str) {
+      List<Integer> intList = new ArrayList<>();
+      intList = Arrays.asList(str.split(","))
+              .stream()
+              .map(Integer::valueOf)
+              .collect(Collectors.toList());
+      return intList;
     }
 
     /**
-     * toIntList　Arrays.asList(user.getComedyStyleNames().split(","));
+     * 文字列をString型のリストに変換
+     * 
      * @param strs
      * @return
      */
-    public static List<String> toStrList(String[] strs) {
-        List<String> intList = new ArrayList<>();
-        for (String str : strs) {
-            intList.add(str);
-        }
-        return intList;
+    public static List<String> toStrList(String str) {
+        List<String> strList = new ArrayList<>();
+        strList = Arrays.asList(str.split(","));
+        return strList;
     }
 
     /**

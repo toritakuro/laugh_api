@@ -1,9 +1,7 @@
 package com.c4ccup.laugh.controller.bean.res;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.util.Util;
@@ -12,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 
 /**
- * TopResourceクラス
+ * UserResourceクラス
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class TopResource {
+public class UserResource {
 
     /** ID */
     private int id;
@@ -76,11 +74,11 @@ public class TopResource {
 
 
 
-    public TopResource() {
+    public UserResource() {
 
     }
 
-    public TopResource(User user) {
+    public UserResource(User user) {
         this.id = user.getId();
         this.userName = user.getUserName();
         this.userNameKana = user.getUserNameKana();
@@ -109,20 +107,12 @@ public class TopResource {
         this.fee = user.getComposerProfile().getFee();
         this.memberNum = user.getComedianProfile().getMemberNum();
         if (user.getComedyStyleIds() != null) {
-            this.comedyStyleIdList =
-                    Arrays.asList(user.getComedyStyleIds().split(","))
-                    .stream()
-                    .map(Integer::valueOf)
-                    .collect(Collectors.toList());
-            this.comedyStyleNameList = Arrays.asList(user.getComedyStyleNames().split(","));
+            this.comedyStyleIdList = Util.toIntList(user.getComedyStyleIds());
+            this.comedyStyleNameList = Util.toStrList(user.getComedyStyleNames());
         }
         if (user.getSpecialSkillIds() != null) {
-            this.specialSkillIdList =
-                    Arrays.asList(user.getSpecialSkillIds().split(","))
-                    .stream()
-                    .map(Integer::valueOf)
-                    .collect(Collectors.toList());
-            this.specialSkillNameList = Arrays.asList(user.getSpecialSkillNames().split(","));
+            this.specialSkillIdList = Util.toIntList(user.getSpecialSkillIds());
+            this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames() + user.getAnotherSkillNames());
         }
     }
 

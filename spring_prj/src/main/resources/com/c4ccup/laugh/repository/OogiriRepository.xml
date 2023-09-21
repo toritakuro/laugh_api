@@ -53,12 +53,12 @@
 </resultMap>
 
 <!-- OogiriAnswerResponseのResultMap -->
-<resultMap id="OogiriAnswerResponseResultMap" type="com.c4ccup.laugh.controller.OogiriAnswerResponse">
+<resultMap id="OogiriAnswerResponseResultMap" type="com.c4ccup.laugh.controller.bean.res.OogiriAnswerResources">
     <id property="answerId" column="answer_id"/>
     <result property="answerUserId" column="answer_user_id"/>
     <result property="answerContent" column="answer_content"/>
     <result property="answerCreatedAt" column="answer_created_at"/>
-    <collection property="reactions" ofType="com.c4ccup.laugh.controller.OogiriReactionResponse">
+    <collection property="reactions" ofType="com.c4ccup.laugh.controller.bean.res.OogiriReactionResources">
         <id property="reactionId" column="reaction_id"/>
         <result property="reactionUserId" column="reaction_user_id"/>
         <result property="reactionStatus" column="reaction_status"/>
@@ -68,7 +68,7 @@
 </resultMap>
 
 <!-- OogiriReactionResponseのResultMap -->
-<resultMap id="OogiriReactionResponseResultMap" type="com.c4ccup.laugh.controller.OogiriReactionResponse">
+<resultMap id="OogiriReactionResponseResultMap" type="com.c4ccup.laugh.controller.bean.res.OogiriReactionResources">
     <id property="reactionId" column="reaction_id"/>
     <result property="reactionUserId" column="reaction_user_id"/>
     <result property="reactionStatus" column="reaction_status"/>

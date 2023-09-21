@@ -1,10 +1,6 @@
-package com.c4ccup.laugh.controller;
+package com.c4ccup.laugh.controller.bean.res;
 
-/**
- * 大喜利リアクション レスポンスクラス
- *
- */
-public class OogiriReactionResponse {
+public class OogiriReactionResources {
 
     /** リアクションID */
     private int reactionId;

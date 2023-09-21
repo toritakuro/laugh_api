@@ -2,20 +2,22 @@ package com.c4ccup.laugh.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.c4ccup.laugh.controller.bean.DemoBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.DemoResources;
 import com.c4ccup.laugh.controller.bean.res.Messages;
 import com.c4ccup.laugh.domain.Demo;
 import com.c4ccup.laugh.repository.DemoRepository;
+import com.c4ccup.laugh.util.AwsS3Util;
 
 /**
  * CRUDを操作するDemoクラス
@@ -28,6 +30,8 @@ public class DemoController extends _CmnController {
     @Autowired
     private DemoRepository demoRepository;
 
+    @Autowired
+    private AwsS3Util s3;
     /**
      * IDで取得
      * @param id
@@ -46,6 +50,7 @@ public class DemoController extends _CmnController {
     @RequestMapping(path = "/list", method = RequestMethod.GET)
     public ResponseEntity<ApiResource<Messages>> initList() {
 //        System.out.println(getMessage("a", "テス"));
+        //s3.createBuck();
         List<Demo> demoList = new ArrayList<>();
         //demoList = demoRepository.findAll();
         Demo de = new Demo();
@@ -67,8 +72,11 @@ public class DemoController extends _CmnController {
      * @return
      */
     @RequestMapping(path = "/insert", method = RequestMethod.POST)
-    public void insert(@RequestBody DemoBean demoBean) {
-        demoRepository.insert(demoBean);
+    public void insert(@ModelAttribute("demoBean") DemoBean bean) {
+        // S3へファイルをアップロードしファイル名を取得
+        String uploadFile = s3.uploadFile(1, bean.getFile());
+        System.out.println(11111);
+        //demoRepository.insert(demoBean);
     }
 
     /**

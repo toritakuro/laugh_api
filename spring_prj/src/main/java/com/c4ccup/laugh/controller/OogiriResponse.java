@@ -40,6 +40,8 @@ public class OogiriResponse {
     private LocalDateTime themeCreatedAt;
     /** お題更新日時 */
     private LocalDateTime themeUpdatedAt;
+    /** 回答数 */
+    private int answerCount;
 
     // 回答情報
     /** 回答リスト */
@@ -118,6 +120,78 @@ public class OogiriResponse {
     }
 
     /**
+     * お題作成日時を取得します。
+     * 
+     * @return お題作成日時
+     */
+    public LocalDateTime getThemeCreatedAt() {
+        return themeCreatedAt;
+    }
+
+    /**
+     * お題作成日時を設定します。
+     * 
+     * @param themeCreatedAt お題作成日時
+     */
+    public void setThemeCreatedAt(LocalDateTime themeCreatedAt) {
+        this.themeCreatedAt = themeCreatedAt;
+    }
+
+    /**
+     * お題更新日時を取得します。
+     * 
+     * @return お題更新日時
+     */
+    public LocalDateTime getThemeUpdatedAt() {
+        return themeUpdatedAt;
+    }
+
+    /**
+     * お題更新日時を設定します。
+     * 
+     * @param themeUpdatedAt お題更新日時
+     */
+    public void setThemeUpdatedAt(LocalDateTime themeUpdatedAt) {
+        this.themeUpdatedAt = themeUpdatedAt;
+    }
+
+    /**
+     * 回答数を取得します。
+     * 
+     * @return 回答数
+     */
+    public int getAnswerCount() {
+        return answerCount;
+    }
+
+    /**
+     * 回答数を設定します。
+     * 
+     * @param answerCount 回答数
+     */
+    public void setAnswerCount(int answerCount) {
+        this.answerCount = answerCount;
+    }
+
+    /**
+     * 回答リストを取得します。
+     * 
+     * @return 回答リスト
+     */
+    public List<OogiriAnswerResponse> getAnswers() {
+        return answers;
+    }
+
+    /**
+     * 回答リストを設定します。
+     * 
+     * @param answers 回答リスト
+     */
+    public void setAnswers(List<OogiriAnswerResponse> answers) {
+        this.answers = answers;
+    }
+
+    /**
      * お題情報をセットする（詳細用）
      * 
      * @param oogiriRes
@@ -144,6 +218,9 @@ public class OogiriResponse {
         this.answers = new ArrayList<>();
         // 回答情報を詰めていく
         for (Oogiri oogiri : oogiriList) {
+            if (oogiri.getAnswerDeletedAt() != null) {
+                continue;
+            }
             OogiriAnswerResponse ansRes = new OogiriAnswerResponse();
             List<OogiriReactionResponse> oogiriReacResList = new ArrayList<>();
             ansRes.setAnswerId(oogiri.getAnswerId());
@@ -234,60 +311,6 @@ public class OogiriResponse {
     public OogiriResponse setErrorResponse(int errorCode, String errorMessage) {
         OogiriResponse response = new OogiriResponse();
         return response;
-    }
-
-    /**
-     * お題作成日時を取得します。
-     * 
-     * @return お題作成日時
-     */
-    public LocalDateTime getThemeCreatedAt() {
-        return themeCreatedAt;
-    }
-
-    /**
-     * お題作成日時を設定します。
-     * 
-     * @param themeCreatedAt お題作成日時
-     */
-    public void setThemeCreatedAt(LocalDateTime themeCreatedAt) {
-        this.themeCreatedAt = themeCreatedAt;
-    }
-
-    /**
-     * お題更新日時を取得します。
-     * 
-     * @return お題更新日時
-     */
-    public LocalDateTime getThemeUpdatedAt() {
-        return themeUpdatedAt;
-    }
-
-    /**
-     * お題更新日時を設定します。
-     * 
-     * @param themeUpdatedAt お題更新日時
-     */
-    public void setThemeUpdatedAt(LocalDateTime themeUpdatedAt) {
-        this.themeUpdatedAt = themeUpdatedAt;
-    }
-
-    /**
-     * 回答リストを取得します。
-     * 
-     * @return 回答リスト
-     */
-    public List<OogiriAnswerResponse> getAnswers() {
-        return answers;
-    }
-
-    /**
-     * 回答リストを設定します。
-     * 
-     * @param answers 回答リスト
-     */
-    public void setAnswers(List<OogiriAnswerResponse> answers) {
-        this.answers = answers;
     }
 
 }

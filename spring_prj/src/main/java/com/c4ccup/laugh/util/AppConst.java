@@ -13,7 +13,11 @@ public class AppConst {
 
     /** ユーザータイプ */
     public enum UserEnum {
-        COMPOSER(1, "作家"), COMEDIAN(2, "芸人");
+        /** 1:作家 */
+        COMPOSER(1, "作家"),
+        /** 2:芸人 */
+        COMEDIAN(2, "芸人"),
+        ;
 
         private int id;
         private String name;
@@ -38,6 +42,7 @@ public class AppConst {
 
     /** 特殊スキル */
     public enum specialSkillEnum {
+        /** 1:動画編集　*/
         VIDEO_EDITTING(1, "動画編集"), DESIGN(2, "イラスト"), SOUND_PRODUCTION(3, "音源制作"), OTHERS(4, "その他");
 
         private int id;

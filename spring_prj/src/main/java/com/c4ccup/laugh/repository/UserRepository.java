@@ -79,18 +79,19 @@ public interface UserRepository {
 
     /**
      * ユーザータイプで作家ユーザーを取得
-     *
-     * @param userBean
-     * @return User
+     * @param userType
+     * @param userId
+     * @return
      */
-    public List<User> getComposerList(int userType);
+    public List<User> getComposerList(int userType, Integer userId);
 
     /**
      * ユーザータイプで芸人ユーザーを取得
-     *
-     * @param userBean
-     * @return User
+     * @param userType
+     * @param userId
+     * @return
      */
-    public List<User> getComedianList(int userType);
+    public List<User> getComedianList(int userType, Integer userId);
+
 }
 

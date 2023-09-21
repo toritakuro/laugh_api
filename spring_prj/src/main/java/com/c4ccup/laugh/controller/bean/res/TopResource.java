@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.c4ccup.laugh.domain.User;
+import com.c4ccup.laugh.util.Util;
 
 
 /**
@@ -17,6 +18,8 @@ public class TopResource {
     private String userName;
     /** ユーザ名(かな) */
     private String userNameKana;
+    /** 検索用ユーザ名 */
+    private String searchUserName;
     /** 活動種別 */
     private int userType;
     /** 活動開始年月 */
@@ -41,8 +44,12 @@ public class TopResource {
     private byte[] profileImg;
     /** ログイン日時 */
     private LocalDateTime loginAt;
+    /** ログイン日時 並び替え用 */
+    private Integer loginAtInt;
     /** 更新日時 */
     private LocalDateTime updateAt;
+    /** 更新日時 並び替え用 */
+    private Integer updateAtInt;
     /** 活動人数 */
     private int memberNum;
     /** 料金体系 */
@@ -67,6 +74,7 @@ public class TopResource {
         this.id = user.getId();
         this.userName = user.getUserName();
         this.userNameKana = user.getUserNameKana();
+        this.searchUserName = user.getUserName().replaceAll("　| ","");
         this.userType = user.getUserType();
         this.debutDt = user.getDebutDt();
         this.gender = user.getGender();
@@ -78,8 +86,14 @@ public class TopResource {
         this.selfIntroduction = user.getSelfIntroduction();
         this.profileImg = user.getProfileImgPath();
         this.loginAt = user.getLoginAt();
+        this.loginAtInt = Util.getFormatLocalDateTimeToInt(loginAt);
         this.updateAt = user.getUpdateAt();
-        this.specialSkillName = user.getSpecialSkillNames();
+        this.updateAtInt = Util.getFormatLocalDateTimeToInt(updateAt);
+        if (user.getAnotherSkillNames() != null) {
+            this.specialSkillName = (user.getSpecialSkillNames() + user.getAnotherSkillNames());
+        } else {
+            this.specialSkillName = (user.getSpecialSkillNames());
+        }
         this.feeType = user.getComposerProfile().getFeeType();
         this.fee = user.getComposerProfile().getFee();
         this.memberNum = user.getComedianProfile().getMemberNum();
@@ -126,6 +140,20 @@ public class TopResource {
      */
     public void setUserNameKana(String userNameKana) {
         this.userNameKana = userNameKana;
+    }
+
+    /**
+     * @return searchUserName
+     */
+    public String getSearchUserName() {
+        return searchUserName;
+    }
+
+    /**
+     * @param searchUserName セットする searchUserName
+     */
+    public void setSearchUserName(String searchUserName) {
+        this.searchUserName = searchUserName;
     }
 
     /**
@@ -297,6 +325,20 @@ public class TopResource {
     }
 
     /**
+     * @return loginAtInt
+     */
+    public Integer getLoginAtInt() {
+        return loginAtInt;
+    }
+
+    /**
+     * @param loginAtInt セットする loginAtInt
+     */
+    public void setLoginAtInt(Integer loginAtInt) {
+        this.loginAtInt = loginAtInt;
+    }
+
+    /**
      * @return updateAt
      */
     public LocalDateTime getUpdateAt() {
@@ -308,6 +350,20 @@ public class TopResource {
      */
     public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
+    }
+
+    /**
+     * @return updateAtInt
+     */
+    public Integer getUpdateAtInt() {
+        return updateAtInt;
+    }
+
+    /**
+     * @param updateAtInt セットする updateAtInt
+     */
+    public void setUpdateAtInt(Integer updateAtInt) {
+        this.updateAtInt = updateAtInt;
     }
 
     /**

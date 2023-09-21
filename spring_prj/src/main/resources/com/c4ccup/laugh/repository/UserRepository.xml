@@ -12,8 +12,8 @@
     <result column="password" property="password"/>
     <result column="debut_dt" property="debutDt"/>
     <result column="gender" property="gender"/>
-    <result column="self_introduction" property="selfIntoroduction"/>
-    <result column="profile_img_path" property="porfileImg"/>
+    <result column="self_introduction" property="selfIntroduction"/>
+    <result column="profile_img_path" property="profileImgPath"/>
     <result column="delete_flg" property="deleteFlg"/>
     <result column="login_at" property="loginAt"/>
     <result column="create_at" property="createAt"/>
@@ -31,14 +31,10 @@
     <resultMap id="OfficeResultMap" type="com.c4ccup.laugh.domain.Office">
 	  <id column="office_id" property="id" />
 	  <result column="office_name" property="officeName"/>
-	  <result column="create_at" property="createAt"/>
-	  <result column="update_at" property="updateAt"/>
     </resultMap>
     <resultMap id="AreaResultMap" type="com.c4ccup.laugh.domain.Area">
 	  <id column="area_id" property="id" />
 	  <result column="area" property="areaName"/>
-	  <result column="create_at" property="createAt"/>
-	  <result column="update_at" property="updateAt"/>
     </resultMap>
     <resultMap id="ComposerResultMap" type="com.c4ccup.laugh.domain.Composer">
 	  <id column="id" property="id" />

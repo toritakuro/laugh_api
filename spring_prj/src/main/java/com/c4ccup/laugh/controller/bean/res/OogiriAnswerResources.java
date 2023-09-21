@@ -1,14 +1,14 @@
-package com.c4ccup.laugh.controller;
+package com.c4ccup.laugh.controller.bean.res;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 大喜利回答 レスポンスクラス
- *
- */
-public class OogiriAnswerResponse {
+public class OogiriAnswerResources {
+
+    public OogiriAnswerResources() {
+        this.reactions = new ArrayList<>();
+    }
 
     /** 回答ID */
     private int answerId;
@@ -24,10 +24,11 @@ public class OogiriAnswerResponse {
     private LocalDateTime answerDeletedAt;
 
     /** リアクションリスト */
-    private List<OogiriReactionResponse> reactions;
+    private List<OogiriReactionResources> reactions;
 
     /**
      * 回答IDを取得します。
+     * 
      * @return 回答ID
      */
     public int getAnswerId() {
@@ -36,6 +37,7 @@ public class OogiriAnswerResponse {
 
     /**
      * 回答IDを設定します。
+     * 
      * @param answerId 回答ID
      */
     public void setAnswerId(int answerId) {
@@ -44,6 +46,7 @@ public class OogiriAnswerResponse {
 
     /**
      * 回答ユーザーIDを取得します。
+     * 
      * @return 回答ユーザーID
      */
     public int getAnswerUserId() {
@@ -52,6 +55,7 @@ public class OogiriAnswerResponse {
 
     /**
      * 回答ユーザーIDを設定します。
+     * 
      * @param answerUserId 回答ユーザーID
      */
     public void setAnswerUserId(int answerUserId) {
@@ -60,6 +64,7 @@ public class OogiriAnswerResponse {
 
     /**
      * 回答ユーザーネームを取得します。
+     * 
      * @return 回答ユーザーネーム
      */
     public String getAnswerUserName() {
@@ -68,18 +73,16 @@ public class OogiriAnswerResponse {
 
     /**
      * 回答ユーザーネームを設定します。
+     * 
      * @param answerUserName 回答ユーザーネーム
      */
     public void setAnswerUserName(String answerUserName) {
         this.answerUserName = answerUserName;
     }
 
-    public OogiriAnswerResponse() {
-        this.reactions = new ArrayList<>();
-    }
-
     /**
      * 回答内容を取得します。
+     * 
      * @return 回答内容
      */
     public String getAnswerContent() {
@@ -88,6 +91,7 @@ public class OogiriAnswerResponse {
 
     /**
      * 回答内容を設定します。
+     * 
      * @param answerContent 回答内容
      */
     public void setAnswerContent(String answerContent) {
@@ -96,6 +100,7 @@ public class OogiriAnswerResponse {
 
     /**
      * 回答作成日時を取得します。
+     * 
      * @return 回答作成日時
      */
     public LocalDateTime getAnswerCreatedAt() {
@@ -104,6 +109,7 @@ public class OogiriAnswerResponse {
 
     /**
      * 回答作成日時を設定します。
+     * 
      * @param answerCreatedAt 回答作成日時
      */
     public void setAnswerCreatedAt(LocalDateTime answerCreatedAt) {
@@ -112,6 +118,7 @@ public class OogiriAnswerResponse {
 
     /**
      * 回答削除日時を取得します。
+     * 
      * @return 回答削除日時
      */
     public LocalDateTime getAnswerDeletedAt() {
@@ -120,6 +127,7 @@ public class OogiriAnswerResponse {
 
     /**
      * 回答削除日時を設定します。
+     * 
      * @param answerDeletedAt 回答削除日時
      */
     public void setAnswerDeletedAt(LocalDateTime answerDeletedAt) {
@@ -128,17 +136,19 @@ public class OogiriAnswerResponse {
 
     /**
      * リアクションリストを取得します。
+     * 
      * @return リアクションリスト
      */
-    public List<OogiriReactionResponse> getReactions() {
+    public List<OogiriReactionResources> getReactions() {
         return reactions;
     }
 
     /**
      * リアクションリストを設定します。
+     * 
      * @param reactions リアクションリスト
      */
-    public void setReactions(List<OogiriReactionResponse> reactions) {
+    public void setReactions(List<OogiriReactionResources> reactions) {
         this.reactions = reactions;
     }
 

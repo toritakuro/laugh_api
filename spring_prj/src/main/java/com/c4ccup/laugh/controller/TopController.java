@@ -2,7 +2,9 @@ package com.c4ccup.laugh.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,11 +41,12 @@ public class TopController {
 
         // ユーザーの一覧を取得
         if (loginUserType == UserEnum.COMEDIAN.getId()) {
+            // TODO:
             // 作家一覧を取得
-            userList = userRepository.getComposerList(UserEnum.COMPOSER.getId());
+            userList = userRepository.getComposerList(UserEnum.COMPOSER.getId(), null);
         } else {
             // 芸人一覧を取得
-            userList = userRepository.getComedianList(UserEnum.COMEDIAN.getId());
+            userList = userRepository.getComedianList(UserEnum.COMEDIAN.getId(), null);
         }
         // 取得した値を表示用にセット
         for (User user : userList) {
@@ -60,8 +63,10 @@ public class TopController {
             if (users.getUserType() == UserEnum.COMPOSER.getId()) {
                 // 文字列を分割し配列に格納
                 String[] specialSkillIdStrList = user.getSpecialSkillIds().split(",");
-                // int型に変換
-                List<Integer> specialSkillIdList = Util.chgToInt(specialSkillIdStrList);
+                List<Integer> specialSkillIdList = Arrays.asList(specialSkillIdStrList)
+                        .stream()
+                        .map(Integer::valueOf)
+                        .collect(Collectors.toList());
                 users.setSpecialSkillIdList(specialSkillIdList);
             } else {
                 // 芸人用

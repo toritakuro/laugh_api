@@ -1,14 +1,19 @@
 package com.c4ccup.laugh.controller.bean.res;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.c4ccup.laugh.domain.User;
+import com.c4ccup.laugh.util.AppConst.UserEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 
 /**
  * TopResourceクラス
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TopResource {
 
     /** ID */
@@ -52,11 +57,11 @@ public class TopResource {
     /** 得意分野一覧 */
     private List<Integer> comedyStyleIdList;
     /** コメディスタイル名 */
-    private String comedyStyleName;
+    private List<String> comedyStyleNameList;
     /** 特殊スキル一覧 */
     private List<Integer> specialSkillIdList;
     /** 特殊スキル名 */
-    private String specialSkillName;
+    private List<String> specialSkillNameList;
 
 
     public TopResource() {
@@ -70,7 +75,6 @@ public class TopResource {
         this.userType = user.getUserType();
         this.debutDt = user.getDebutDt();
         this.gender = user.getGender();
-        this.comedyStyleName = user.getComedyStyleNames();
         this.officeId = user.getOfficeId().getId();
         this.officeName = user.getOfficeId().getOfficeName();
         this.areaId = user.getAreaId().getId();
@@ -79,10 +83,29 @@ public class TopResource {
         this.profileImg = user.getProfileImgPath();
         this.loginAt = user.getLoginAt();
         this.updateAt = user.getUpdateAt();
-        this.specialSkillName = user.getSpecialSkillNames();
         this.feeType = user.getComposerProfile().getFeeType();
         this.fee = user.getComposerProfile().getFee();
         this.memberNum = user.getComedianProfile().getMemberNum();
+        if (user.getComedyStyleIds() != null) {
+            this.comedyStyleIdList =
+                    Arrays.asList(user.getComedyStyleIds().split(","))
+                    .stream()
+                    .map(Integer::valueOf)
+                    .collect(Collectors.toList());
+            this.comedyStyleNameList = Arrays.asList(user.getComedyStyleNames().split(","));
+        }
+        if (user.getSpecialSkillIds() != null) {
+            this.specialSkillIdList =
+                    Arrays.asList(user.getSpecialSkillIds().split(","))
+                    .stream()
+                    .map(Integer::valueOf)
+                    .collect(Collectors.toList());
+            this.specialSkillNameList = Arrays.asList(user.getSpecialSkillNames().split(","));
+        }
+
+        if (this.userType == UserEnum.COMEDIAN.getId()) {
+            this.setActivityNum();
+        }
     }
 
 
@@ -234,7 +257,6 @@ public class TopResource {
     public int getAreaId() {
         return areaId;
     }
-
     /**
      * 活動場所IDを設定します。
      * @param areaId 活動場所ID
@@ -372,15 +394,15 @@ public class TopResource {
      * コメディスタイル名を取得します。
      * @return コメディスタイル名
      */
-    public String getComedyStyleName() {
-        return comedyStyleName;
+    public List<String> getComedyStyleNameList() {
+        return comedyStyleNameList;
     }
     /**
      * コメディスタイル名を設定します。
      * @param comedyStyleName コメディスタイル名
      */
-    public void setComedyStyleName(String comedyStyleName) {
-        this.comedyStyleName = comedyStyleName;
+    public void setComedyStyleName(List<String> comedyStyleName) {
+        this.comedyStyleNameList = comedyStyleName;
     }
     /**
      * 特殊スキル一覧を取得します。
@@ -400,16 +422,40 @@ public class TopResource {
      * 特殊スキル名を取得します。
      * @return 特殊スキル名
      */
-    public String getSpecialSkillName() {
-        return specialSkillName;
+    public List<String> getSpecialSkillNamelist() {
+        return specialSkillNameList;
     }
     /**
      * 特殊スキル名を設定します。
-     * @param specialSkillName 特殊スキル名
+     * @param specialSkillNameList 特殊スキル名
      */
-    public void setSpecialSkillName(String specialSkillName) {
-        this.specialSkillName = specialSkillName;
+    public void setSpecialSkillNameList(List<String> specialSkillNameList) {
+        this.specialSkillNameList = specialSkillNameList;
     }
-
+    /**
+     * 活動年月のセット処理  作家・芸人共通
+     * @param users
+     */
+    private void setActivityNum() {
+        // 現在日付を取得
+        LocalDate date = LocalDate.now();
+        // 現在日付と活動開始年月の差分を取得
+        LocalDate differenceYear = date.minusYears(this.getDebutDt().getYear());
+        LocalDate differenceDate = differenceYear.minusMonths(this.getDebutDt().getMonthValue());
+        // String型に変換
+        String activityYear = Integer.valueOf(differenceDate.getYear()).toString();
+        String activityMonth = Integer.valueOf(differenceDate.getMonthValue()).toString();
+        String activityDate;
+        // 活動年数
+        int activityNum = differenceDate.getYear();
+        // 画面表示用にセット
+        if (0 < differenceDate.getYear()) {
+            activityDate = activityYear + "年 " + activityMonth + "ヶ月" ;
+        } else {
+            activityDate = activityMonth + "ヶ月 " ;
+        }
+        this.activityDt = activityDate;
+        this.activityNum = activityNum;
+    }
 
 }

@@ -15,8 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.c4ccup.laugh.controller.bean.req.MyPageBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.LaughResource;
+import com.c4ccup.laugh.controller.bean.res.TopResource;
 import com.c4ccup.laugh.domain.Laugh;
+import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.MyPageRepository;
+import com.c4ccup.laugh.repository.UserRepository;
+import com.c4ccup.laugh.util.AppConst.UserEnum;
+
 import static com.c4ccup.laugh.util.EnumConst.*;
 
 /**
@@ -27,16 +32,30 @@ import static com.c4ccup.laugh.util.EnumConst.*;
 public class MyPageController {
 
     @Autowired
-    MyPageRepository repository;
+    MyPageRepository mypageRepository;
+    @Autowired
+    UserRepository userRepository;
 
     /**
-     * laughの一覧を取得する。自分が送ったlaughと送られたlaughを取得する
+     * ログイン情報を取得する。
+     * @param bean
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<ApiResource<TopResource>> mypage(MyPageBean bean) {
+        User user = userRepository.getComedianList(UserEnum.COMEDIAN.getId(), 3).get(0);
+        return ResponseEntity.ok(new ApiResource<>(new TopResource(user)));
+    }
+
+    /**
+     * laughの一覧を取得する。
+     * 自分が送ったlaughと送られたlaughを取得する。
      * @param bean
      * @return
      */
     @RequestMapping(value ="laugh" , method = RequestMethod.GET)
     public ResponseEntity<ApiResource<List<LaughResource>>> laughList(MyPageBean bean) {
-        List<Laugh> LaughList = repository.selectLaugh(bean.getUserId());
+        List<Laugh> LaughList = mypageRepository.selectLaugh(bean.getUserId());
         List<LaughResource> result = new ArrayList<>();
 
         // Loughの一覧設定

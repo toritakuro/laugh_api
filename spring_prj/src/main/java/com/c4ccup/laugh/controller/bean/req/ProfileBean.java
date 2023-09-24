@@ -40,7 +40,7 @@ public class ProfileBean {
     /** 自己紹介文 */
     private String selfIntroduction;
     /** プロフィール画像 */
-    private byte[] profileImg;
+    private byte[] profileImgPath;
     /** 退会フラグ */
     private int deleteFlg;
     /** ログイン日時 */
@@ -237,23 +237,23 @@ public class ProfileBean {
         this.selfIntroduction = selfIntroduction;
     }
     /**
-     * @return profileImg
+     * @return profileImgPath
      */
-    public String getProfileImg() {
-        if(profileImg != null) {
-            return Base64.getEncoder().encodeToString(profileImg);
+    public String getprofileImgPath() {
+        if(profileImgPath != null) {
+            return Base64.getEncoder().encodeToString(profileImgPath);
         }
         return null;
     }
     /**
-     * @param profileImg セットする profileImg
+     * @param profileImgPath セットする profileImgPath
      */
-    public void setProfileImg(String profileImg) {
-        if(profileImg != null) {
-            this.profileImg = Base64.getDecoder().decode(profileImg);
+    public void setprofileImgPath(String profileImgPath) {
+        if(profileImgPath != null) {
+            this.profileImgPath = Base64.getDecoder().decode(profileImgPath);
             return;
         }
-        this.profileImg = null;
+        this.profileImgPath = null;
     }
     /**
      * @return deleteFlg

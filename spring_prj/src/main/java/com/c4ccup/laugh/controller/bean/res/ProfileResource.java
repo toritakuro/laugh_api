@@ -38,7 +38,7 @@ public class ProfileResource {
     /** 自己紹介文 */
     private String selfIntroduction;
     /** プロフィール画像 */
-    private byte[] profileImg;
+    private byte[] profileImgPath;
     /** ログイン日時 */
     private LocalDateTime loginAt;
     /** 更新日時 */
@@ -78,7 +78,7 @@ public class ProfileResource {
         this.areaId = user.getAreaId().getId();
         this.areaName = user.getAreaId().getAreaName();
         this.selfIntroduction = user.getSelfIntroduction();
-        this.profileImg = user.getProfileImgPath();
+        this.profileImgPath = user.getProfileImgPath();
         this.loginAt = user.getLoginAt();
         this.updateAt = user.getUpdateAt();
         this.specialSkillName = user.getSpecialSkillNames();
@@ -272,17 +272,17 @@ public class ProfileResource {
     }
 
     /**
-     * @return profileImg
+     * @return profileImgPath
      */
-    public byte[] getProfileImg() {
-        return profileImg;
+    public byte[] getprofileImgPath() {
+        return profileImgPath;
     }
 
     /**
-     * @param profileImg セットする profileImg
+     * @param profileImgPath セットする profileImgPath
      */
-    public void setProfileImg(byte[] profileImg) {
-        this.profileImg = profileImg;
+    public void setprofileImgPath(byte[] profileImgPath) {
+        this.profileImgPath = profileImgPath;
     }
 
     /**

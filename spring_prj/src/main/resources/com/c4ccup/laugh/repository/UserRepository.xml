@@ -13,7 +13,7 @@
     <result column="debut_dt" property="debutDt"/>
     <result column="gender" property="gender"/>
     <result column="self_introduction" property="selfIntroduction"/>
-    <result column="profile_img" property="porfileImg"/>
+    <result column="profile_img_path" property="profileImgPath"/>
     <result column="delete_flg" property="deleteFlg"/>
     <result column="login_at" property="loginAt"/>
     <result column="create_at" property="createAt"/>
@@ -96,7 +96,7 @@
         ,office_id
         ,area_id
         ,self_introduction
-        ,profile_img
+        ,profile_img_path
         )
     VALUES
       (
@@ -110,7 +110,7 @@
       ,#{officeId}
       ,#{areaId}
       ,#{selfIntroduction}
-      ,#{profileImg}
+      ,#{profileImgPath}
       );
   </insert>
 
@@ -336,7 +336,7 @@
       ,user.office_id
       ,user.area_id
       ,user.self_introduction
-      ,user.profile_img
+      ,user.profile_img_path
       ,user.login_at
       ,user.create_at
       ,user.update_at
@@ -399,7 +399,7 @@
       ,user.office_id
       ,user.area_id
       ,user.self_introduction
-      ,user.profile_img
+      ,user.profile_img_path
       ,user.login_at
       ,user.create_at
       ,user.update_at
@@ -463,7 +463,7 @@
       ,office_id = #{officeId}
       ,area_id = #{areaId}
       ,self_introduction = #{selfIntroduction}
-      ,profile_img = #{profileImg}
+      ,profile_img_path = #{profileImgPath}
     WHERE
       id = #{id}
   </update>

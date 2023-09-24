@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.Messages;
+import com.c4ccup.laugh.controller.bean.res.OogiriResources;
 import com.c4ccup.laugh.domain.Oogiri;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.OogiriRepository;
@@ -49,16 +50,17 @@ public class OogiriController extends _CmnController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<OogiriResponse>> getOogiri(@RequestParam int page) {
+    public ResponseEntity<ApiResource<List<OogiriResources>>> getOogiri(@RequestParam int page) {
         // お題を全件取得
         List<Integer> themeIds = new ArrayList<>();
         List<Oogiri> oogiriList = oogiriRepository.getAllOogiri(themeIds);
-        List<OogiriResponse> resList = createInitResList(oogiriList);
+        List<OogiriResources> resList = createInitResList(oogiriList);
         // お題の更新順に並び替え
         resList.sort((o1, o2) -> o2.getThemeUpdatedAt().compareTo(o1.getThemeUpdatedAt()));
         // ページング
         resList = resetResByPage(resList, page);
-        return ResponseEntity.ok(resList);
+        ApiResource<List<OogiriResources>> oogiri = new ApiResource<>(resList);
+        return ResponseEntity.ok(oogiri);
     }
 
     /**
@@ -68,11 +70,12 @@ public class OogiriController extends _CmnController {
      * @return
      */
     @RequestMapping(path = "/detail", method = RequestMethod.GET)
-    public ResponseEntity<OogiriResponse> getOogiriAnswers(@RequestParam int themeId) {
+    public ResponseEntity<ApiResource<OogiriResources>> getOogiriAnswers(@RequestParam int themeId) {
         // お題に紐づく回答リストを取得
         List<Oogiri> oogiriList = oogiriRepository.getAllAnswers(themeId);
-        OogiriResponse oogiriRes = new OogiriResponse(oogiriList);
-        return ResponseEntity.ok(oogiriRes);
+        OogiriResources oogiriRes = new OogiriResources(oogiriList);
+        ApiResource<OogiriResources> oogiri = new ApiResource<>(oogiriRes);
+        return ResponseEntity.ok(oogiri);
     }
 
     /**
@@ -203,9 +206,10 @@ public class OogiriController extends _CmnController {
 
         // レスポンスを生成する
         List<Oogiri> oogiriList = oogiriRepository.getAllOogiri(themeIds);
-        List<OogiriResponse> resList = createInitResList(oogiriList);
+        List<OogiriResources> resList = createInitResList(oogiriList);
         resList = resetResByPage(resList, page);
-        return ResponseEntity.ok(resList);
+        ApiResource<List<OogiriResources>> oogiri = new ApiResource<>(resList);
+        return ResponseEntity.ok(oogiri);
     }
 
     /**
@@ -215,32 +219,40 @@ public class OogiriController extends _CmnController {
      * @param themes
      * @return
      */
-    private List<OogiriResponse> createInitResList(List<Oogiri> oogiriList) {
+    private List<OogiriResources> createInitResList(List<Oogiri> oogiriList) {
 
-        List<OogiriResponse> resList = new ArrayList<>();
-        OogiriResponse res = null;
-        int prevId = 0;
+        List<OogiriResources> resList = new ArrayList<>();
+        OogiriResources res = null;
+        int prevId = 0; // お題ID判定用
+        int answerCount = 0; // 回答数カウント用
         for (Oogiri o : oogiriList) {
             int themeId = o.getThemeId();
-            // お題IDが変わったら新しいOogiriResponseを作成
+            // お題IDが変わったら新しいOogiriResourcesを作成
             if (prevId != themeId) {
                 // 最後以外はここでレスポンスリストに追加する
-                if (res != null)
+                if (res != null) {
+                    res.setAnswerCount(answerCount);
                     resList.add(res);
-                res = new OogiriResponse();
+                }
+                res = new OogiriResources();
                 res = res.setThemeInfo(o);
+                answerCount = 0;
             }
             // 回答が3件セットされている場合スキップ
             if (res.getAnswers().size() >= AppConst.oogiri_answer_disp_num) {
+                if (o.getAnswerDeletedAt() == null)
+                    answerCount++;
                 continue;
             }
             // 回答が削除済みでなければセット
             if (o.getAnswerDeletedAt() == null) {
+                answerCount++;
                 res = res.setAnswerInfo(res, o);
             }
             prevId = themeId;
         }
         // 最後の大喜利情報をここで追加
+        res.setAnswerCount(answerCount);
         resList.add(res);
         return resList;
     }
@@ -268,7 +280,7 @@ public class OogiriController extends _CmnController {
      * @param page
      * @return responses
      */
-    private List<OogiriResponse> resetResByPage(List<OogiriResponse> responses, int page) {
+    private List<OogiriResources> resetResByPage(List<OogiriResources> responses, int page) {
         // レスポンスリストの要素数
         int totalElements = responses.size();
         // 抽出開始位置、終了位置

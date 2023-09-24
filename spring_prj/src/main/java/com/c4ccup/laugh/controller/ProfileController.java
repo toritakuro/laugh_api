@@ -142,19 +142,15 @@ public class ProfileController extends _CmnController {
         ProfileResource profile = new ProfileResource(user);
 
         if(user.getComedyStyleIds() != null) {
-         // 文字列を分割し配列に格納
-            String[] comedyIdStrList = user.getComedyStyleIds().split(",");
             // int型に変換
-            List<Integer> comedyIdList = Util.chgToInt(comedyIdStrList);
+            List<Integer> comedyIdList = Util.toIntList(user.getComedyStyleIds());
             profile.setComedyStyleIdList(comedyIdList);
         }
 
         // 特殊スキルを取得(作家用)
         if (profile.getUserType() == UserEnum.COMPOSER.getId() && user.getSpecialSkillIds() != null) {
-            // 文字列を分割し配列に格納
-            String[] specialSkillIdStrList = user.getSpecialSkillIds().split(",");
             // int型に変換
-            List<Integer> specialSkillIdList = Util.chgToInt(specialSkillIdStrList);
+            List<Integer> specialSkillIdList = Util.toIntList(user.getComedyStyleIds());
             profile.setSpecialSkillIdList(specialSkillIdList);
         }
 

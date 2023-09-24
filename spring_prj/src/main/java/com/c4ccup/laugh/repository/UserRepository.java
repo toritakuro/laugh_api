@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.c4ccup.laugh.controller.bean.UserBean;
+import com.c4ccup.laugh.controller.bean.req.ProfileBean;
 import com.c4ccup.laugh.domain.User;
 
 /**
@@ -36,31 +37,31 @@ public interface UserRepository {
      * @param UserBean
      * @return user_id
      */
-    public void register(UserBean userBean);
+    public void register(ProfileBean userBean);
 
     /**
      * comedian_profileテーブルにデータを追加する
      * @param UserBean
      */
-    public void registerComedian(UserBean userBean);
+    public void registerComedian(ProfileBean userBean);
 
     /**
      * composer_profileテーブルにデータを追加する
      * @param UserBean
      */
-    public void registerComposer(UserBean userBean);
+    public void registerComposer(ProfileBean userBean);
 
     /**
      * own_comedy_styleテーブルにデータを追加する
      * @param UserBean
      */
-    public void registerOwnComedyStyle(UserBean userBean);
+    public void registerOwnComedyStyle(ProfileBean userBean);
 
     /**
      * own_special_skillテーブルにデータを追加する
      * @param UserBean
      */
-    public void registerOwnSpecialSkill(@Param("userBeanList") List<UserBean> userBeanList);
+    public void registerOwnSpecialSkill(@Param("userBeanList") List<ProfileBean> userBeanList);
 
     /**
      * 氏名でユーザーを取得
@@ -92,5 +93,51 @@ public interface UserRepository {
      * @return User
      */
     public List<User> getComedianList(int userType);
+
+    /**
+     * ユーザーIDで作家ユーザーを取得
+     *
+     * @param userBean
+     * @return User
+     */
+    public User getComposer(int id);
+
+    /**
+     * ユーザーIDで芸人ユーザーを取得
+     *
+     * @param userBean
+     * @return User
+     */
+    public User getComedian(int id);
+
+    /**
+     * userテーブルのデータを更新する
+     * @param userId
+     */
+    public void updateProfile(ProfileBean bean);
+
+    /**
+     * comedian_profileテーブルのデータを更新する
+     * @param userId
+     */
+    public void updateComedian(ProfileBean bean);
+
+    /**
+     * composer_profileテーブルのデータを更新する
+     * @param userId
+     */
+    public void updateComposer(ProfileBean bean);
+
+    /**
+     * own_comedy_styleテーブルのデータを物理削除する
+     * @param userId
+     */
+    public void deleteOwnComedyStyle(int userId);
+
+    /**
+     * own_special_skillテーブルのデータを物理削除する
+     * @param userId
+     */
+    public void deleteOwnSpecialSkill(int userId);
 }
 

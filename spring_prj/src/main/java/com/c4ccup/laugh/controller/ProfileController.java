@@ -2,29 +2,42 @@ package com.c4ccup.laugh.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.c4ccup.laugh.controller.bean.UserBean;
+import com.c4ccup.laugh.controller.bean.req.ProfileBean;
+import com.c4ccup.laugh.controller.bean.res.ApiResource;
+import com.c4ccup.laugh.controller.bean.res.Messages;
+import com.c4ccup.laugh.controller.bean.res.ProfileResource;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
 import com.c4ccup.laugh.util.AwsSesUtil;
+import com.c4ccup.laugh.util.MessageUtil;
 import com.c4ccup.laugh.util.PropBean;
+import com.c4ccup.laugh.util.Util;
 /**
  * CRUDを操作するProfileクラス
  *
  */
 @RequestMapping(value = "profile")
 @RestController
-public class ProfileController {
+public class ProfileController extends _CmnController {
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private AwsSesUtil awsSesUtil;
+    @Autowired
+    MessageUtil msgUtil;
+
     /**
      * メールを送信するメソッド
      * @param userBean
@@ -39,64 +52,186 @@ public class ProfileController {
                      + propBean.getEmail().replace(".", "+");
         awsSesUtil.send(userMailAddress, Title, Text);
     }
+
     /**
      * 新規登録するメソッド
      * @param userBean
      * @return
      */
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public void register(@RequestBody UserBean userBean) {
-        //debutDtをセット
-        LocalDate debutDt = LocalDate.of(userBean.getDebutYear(), userBean.getDebutMonth(), 1);
-        userBean.setDebutDt(debutDt);
+    public void register(@RequestBody ProfileBean bean) {
+        //debutDtをセット(作家のみ)
+        if(bean.getUserType() == UserEnum.COMEDIAN.getId()) {
+            LocalDate debutDt = LocalDate.of(bean.getDebutYear(), bean.getDebutMonth(), 1);
+            bean.setDebutDt(debutDt);
+        }
+
         // ユーザーをuserテーブルに登録する。
-        userRepository.register(userBean);
+        userRepository.register(bean);
+
         // 採番されたidを取得しregisterUserIdに入れる
-        int registerUserId = userBean.getId();
+        int registerUserId = bean.getId();
+
         // 登録したユーザーのuserIdをセットしておく
-        userBean.setUserId(registerUserId);
+        bean.setUserId(registerUserId);
+
         // 作家プロフィールの登録
-        if(userBean.getUserType() == UserEnum.COMPOSER.getId()) {
-            userRepository.registerComposer(userBean);
+        if(bean.getUserType() == UserEnum.COMPOSER.getId()) {
+            userRepository.registerComposer(bean);
         }
         // 芸人プロフィールの登録
-        if(userBean.getUserType() == UserEnum.COMEDIAN.getId()) {
-            userRepository.registerComedian(userBean);
+        if(bean.getUserType() == UserEnum.COMEDIAN.getId()) {
+            userRepository.registerComedian(bean);
         }
+
         // 得意分野の登録(作家・芸人どちらも)
-        if (userBean.getComedyStyleIdList() != null) {
-            for(int comedyStyleId: userBean.getComedyStyleIdList()) {
-                userBean.setComedyStyleId(comedyStyleId);
-                userRepository.registerOwnComedyStyle(userBean);
+        if (bean.getComedyStyleIdList() != null) {
+            for(int comedyStyleId: bean.getComedyStyleIdList()) {
+                bean.setComedyStyleId(comedyStyleId);
+                userRepository.registerOwnComedyStyle(bean);
             }
         }
+
         // 特殊スキルの登録(作家のみ)
-        if (userBean.getUserType() == UserEnum.COMPOSER.getId() && userBean.getSpecialSkillIdList() != null) {
-            List<UserBean> userBeanList = new ArrayList<>();
-            for(int specialSkillId: userBean.getSpecialSkillIdList()) {
-                UserBean user = new UserBean();
-                user.setUserId(registerUserId);
-                user.setSpecialSkillId(specialSkillId);
-                userBeanList.add(user);
+        if (bean.getUserType() == UserEnum.COMPOSER.getId()) {
+            List<ProfileBean> userBeanList = new ArrayList<>();
+
+            if(bean.getSpecialSkillIdList() != null) {
+                for(int specialSkillId: bean.getSpecialSkillIdList()) {
+                    ProfileBean user = new ProfileBean();
+                    user.setUserId(registerUserId);
+                    user.setSpecialSkillId(specialSkillId);
+                    userBeanList.add(user);
+                }
             }
+
             // 「その他」で自由入力された内容は、specialSkillId = nullで登録する
-            if(!userBean.getAnotherSkill().isEmpty()) {
-                UserBean user = new UserBean();
+            if(!bean.getAnotherSkill().isEmpty()) {
+                ProfileBean user = new ProfileBean();
                 user.setUserId(registerUserId);
-                user.setAnotherSkill(userBean.getAnotherSkill());
+                user.setAnotherSkill(bean.getAnotherSkill());
                 userBeanList.add(user);
             }
-            userRepository.registerOwnSpecialSkill(userBeanList);
+
+            if(userBeanList != null) {
+                userRepository.registerOwnSpecialSkill(userBeanList);
+            }
         }
     }
+
     /**
      * 編集画面を返すメソッド
      * @param userBean
      * @return
      */
     @RequestMapping(path = "/editInit", method = RequestMethod.GET)
-    public ResponseEntity<User> editInit(@RequestBody int userId) {
-        User user = userRepository.findById(1);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<ApiResource<ProfileResource>> editInit(@RequestParam int loginUserType, @RequestParam int loginUserId) {
+//        int loginUserType = bean.getUserType();
+//        int loginUserId = bean.getUserId();
+        User user = new User();
+
+        // 作家を取得
+        if (loginUserType == UserEnum.COMEDIAN.getId()) {
+            user = userRepository.getComedian(loginUserId);
+        }
+        // 芸人を取得
+        if (loginUserType == UserEnum.COMPOSER.getId()) {
+            user = userRepository.getComposer(loginUserId);
+        }
+
+        ProfileResource profile = new ProfileResource(user);
+
+        if(user.getComedyStyleIds() != null) {
+         // 文字列を分割し配列に格納
+            String[] comedyIdStrList = user.getComedyStyleIds().split(",");
+            // int型に変換
+            List<Integer> comedyIdList = Util.chgToInt(comedyIdStrList);
+            profile.setComedyStyleIdList(comedyIdList);
+        }
+
+        // 特殊スキルを取得(作家用)
+        if (profile.getUserType() == UserEnum.COMPOSER.getId() && user.getSpecialSkillIds() != null) {
+            // 文字列を分割し配列に格納
+            String[] specialSkillIdStrList = user.getSpecialSkillIds().split(",");
+            // int型に変換
+            List<Integer> specialSkillIdList = Util.chgToInt(specialSkillIdStrList);
+            profile.setSpecialSkillIdList(specialSkillIdList);
+        }
+
+        return ResponseEntity.ok(new ApiResource<>(profile));
+    }
+
+    /**
+     * 更新するメソッド
+     * @param ProfileBean
+     */
+    @RequestMapping(path = "/edit", method = RequestMethod.POST)
+    public ResponseEntity<ApiResource<Messages>> edit(@RequestBody ProfileBean bean) {
+        int loginUserType = bean.getUserType();
+        int loginUserId = bean.getId();
+        bean.setUserId(loginUserId);
+
+        //debutDtをセット
+        LocalDate debutDt = LocalDate.of(bean.getDebutYear(), bean.getDebutMonth(), 1);
+        bean.setDebutDt(debutDt);
+
+        // ユーザーをuserテーブルに登録する。
+        userRepository.updateProfile(bean);
+
+        // 作家プロフィールの更新
+        if(loginUserType == UserEnum.COMPOSER.getId()) {
+            userRepository.updateComposer(bean);
+        }
+
+        // 芸人プロフィールの更新
+        if(loginUserType == UserEnum.COMEDIAN.getId()) {
+            userRepository.updateComedian(bean);
+        }
+
+        // 得意分野の更新(作家・芸人どちらも)
+        userRepository.deleteOwnComedyStyle(loginUserId);
+        if (bean.getComedyStyleIdList() != null) {
+            for(int comedyStyleId: bean.getComedyStyleIdList()) {
+                bean.setComedyStyleId(comedyStyleId);
+                userRepository.registerOwnComedyStyle(bean);
+            }
+        }
+
+        // 特殊スキルの更新(作家のみ)
+        userRepository.deleteOwnSpecialSkill(loginUserId);
+        if (loginUserType == UserEnum.COMPOSER.getId()) {
+            List<ProfileBean> profileBeanList = new ArrayList<>();
+            for(int specialSkillId: bean.getSpecialSkillIdList()) {
+                ProfileBean profile = new ProfileBean();
+                profile.setUserId(loginUserId);
+                profile.setSpecialSkillId(specialSkillId);
+                profileBeanList.add(profile);
+            }
+            // 「その他」で自由入力された内容は、specialSkillId = nullで登録する
+            if(!bean.getAnotherSkill().isEmpty()) {
+                ProfileBean profile = new ProfileBean();
+                profile.setUserId(loginUserId);
+                profile.setAnotherSkill(bean.getAnotherSkill());
+                profileBeanList.add(profile);
+            }
+            userRepository.registerOwnSpecialSkill(profileBeanList);
+        }
+
+        return ResponseEntity.ok(createMsg("s001", "プロフィール", "更新"));
+    }
+
+
+    /**
+     * メッセージを生成する
+     *
+     * @param code
+     * @param str1
+     * @param str2
+     * @return
+     */
+    private ApiResource<Messages> createMsg(String code, String str1, String str2) {
+        Messages returnMsg = super.getReturnMsg(msgUtil.getMessage(code, str1, str2));
+        ApiResource<Messages> profile = new ApiResource<>(returnMsg);
+        return profile;
     }
 }

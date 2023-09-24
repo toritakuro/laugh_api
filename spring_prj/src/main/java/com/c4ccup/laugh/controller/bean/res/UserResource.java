@@ -4,12 +4,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.c4ccup.laugh.domain.User;
+import com.c4ccup.laugh.util.Util;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 
 
 /**
- * TopResourceクラス
+ * UserResourceクラス
  */
-public class TopResource {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class UserResource {
 
     /** ID */
     private int id;
@@ -17,6 +21,8 @@ public class TopResource {
     private String userName;
     /** ユーザ名(かな) */
     private String userNameKana;
+    /** 検索用ユーザ名 */
+    private String searchUserName;
     /** 活動種別 */
     private int userType;
     /** 活動開始年月 */
@@ -41,36 +47,45 @@ public class TopResource {
     private byte[] profileImg;
     /** ログイン日時 */
     private LocalDateTime loginAt;
+    /** ログイン日時 並び替え用 */
+    private Integer loginAtInt;
     /** 更新日時 */
     private LocalDateTime updateAt;
+    /** 更新日時 並び替え用 */
+    private Integer updateAtInt;
     /** 活動人数 */
     private int memberNum;
     /** 料金体系 */
     private int feeType;
     /** 料金 */
     private int fee;
-    /** 得意分野一覧 */
+    /** 得意分野・芸風Idリスト */
     private List<Integer> comedyStyleIdList;
-    /** コメディスタイル名 */
-    private String comedyStyleName;
+    /** 得意分野・芸風リスト */
+    private List<String> comedyStyleNameList;
+    /** 得意分野・芸風名 */
+    private String comedyStyleNames;
     /** 特殊スキル一覧 */
     private List<Integer> specialSkillIdList;
+    /** 特殊スキル名リスト */
+    private List<String> specialSkillNameList;
     /** 特殊スキル名 */
-    private String specialSkillName;
+    private String specialSkillNames;
 
 
-    public TopResource() {
+
+    public UserResource() {
 
     }
 
-    public TopResource(User user) {
+    public UserResource(User user) {
         this.id = user.getId();
         this.userName = user.getUserName();
         this.userNameKana = user.getUserNameKana();
+        this.searchUserName = user.getUserName().replaceAll("　| ","");
         this.userType = user.getUserType();
         this.debutDt = user.getDebutDt();
         this.gender = user.getGender();
-        this.comedyStyleName = user.getComedyStyleNames();
         this.officeId = user.getOfficeId().getId();
         this.officeName = user.getOfficeId().getOfficeName();
         this.areaId = user.getAreaId().getId();
@@ -78,11 +93,27 @@ public class TopResource {
         this.selfIntroduction = user.getSelfIntroduction();
         this.profileImg = user.getProfileImgPath();
         this.loginAt = user.getLoginAt();
+        this.loginAtInt = Util.getFormatLocalDateTimeToInt(loginAt);
         this.updateAt = user.getUpdateAt();
-        this.specialSkillName = user.getSpecialSkillNames();
+        this.updateAtInt = Util.getFormatLocalDateTimeToInt(updateAt);
+        this.setActivityNum();
+        this.comedyStyleNames = user.getComedyStyleNames();
+        if (user.getAnotherSkillNames() != null) {
+            this.specialSkillNames = (user.getSpecialSkillNames() + user.getAnotherSkillNames());
+        } else {
+            this.specialSkillNames = (user.getSpecialSkillNames());
+        }
         this.feeType = user.getComposerProfile().getFeeType();
         this.fee = user.getComposerProfile().getFee();
         this.memberNum = user.getComedianProfile().getMemberNum();
+        if (user.getComedyStyleIds() != null) {
+            this.comedyStyleIdList = Util.toIntList(user.getComedyStyleIds());
+            this.comedyStyleNameList = Util.toStrList(user.getComedyStyleNames());
+        }
+        if (user.getSpecialSkillIds() != null) {
+            this.specialSkillIdList = Util.toIntList(user.getSpecialSkillIds());
+            this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames() + user.getAnotherSkillNames());
+        }
     }
 
 
@@ -130,6 +161,21 @@ public class TopResource {
         this.userNameKana = userNameKana;
     }
     /**
+     * @return searchUserName
+     */
+    public String getSearchUserName() {
+        return searchUserName;
+    }
+
+    /**
+     * @param searchUserName セットする searchUserName
+     */
+    public void setSearchUserName(String searchUserName) {
+        this.searchUserName = searchUserName;
+    }
+
+    /**
+     * @return userType
      * 活動種別を取得します。
      * @return 活動種別
      */
@@ -234,7 +280,6 @@ public class TopResource {
     public int getAreaId() {
         return areaId;
     }
-
     /**
      * 活動場所IDを設定します。
      * @param areaId 活動場所ID
@@ -299,6 +344,21 @@ public class TopResource {
         this.loginAt = loginAt;
     }
     /**
+     * @return loginAtInt
+     */
+    public Integer getLoginAtInt() {
+        return loginAtInt;
+    }
+
+    /**
+     * @param loginAtInt セットする loginAtInt
+     */
+    public void setLoginAtInt(Integer loginAtInt) {
+        this.loginAtInt = loginAtInt;
+    }
+
+    /**
+     * @return updateAt
      * 更新日時を取得します。
      * @return 更新日時
      */
@@ -313,6 +373,21 @@ public class TopResource {
         this.updateAt = updateAt;
     }
     /**
+     * @return updateAtInt
+     */
+    public Integer getUpdateAtInt() {
+        return updateAtInt;
+    }
+
+    /**
+     * @param updateAtInt セットする updateAtInt
+     */
+    public void setUpdateAtInt(Integer updateAtInt) {
+        this.updateAtInt = updateAtInt;
+    }
+
+    /**
+     * @return memberNum
      * 活動人数を取得します。
      * @return 活動人数
      */
@@ -372,15 +447,15 @@ public class TopResource {
      * コメディスタイル名を取得します。
      * @return コメディスタイル名
      */
-    public String getComedyStyleName() {
-        return comedyStyleName;
+    public List<String> getComedyStyleNameList() {
+        return comedyStyleNameList;
     }
     /**
      * コメディスタイル名を設定します。
      * @param comedyStyleName コメディスタイル名
      */
-    public void setComedyStyleName(String comedyStyleName) {
-        this.comedyStyleName = comedyStyleName;
+    public void setComedyStyleName(List<String> comedyStyleName) {
+        this.comedyStyleNameList = comedyStyleName;
     }
     /**
      * 特殊スキル一覧を取得します。
@@ -400,16 +475,69 @@ public class TopResource {
      * 特殊スキル名を取得します。
      * @return 特殊スキル名
      */
-    public String getSpecialSkillName() {
-        return specialSkillName;
+    public List<String> getSpecialSkillNamelist() {
+        return specialSkillNameList;
     }
     /**
      * 特殊スキル名を設定します。
-     * @param specialSkillName 特殊スキル名
+     * @param specialSkillNameList 特殊スキル名
      */
-    public void setSpecialSkillName(String specialSkillName) {
-        this.specialSkillName = specialSkillName;
+    public void setSpecialSkillNameList(List<String> specialSkillNameList) {
+        this.specialSkillNameList = specialSkillNameList;
     }
 
+    /**
+     * @return specialSkillNames
+     */
+    public String getSpecialSkillNames() {
+        return specialSkillNames;
+    }
+
+    /**
+     * @param specialSkillNames セットする specialSkillNames
+     */
+    public void setSpecialSkillNames(String specialSkillNames) {
+        this.specialSkillNames = specialSkillNames;
+    }
+
+    /**
+     * @return comedyStyleNames
+     */
+    public String getComedyStyleNames() {
+        return comedyStyleNames;
+    }
+
+    /**
+     * @param comedyStyleNames セットする comedyStyleNames
+     */
+    public void setComedyStyleNames(String comedyStyleNames) {
+        this.comedyStyleNames = comedyStyleNames;
+    }
+
+    /**
+     * 活動年月のセット処理  作家・芸人共通
+     * @param users
+     */
+    private void setActivityNum() {
+        // 現在日付を取得
+        LocalDate date = LocalDate.now();
+        // 現在日付と活動開始年月の差分を取得
+        LocalDate differenceYear = date.minusYears(this.getDebutDt().getYear());
+        LocalDate differenceDate = differenceYear.minusMonths(this.getDebutDt().getMonthValue());
+        // String型に変換
+        String activityYear = Integer.valueOf(differenceDate.getYear()).toString();
+        String activityMonth = Integer.valueOf(differenceDate.getMonthValue()).toString();
+        String activityDate;
+        // 活動年数
+        int activityNum = differenceDate.getYear();
+        // 画面表示用にセット
+        if (0 < differenceDate.getYear()) {
+            activityDate = activityYear + "年 " + activityMonth + "ヶ月" ;
+        } else {
+            activityDate = activityMonth + "ヶ月 " ;
+        }
+        this.activityDt = activityDate;
+        this.activityNum = activityNum;
+    }
 
 }

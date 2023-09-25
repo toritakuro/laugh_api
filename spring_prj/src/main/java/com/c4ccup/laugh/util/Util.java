@@ -39,7 +39,7 @@ public class Util {
      * 文字列をString型のリストに変換
      * 
      * @param strs
-     * @return
+     * @return strList
      */
     public static List<String> toStrList(String str) {
         List<String> strList = new ArrayList<>();

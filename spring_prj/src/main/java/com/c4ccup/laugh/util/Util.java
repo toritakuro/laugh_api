@@ -26,10 +26,12 @@ public class Util {
      */
     public static List<Integer> toIntList(String str) {
       List<Integer> intList = new ArrayList<>();
-      intList = Arrays.asList(str.split(","))
-              .stream()
-              .map(Integer::valueOf)
-              .collect(Collectors.toList());
+      if (str != null) {
+          intList = Arrays.asList(str.split(","))
+                  .stream()
+                  .map(Integer::valueOf)
+                  .collect(Collectors.toList());
+      }
       return intList;
     }
 
@@ -41,7 +43,9 @@ public class Util {
      */
     public static List<String> toStrList(String str) {
         List<String> strList = new ArrayList<>();
-        strList = Arrays.asList(str.split(","));
+        if (str != null) {
+            strList = Arrays.asList(str.split(","));
+        }
         return strList;
     }
 

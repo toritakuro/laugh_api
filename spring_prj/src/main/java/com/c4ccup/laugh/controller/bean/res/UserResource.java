@@ -63,14 +63,10 @@ public class UserResource {
     private List<Integer> comedyStyleIdList;
     /** 得意分野・芸風リスト */
     private List<String> comedyStyleNameList;
-    /** 得意分野・芸風名 */
-    private String comedyStyleNames;
     /** 特殊スキル一覧 */
     private List<Integer> specialSkillIdList;
     /** 特殊スキル名リスト */
     private List<String> specialSkillNameList;
-    /** 特殊スキル名 */
-    private String specialSkillNames;
 
 
 
@@ -97,12 +93,6 @@ public class UserResource {
         this.updateAt = user.getUpdateAt();
         this.updateAtInt = Util.getFormatLocalDateTimeToInt(updateAt);
         this.setActivityNum();
-        this.comedyStyleNames = user.getComedyStyleNames();
-        if (user.getAnotherSkillNames() != null) {
-            this.specialSkillNames = (user.getSpecialSkillNames() + user.getAnotherSkillNames());
-        } else {
-            this.specialSkillNames = (user.getSpecialSkillNames());
-        }
         this.feeType = user.getComposerProfile().getFeeType();
         this.fee = user.getComposerProfile().getFee();
         this.memberNum = user.getComedianProfile().getMemberNum();
@@ -112,7 +102,11 @@ public class UserResource {
         }
         if (user.getSpecialSkillIds() != null) {
             this.specialSkillIdList = Util.toIntList(user.getSpecialSkillIds());
-            this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames() + user.getAnotherSkillNames());
+            if (user.getAnotherSkillNames() != null) { 
+                this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames() + user.getAnotherSkillNames());
+            } else {
+                this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames());
+            }
         }
     }
 
@@ -475,7 +469,7 @@ public class UserResource {
      * 特殊スキル名を取得します。
      * @return 特殊スキル名
      */
-    public List<String> getSpecialSkillNamelist() {
+    public List<String> getSpecialSkillNameList() {
         return specialSkillNameList;
     }
     /**
@@ -484,34 +478,6 @@ public class UserResource {
      */
     public void setSpecialSkillNameList(List<String> specialSkillNameList) {
         this.specialSkillNameList = specialSkillNameList;
-    }
-
-    /**
-     * @return specialSkillNames
-     */
-    public String getSpecialSkillNames() {
-        return specialSkillNames;
-    }
-
-    /**
-     * @param specialSkillNames セットする specialSkillNames
-     */
-    public void setSpecialSkillNames(String specialSkillNames) {
-        this.specialSkillNames = specialSkillNames;
-    }
-
-    /**
-     * @return comedyStyleNames
-     */
-    public String getComedyStyleNames() {
-        return comedyStyleNames;
-    }
-
-    /**
-     * @param comedyStyleNames セットする comedyStyleNames
-     */
-    public void setComedyStyleNames(String comedyStyleNames) {
-        this.comedyStyleNames = comedyStyleNames;
     }
 
     /**

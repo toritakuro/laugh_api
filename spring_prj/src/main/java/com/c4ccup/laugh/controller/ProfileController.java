@@ -213,21 +213,7 @@ public class ProfileController extends _CmnController {
             userRepository.registerOwnSpecialSkill(profileBeanList);
         }
 
-        return ResponseEntity.ok(createMsg("s001", "プロフィール", "更新"));
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール", "更新"))));
     }
 
-
-    /**
-     * メッセージを生成する
-     *
-     * @param code
-     * @param str1
-     * @param str2
-     * @return
-     */
-    private ApiResource<Messages> createMsg(String code, String str1, String str2) {
-        Messages returnMsg = super.getReturnMsg(msgUtil.getMessage(code, str1, str2));
-        ApiResource<Messages> profile = new ApiResource<>(returnMsg);
-        return profile;
-    }
 }

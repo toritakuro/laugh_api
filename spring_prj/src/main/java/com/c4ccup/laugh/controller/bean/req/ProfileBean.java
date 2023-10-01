@@ -1,4 +1,4 @@
-package com.c4ccup.laugh.controller.bean;
+package com.c4ccup.laugh.controller.bean.req;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,9 +8,9 @@ import java.util.List;
 import com.c4ccup.laugh.util.PasswordUtil;
 
 /**
- * 画面から取得した値をJavaオブジェクトで扱うためのクラス
+ * マイページBean
  */
-public class UserBean {
+public class ProfileBean {
 
     // userテーブル用
     /** ID */
@@ -251,6 +251,7 @@ public class UserBean {
     public void setprofileImgPath(String profileImgPath) {
         if(profileImgPath != null) {
             this.profileImgPath = Base64.getDecoder().decode(profileImgPath);
+            return;
         }
         this.profileImgPath = null;
     }

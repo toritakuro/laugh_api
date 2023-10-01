@@ -43,7 +43,7 @@ public class JwtUtil {
     }
 
     /**
-     * 指定されたsubjectを含むJWTトークンを生成
+     * idトークンを生成
      * 
      * @param subject JWTのsubject
      * @return 生成されたJWTトークン
@@ -51,6 +51,15 @@ public class JwtUtil {
     public String generateToken(String subject) {
         return Jwts.builder().setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .signWith(secretKey, SignatureAlgorithm.HS256).compact();
+    }
+
+    /**
+     * リフレッシュトークンを生成
+     */
+    public String generateRefreshToken(String subject) {
+        return Jwts.builder().setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + (7 * 24 * 60 * 60 * 1000)))
                 .signWith(secretKey, SignatureAlgorithm.HS256).compact();
     }
 

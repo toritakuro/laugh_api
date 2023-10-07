@@ -43,7 +43,7 @@ public class JwtUtil {
     }
 
     /**
-     * 指定されたsubjectを含むJWTトークンを生成
+     * idトークンを生成
      * 
      * @param subject JWTのsubject
      * @return 生成されたJWTトークン
@@ -55,16 +55,21 @@ public class JwtUtil {
     }
 
     /**
+     * リフレッシュトークンを生成
+     */
+    public String generateRefreshToken(String subject) {
+        return Jwts.builder().setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + (7 * 24 * 60 * 60 * 1000)))
+                .signWith(secretKey, SignatureAlgorithm.HS256).compact();
+    }
+
+    /**
      * 指定されたトークンを検証
      * 
      * @param token 検証するJWTトークン
      * @return トークンが有効であればtrue、無効であればfalse
      */
     public boolean isValidToken(String token) {
-        // TODO:トークンのnullチェック。フロント実装完了までtrueで返す。(tori)
-        if (token == null) {
-            return true;
-        }
         // トークンの値のみを抽出
         String tokenVal = "";
         String[] parts = token.split(" ");

@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.c4ccup.laugh.util.AppConst.DateFormatEnum;
+
 /**
  * 共通メソッドUtilクラス
  *
@@ -66,4 +68,16 @@ public class Util {
        }
        return intDate;
     }
+
+    /**
+     * enumで指定した日付の形式に変換
+     * @param date
+     * @param format
+     * @return
+     */
+    public static String formatLocalDateTime(LocalDateTime date, DateFormatEnum format) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(format.getFormat());
+        return date.format(dtf);
+    }
+
 }

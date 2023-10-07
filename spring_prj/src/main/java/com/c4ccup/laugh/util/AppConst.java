@@ -26,24 +26,20 @@ public class AppConst {
             this.id = id;
             this.name = name;
         }
-        public int getId() {
-            return id;
-        }
-        public String getName() {
-            return name;
-        }
-        public void setId(int id) {
-            this.id = id;
-        }
-        public void setName(String name) {
-            this.name = name;
-        }
+        public int getId() { return id; }
+        public String getName() { return name; }
     }
 
     /** 特殊スキル */
     public enum specialSkillEnum {
         /** 1:動画編集　*/
-        VIDEO_EDITTING(1, "動画編集"), DESIGN(2, "イラスト"), SOUND_PRODUCTION(3, "音源制作"), OTHERS(4, "その他");
+        VIDEO_EDITTING(1, "動画編集"),
+        /** 2:イラスト　*/
+        DESIGN(2, "イラスト"),
+        /** 3:音源作成　*/
+        SOUND_PRODUCTION(3, "音源制作"),
+        /** 4:その他　*/
+        OTHERS(4, "その他");
 
         private int id;
         private String name;
@@ -53,20 +49,24 @@ public class AppConst {
             this.name = name;
         }
 
-        public int getId() {
-            return id;
-        }
-        public String getName() {
-            return name;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
+        public int getId() { return id; }
+        public String getName() { return name; }
     }
 
+    /** 日付フォーマット */
+    public enum DateFormatEnum {
+        /** yyyy-MM-dd */
+        HYPHEN_YMD("yyyy-MM-dd"),
+        /** yyyy/MM/dd */
+        SLASH_YMD("yyyy/MM/dd"),
+        ;
+
+        private String format;
+
+        DateFormatEnum(String format) {
+            this.format = format;
+        }
+
+        public String getFormat() { return format; }
+    }
 }

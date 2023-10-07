@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.c4ccup.laugh.repository.ChatRepository">
+
+  <resultMap id="ChatListMap" type="com.c4ccup.laugh.domain.Chat">
+    <id column="id" property="chatRoomId" />
+    <id column="chat_id" property="chatId" />
+    <result column="send_user_id" property="sendUserId"/>
+    <result column="chat_message" property="chatMessage"/>
+    <result column="create_at" property="createAt"/>
+    <!-- Javaの変数名を設定 -->
+    <association property="comedian" resultMap="ComedianResultMap"/>
+    <association property="composer" resultMap="ComposerResultMap"/>
+  </resultMap>
+  <resultMap id="ComedianResultMap" type="com.c4ccup.laugh.domain.User">
+    <result column="user_comedian_id" property="id"/>
+    <result column="comedian_name" property="userName"/>
+  </resultMap>
+  <resultMap id="ComposerResultMap" type="com.c4ccup.laugh.domain.User">
+    <result column="user_composer_id" property="id"/>
+    <result column="composer_name" property="userName"/>
+  </resultMap>
+
+  <!-- チャット一覧を取得する -->
+  <select id="findChatList" resultMap="ChatListMap">
+    SELECT
+        crl.id,
+        cd.id AS chat_id,
+        crl.user_comedian_id,
+        crl.user_composer_id,
+    	cd.send_user_id,
+        cd.chat_message,
+        comedian.user_name AS comedian_name,
+        composer.user_name AS composer_name,
+        cd.create_at
+    FROM
+    	chat_detail cd
+    INNER JOIN (
+    	SELECT
+    		max(id) as id
+    	FROM
+    		chat_detail
+    	GROUP BY chat_room_list_id) as _cd on
+    	  _cd.id = cd.id
+    INNER JOIN chat_room_list crl
+    	ON crl.id = cd.chat_room_list_id
+    INNER JOIN user AS comedian
+    	on comedian.id = crl.user_comedian_id
+    INNER JOIN user AS composer
+    	ON composer.id = crl.user_composer_id
+    WHERE
+    <if test="userComedianId != null">
+        user_comedian_id = #{userComedianId}
+    </if>
+    <if test="userComposerId != null">
+        user_composer_id = #{userComposerId}
+    </if>
+    ORDER BY cd.create_at DESC
+  </select>
+</mapper>

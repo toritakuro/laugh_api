@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class ChatResource {
 
     /** チャットルームID */
-    private int chatRoomId;
+    private Integer chatRoomId;
     /** チャットID */
     private Integer chatId;
     /** 相手名 */
@@ -17,20 +17,23 @@ public class ChatResource {
     private String message;
     /** 送信日 */
     private String sendAt;
-
+    /** 送信時間 */
+    private String sendTime;
+    /** 自分が送信したメッセージ */
+    private Boolean isMyMessage;
 
     /**
      * チャットルームIDを取得します。
      * @return チャットルームID
      */
-    public int getChatRoomId() {
+    public Integer getChatRoomId() {
         return chatRoomId;
     }
     /**
      * チャットルームIDを設定します。
      * @param chatRoomId チャットルームID
      */
-    public void setChatRoomId(int chatRoomId) {
+    public void setChatRoomId(Integer chatRoomId) {
         this.chatRoomId = chatRoomId;
     }
     /**
@@ -102,6 +105,34 @@ public class ChatResource {
      */
     public void setSendAt(String sendAt) {
         this.sendAt = sendAt;
+    }
+    /**
+     * 送信時間を取得します。
+     * @return 送信時間
+     */
+    public String getSendTime() {
+        return sendTime;
+    }
+    /**
+     * 送信時間を設定します。
+     * @param sendTime 送信時間
+     */
+    public void setSendTime(String sendTime) {
+        this.sendTime = sendTime;
+    }
+    /**
+     * 自分が送信したメッセージを取得します。
+     * @return 自分が送信したメッセージ
+     */
+    public Boolean getIsMyMessage() {
+        return isMyMessage;
+    }
+    /**
+     * 自分が送信したメッセージを設定します。
+     * @param isMyMessage 自分が送信したメッセージ
+     */
+    public void setIsMyMessage(Boolean isMyMessage) {
+        this.isMyMessage = isMyMessage;
     }
 
 }

@@ -9,10 +9,31 @@ import com.c4ccup.laugh.domain.Chat;
 public interface ChatRepository {
 
     /**
-     * チャットリストを取得する
-     *@param demoBean DemoBean型の要素
-     *@return Demo
+     * チャット一覧を取得する
+     * @param chat
+     * @return List<Chat>
      */
     public List<Chat> findChatList(Chat chat);
+
+    /**
+     * チャット詳細を取得する
+     * @param chat
+     * @return List<Chat>
+     */
+    public List<Chat> findChatDetail(Chat chat);
+
+    /**
+     * チャットルームを作成する
+     * @param chat
+     * @return int
+     */
+    public int createChatRoom(Chat chat);
+
+    /**
+     * チャットルームを送信する
+     * @param chat
+     * @return int
+     */
+    public void sendChat(Chat chat);
 
 }

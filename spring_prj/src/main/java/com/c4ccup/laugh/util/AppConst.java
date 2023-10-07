@@ -59,6 +59,8 @@ public class AppConst {
         HYPHEN_YMD("yyyy-MM-dd"),
         /** yyyy/MM/dd */
         SLASH_YMD("yyyy/MM/dd"),
+        /** HH:mm */
+        TIME("HH:mm"),
         ;
 
         private String format;

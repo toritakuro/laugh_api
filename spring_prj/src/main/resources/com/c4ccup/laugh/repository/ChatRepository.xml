@@ -45,7 +45,7 @@
     INNER JOIN chat_room_list crl
     	ON crl.id = cd.chat_room_list_id
     INNER JOIN user AS comedian
-    	on comedian.id = crl.user_comedian_id
+    	ON comedian.id = crl.user_comedian_id
     INNER JOIN user AS composer
     	ON composer.id = crl.user_composer_id
     WHERE
@@ -57,4 +57,68 @@
     </if>
     ORDER BY cd.create_at DESC
   </select>
+
+  <!-- チャット詳細を取得する -->
+  <select id="findChatDetail" resultMap="ChatListMap">
+    SELECT
+        crl.id,
+        cd.id AS chat_id,
+        crl.user_comedian_id,
+        crl.user_composer_id,
+    	cd.send_user_id,
+        cd.chat_message,
+        comedian.user_name AS comedian_name,
+        composer.user_name AS composer_name,
+        cd.create_at
+    FROM
+      chat_detail cd
+    INNER JOIN chat_room_list crl ON crl.id = cd.chat_room_list_id
+    INNER JOIN user AS comedian
+    	on comedian.id = crl.user_comedian_id
+    INNER JOIN user AS composer
+    	ON composer.id = crl.user_composer_id
+    WHERE
+        crl.id = #{chatRoomId}
+    ORDER BY cd.create_at DESC
+  </select>
+
+  <!-- チャットルーム作成 -->
+  <insert id="createChatRoom" useGeneratedKeys="true" keyProperty="chatRoomId">
+    INSERT INTO
+      chat_room_list
+        (
+        user_comedian_id
+        ,user_composer_id
+        ,create_at
+        ,update_at
+        )
+    VALUES
+      (
+      #{userComedianId}
+      ,#{userComposerId}
+      ,now()
+      ,now()
+      );
+  </insert>
+
+  <!-- チャット送信 -->
+  <insert id="sendChat" >
+    INSERT INTO
+      chat_detail
+        (
+        chat_room_list_id
+        ,send_user_id
+        ,chat_message
+        ,create_at
+        ,update_at
+        )
+    VALUES
+      (
+      #{chatRoomId}
+      ,#{sendUserId}
+      ,#{chatMessage}
+      ,now()
+      ,now()
+      );
+  </insert>
 </mapper>

@@ -39,7 +39,7 @@ public class Util {
 
     /**
      * 文字列をString型のリストに変換
-     * 
+     *
      * @param strs
      * @return strList
      */
@@ -78,6 +78,16 @@ public class Util {
     public static String formatLocalDateTime(LocalDateTime date, DateFormatEnum format) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(format.getFormat());
         return date.format(dtf);
+    }
+
+    /**
+     * 改行をbrに変換する
+     * @param str
+     * @return
+     */
+    public static String changeRCtoBR(String str) {
+        if (str == null) return "";
+        return str.replaceAll("\r\n|\n", "<br>");
     }
 
 }

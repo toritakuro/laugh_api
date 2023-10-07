@@ -13,8 +13,8 @@ public class ChatBean {
     private int userComposerId;
     /** 芸人ID */
     private int userComedianId;
-    /** 送信ユーザId */
-    private int sendUserId;
+    /** ユーザId */
+    private int userId;
     /** メッセージ */
     private String chatMessasge;
 
@@ -77,18 +77,18 @@ public class ChatBean {
         this.userComedianId = userComedianId;
     }
     /**
-     * 送信ユーザIdを取得します。
-     * @return 送信ユーザId
+     * ユーザIdを取得します。
+     * @return ユーザId
      */
-    public int getSendUserId() {
-        return sendUserId;
+    public int getUserId() {
+        return userId;
     }
     /**
-     * 送信ユーザIdを設定します。
-     * @param sendUserId 送信ユーザId
+     * ユーザIdを設定します。
+     * @param userId ユーザId
      */
-    public void setSendUserId(int sendUserId) {
-        this.sendUserId = sendUserId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
     /**
      * メッセージを取得します。

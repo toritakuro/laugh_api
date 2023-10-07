@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.c4ccup.laugh.controller.bean.req.MyPageBean;
 import com.c4ccup.laugh.domain.Laugh;
 
 /**
@@ -21,5 +22,12 @@ public interface MyPageRepository {
      * @return
      */
     public List<Laugh> selectLaugh(int userId);
+
+    /**
+     * contentsテーブルにデータを追加する
+     *
+     * @param myPageBean
+     */
+    public void uploadFile(MyPageBean myPageBean);
 
 }

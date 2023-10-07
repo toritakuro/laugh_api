@@ -37,4 +37,24 @@
 		ORDER BY
 			ms.create_at DESC
   </select>
+
+  <insert id="uploadFile" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO
+      content
+        (
+        user_id
+        ,title
+        ,detail
+        ,top_img_path
+        ,content_path
+        )
+    VALUES
+      (
+      #{userId}
+      ,#{title}
+      ,#{detail}
+      ,#{topImgPath}
+      ,#{contentPath}
+      );
+  </insert>
 </mapper>

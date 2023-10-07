@@ -1,38 +1,55 @@
 package com.c4ccup.laugh.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.c4ccup.laugh.controller.bean.req.MyPageBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.LaughResource;
+import com.c4ccup.laugh.controller.bean.res.Messages;
 import com.c4ccup.laugh.controller.bean.res.UserResource;
 import com.c4ccup.laugh.domain.Laugh;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.MyPageRepository;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
+import com.c4ccup.laugh.util.AwsS3Util;
+import com.c4ccup.laugh.util.ByteArrayMultipartFile;
 import com.c4ccup.laugh.util.EnumConst.MatchStatus;
+import com.c4ccup.laugh.util.MessageUtil;
+
+import io.jsonwebtoken.io.IOException;
 
 /**
  * マイページ Controllerクラス
  */
 @RequestMapping(value = "mypage")
 @RestController
-public class MyPageController {
+public class MyPageController extends _CmnController {
 
     @Autowired
     MyPageRepository mypageRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    private AwsS3Util awsS3Util;
+    @Autowired
+    MessageUtil msgUtil;
 
     /**
      * ログイン情報を取得する。
@@ -95,4 +112,28 @@ public class MyPageController {
         int month = (int) ChronoUnit.MONTHS.between(debutAt.withDayOfMonth(1), LocalDate.now().withDayOfMonth(1)) + 1;
         return new int[]{(month / 12),(month % 12)};
     }
+
+    /**
+     * コンテンツをS3に登録する
+     * @param
+     */
+    @RequestMapping(value ="uploadFile" , method = RequestMethod.POST)
+    private ResponseEntity<ApiResource<Messages>> uploadFile(@RequestBody MyPageBean bean) {
+        byte[] decodedBytes = Base64.getDecoder().decode(bean.getTopImg());
+
+        // ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedBytes);
+        MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", bean.getTitle(), null);
+
+        String uploadedFileName = awsS3Util.uploadFile(bean.getUserId(), multipartFile);
+
+        String s3Url = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/" + bean.getUserId() + "/" + uploadedFileName;
+        bean.setTopImgPath(s3Url);
+
+        mypageRepository.uploadFile(bean);
+
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール", "更新"))));
+    }
+
 }
+
+

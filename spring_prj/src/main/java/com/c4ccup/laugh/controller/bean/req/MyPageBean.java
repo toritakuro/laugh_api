@@ -22,7 +22,7 @@ public class MyPageBean {
     /** サムネイル画像URL */
     private String topImgPath;
     /** コンテント */
-    private byte[] content;
+    private String content;
     /** コンテントURL */
     private String contentPath;
 
@@ -115,21 +115,23 @@ public class MyPageBean {
      * @return content
      */
     public String getContent() {
-        if(content != null) {
-            return Base64.getEncoder().encodeToString(content);
-        }
-        return null;
+        return content;
+//        if(content != null) {
+//            return Base64.getEncoder().encodeToString(content);
+//        }
+//        return null;
     }
     /**
      * 投稿ファイルを設定します。
      * @param content 投稿ファイル
      */
     public void setContent(String content) {
-        if(content != null) {
-            this.content = Base64.getDecoder().decode(content);
-            return;
-        }
-        this.content = null;
+        this.content = content;
+//        if(content != null) {
+//            this.content = Base64.getDecoder().decode(content);
+//            return;
+//        }
+//        this.content = null;
     }
     /**
      * 投稿ファイルURLを取得します。

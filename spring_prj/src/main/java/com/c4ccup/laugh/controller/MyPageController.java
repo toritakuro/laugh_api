@@ -1,9 +1,5 @@
 package com.c4ccup.laugh.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -15,14 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.c4ccup.laugh.controller.bean.req.MyPageBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
+import com.c4ccup.laugh.controller.bean.res.ContentResources;
 import com.c4ccup.laugh.controller.bean.res.LaughResource;
 import com.c4ccup.laugh.controller.bean.res.Messages;
 import com.c4ccup.laugh.controller.bean.res.UserResource;
+import com.c4ccup.laugh.domain.Content;
 import com.c4ccup.laugh.domain.Laugh;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.MyPageRepository;
@@ -32,8 +31,6 @@ import com.c4ccup.laugh.util.AwsS3Util;
 import com.c4ccup.laugh.util.ByteArrayMultipartFile;
 import com.c4ccup.laugh.util.EnumConst.MatchStatus;
 import com.c4ccup.laugh.util.MessageUtil;
-
-import io.jsonwebtoken.io.IOException;
 
 /**
  * マイページ Controllerクラス
@@ -119,20 +116,77 @@ public class MyPageController extends _CmnController {
      */
     @RequestMapping(value ="uploadFile" , method = RequestMethod.POST)
     private ResponseEntity<ApiResource<Messages>> uploadFile(@RequestBody MyPageBean bean) {
-        byte[] decodedBytes = Base64.getDecoder().decode(bean.getTopImg());
 
-        // ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(decodedBytes);
-        MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", bean.getTitle(), null);
+        //サムネイルをS3に登録
+        if(bean.getTopImg() != null && !bean.getTopImg().isEmpty()) {
+            String DataUriSchema = bean.getTopImg().split(",")[0];  // Data URIスキーマ
+            String mimeType = DataUriSchema.split(";")[0].split(":")[1];  // MIME TYPE
+            String base64 = bean.getTopImg().split(",")[1];  // base64
 
-        String uploadedFileName = awsS3Util.uploadFile(bean.getUserId(), multipartFile);
+            byte[] decodedBytes = Base64.getDecoder().decode(base64);
+          //byte[] decodedBytes = Base64.getDecoder().decode(bean.getTopImg());
+            MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", bean.getTitle(), mimeType);
 
-        String s3Url = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/" + bean.getUserId() + "/" + uploadedFileName;
-        bean.setTopImgPath(s3Url);
+            String uploadedFileName = awsS3Util.uploadFile(bean.getUserId(), multipartFile);
 
+            String s3Url = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/" + bean.getUserId() + "/" + uploadedFileName;
+            bean.setTopImgPath(s3Url);
+
+        }
+
+      //コンテンツをS3に登録
+        if(bean.getContent() != null && !bean.getContent().isEmpty()) {
+            String DataUriSchema = bean.getContent().split(",")[0];  // Data URIスキーマ
+            String base64 = bean.getContent().split(",")[1];  // base64
+
+            byte[] decodedBytes = Base64.getDecoder().decode(base64);
+          //byte[] decodedBytes = Base64.getDecoder().decode(bean.getTopImg());
+            MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", bean.getTitle(), null);
+
+            String uploadedFileName = awsS3Util.uploadFile(bean.getUserId(), multipartFile);
+
+            String s3Url = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/" + bean.getUserId() + "/" + uploadedFileName;
+            bean.setContentPath(s3Url);
+
+
+        }
         mypageRepository.uploadFile(bean);
 
         return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール", "更新"))));
     }
+
+    /**
+     * コンテンツを取得する
+     * @param
+     * @return
+     */
+    @RequestMapping(value ="getFile" , method = RequestMethod.GET)
+    private ResponseEntity<ApiResource<List<ContentResources>>> getFile(@RequestParam int userId) {
+        List<Content> contentList = mypageRepository.selectContent(userId);
+        List<ContentResources> result = new ArrayList<>();
+
+        for (Content content : contentList) {
+            ContentResources r = new ContentResources();
+
+            r.setId(content.getId());
+            r.setUserId(content.getUserId());
+            r.setUserId(content.getUserId());
+            r.setTitle(content.getTitle());
+            r.setDetail(content.getDetail());
+            r.setTopImgPath(content.getTopImgPath());
+            r.setContentPath(content.getContentPath());
+            r.setCreateAt(content.getCreateAt());
+            r.setUpdateAt(content.getUpdateAt());
+
+            result.add(r);
+        }
+
+
+
+        return ResponseEntity.ok(new ApiResource<>(result));
+    }
+
+
 
 }
 

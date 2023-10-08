@@ -79,7 +79,7 @@
     	ON composer.id = crl.user_composer_id
     WHERE
         crl.id = #{chatRoomId}
-    ORDER BY cd.create_at DESC
+    ORDER BY cd.create_at ASC
   </select>
 
   <!-- チャットルーム作成 -->

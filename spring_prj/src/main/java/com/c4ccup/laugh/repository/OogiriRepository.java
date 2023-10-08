@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.c4ccup.laugh.controller.OogiriAnswerResponse;
-import com.c4ccup.laugh.controller.OogiriReactionResponse;
+import com.c4ccup.laugh.controller.bean.res.OogiriAnswerResources;
+import com.c4ccup.laugh.controller.bean.res.OogiriReactionResources;
 import com.c4ccup.laugh.domain.Oogiri;
 
 /**
@@ -58,9 +58,9 @@ public interface OogiriRepository {
      * お題に対する回答を3件取得
      * 
      * @param themeId お題ID
-     * @return List<OogiriAnswerResponse>
+     * @return List<OogiriAnswerResources>
      */
-    public List<OogiriAnswerResponse> getThreeAnswers(int themeId, int limit);
+    public List<OogiriAnswerResources> getThreeAnswers(int themeId, int limit);
 
     /**
      * お題を登録する
@@ -109,9 +109,9 @@ public interface OogiriRepository {
      * 回答に対するリアクションを全件取得
      * 
      * @param answerId
-     * @return List<OogiriReactionResponse>
+     * @return List<OogiriReactionResources>
      */
-    public List<OogiriReactionResponse> getAllReactions(int answerId);
+    public List<OogiriReactionResources> getAllReactions(int answerId);
 
     /**
      * リアクションを登録する

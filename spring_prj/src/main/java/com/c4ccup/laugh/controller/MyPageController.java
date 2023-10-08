@@ -1,7 +1,6 @@
 package com.c4ccup.laugh.controller;
 
 import java.time.LocalDate;
-
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.c4ccup.laugh.controller.bean.req.MyPageBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.LaughResource;
-import com.c4ccup.laugh.controller.bean.res.TopResource;
+import com.c4ccup.laugh.controller.bean.res.UserResource;
 import com.c4ccup.laugh.domain.Laugh;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.MyPageRepository;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
-
-import static com.c4ccup.laugh.util.EnumConst.*;
+import com.c4ccup.laugh.util.EnumConst.MatchStatus;
 
 /**
  * マイページ Controllerクラス
@@ -42,9 +40,9 @@ public class MyPageController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<ApiResource<TopResource>> mypage(MyPageBean bean) {
+    public ResponseEntity<ApiResource<UserResource>> mypage(MyPageBean bean) {
         User user = userRepository.getComedianList(UserEnum.COMEDIAN.getId(), 3).get(0);
-        return ResponseEntity.ok(new ApiResource<>(new TopResource(user)));
+        return ResponseEntity.ok(new ApiResource<>(new UserResource(user)));
     }
 
     /**

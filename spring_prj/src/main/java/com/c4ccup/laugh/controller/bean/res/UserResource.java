@@ -1,20 +1,18 @@
 package com.c4ccup.laugh.controller.bean.res;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.c4ccup.laugh.domain.User;
-import com.c4ccup.laugh.util.AppConst.UserEnum;
+import com.c4ccup.laugh.util.Util;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-
 /**
- * TopResourceクラス
+ * UserResourceクラス
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class TopResource {
+public class UserResource {
 
     /** ID */
     private int id;
@@ -22,6 +20,8 @@ public class TopResource {
     private String userName;
     /** ユーザ名(かな) */
     private String userNameKana;
+    /** 検索用ユーザ名 */
+    private String searchUserName;
     /** 活動種別 */
     private int userType;
     /** 活動開始年月 */
@@ -46,32 +46,42 @@ public class TopResource {
     private byte[] profileImg;
     /** ログイン日時 */
     private LocalDateTime loginAt;
+    /** ログイン日時 並び替え用 */
+    private Integer loginAtInt;
     /** 更新日時 */
     private LocalDateTime updateAt;
+    /** 更新日時 並び替え用 */
+    private Integer updateAtInt;
     /** 活動人数 */
     private int memberNum;
     /** 料金体系 */
     private int feeType;
     /** 料金 */
     private int fee;
-    /** 得意分野一覧 */
+    /** 得意分野・芸風Idリスト */
     private List<Integer> comedyStyleIdList;
-    /** コメディスタイル名 */
+    /** 得意分野・芸風リスト */
     private List<String> comedyStyleNameList;
     /** 特殊スキル一覧 */
     private List<Integer> specialSkillIdList;
-    /** 特殊スキル名 */
+    /** 特殊スキル名リスト */
     private List<String> specialSkillNameList;
+    /** idトークン */
+    private String idToken;
+    /** リフレッシュトークン */
+    private String refreshToken;
 
 
-    public TopResource() {
+
+    public UserResource() {
 
     }
 
-    public TopResource(User user) {
+    public UserResource(User user) {
         this.id = user.getId();
         this.userName = user.getUserName();
         this.userNameKana = user.getUserNameKana();
+        this.searchUserName = user.getUserName().replaceAll("　| ", "");
         this.userType = user.getUserType();
         this.debutDt = user.getDebutDt();
         this.gender = user.getGender();
@@ -82,33 +92,26 @@ public class TopResource {
         this.selfIntroduction = user.getSelfIntroduction();
         this.profileImg = user.getProfileImgPath();
         this.loginAt = user.getLoginAt();
+        this.loginAtInt = Util.getFormatLocalDateTimeToInt(loginAt);
         this.updateAt = user.getUpdateAt();
+        this.updateAtInt = Util.getFormatLocalDateTimeToInt(updateAt);
+        this.setActivityNum();
         this.feeType = user.getComposerProfile().getFeeType();
         this.fee = user.getComposerProfile().getFee();
         this.memberNum = user.getComedianProfile().getMemberNum();
         if (user.getComedyStyleIds() != null) {
-            this.comedyStyleIdList =
-                    Arrays.asList(user.getComedyStyleIds().split(","))
-                    .stream()
-                    .map(Integer::valueOf)
-                    .collect(Collectors.toList());
-            this.comedyStyleNameList = Arrays.asList(user.getComedyStyleNames().split(","));
+            this.comedyStyleIdList = Util.toIntList(user.getComedyStyleIds());
+            this.comedyStyleNameList = Util.toStrList(user.getComedyStyleNames());
         }
         if (user.getSpecialSkillIds() != null) {
-            this.specialSkillIdList =
-                    Arrays.asList(user.getSpecialSkillIds().split(","))
-                    .stream()
-                    .map(Integer::valueOf)
-                    .collect(Collectors.toList());
-            this.specialSkillNameList = Arrays.asList(user.getSpecialSkillNames().split(","));
-        }
-
-        if (this.userType == UserEnum.COMEDIAN.getId()) {
-            this.setActivityNum();
+            this.specialSkillIdList = Util.toIntList(user.getSpecialSkillIds());
+            if (user.getAnotherSkillNames() != null) { 
+                this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames() + user.getAnotherSkillNames());
+            } else {
+                this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames());
+            }
         }
     }
-
-
 
     /**
      * IDを取得します。
@@ -117,6 +120,7 @@ public class TopResource {
     public int getId() {
         return id;
     }
+
     /**
      * IDを設定します。
      * @param id ID
@@ -124,6 +128,7 @@ public class TopResource {
     public void setId(int id) {
         this.id = id;
     }
+
     /**
      * ユーザ名を取得します。
      * @return ユーザ名
@@ -131,6 +136,7 @@ public class TopResource {
     public String getUserName() {
         return userName;
     }
+
     /**
      * ユーザ名を設定します。
      * @param userName ユーザ名
@@ -138,6 +144,7 @@ public class TopResource {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     /**
      * ユーザ名(かな)を取得します。
      * @return ユーザ名(かな)
@@ -145,6 +152,7 @@ public class TopResource {
     public String getUserNameKana() {
         return userNameKana;
     }
+
     /**
      * ユーザ名(かな)を設定します。
      * @param userNameKana ユーザ名(かな)
@@ -152,6 +160,23 @@ public class TopResource {
     public void setUserNameKana(String userNameKana) {
         this.userNameKana = userNameKana;
     }
+
+    /**
+     * 検索用ユーザ名を取得します。
+     * @return 検索用ユーザ名
+     */
+    public String getSearchUserName() {
+        return searchUserName;
+    }
+
+    /**
+     * 検索用ユーザ名を設定します。
+     * @param searchUserName 検索用ユーザ名
+     */
+    public void setSearchUserName(String searchUserName) {
+        this.searchUserName = searchUserName;
+    }
+
     /**
      * 活動種別を取得します。
      * @return 活動種別
@@ -159,6 +184,7 @@ public class TopResource {
     public int getUserType() {
         return userType;
     }
+
     /**
      * 活動種別を設定します。
      * @param userType 活動種別
@@ -166,6 +192,7 @@ public class TopResource {
     public void setUserType(int userType) {
         this.userType = userType;
     }
+
     /**
      * 活動開始年月を取得します。
      * @return 活動開始年月
@@ -173,6 +200,7 @@ public class TopResource {
     public LocalDate getDebutDt() {
         return debutDt;
     }
+
     /**
      * 活動開始年月を設定します。
      * @param debutDt 活動開始年月
@@ -180,6 +208,7 @@ public class TopResource {
     public void setDebutDt(LocalDate debutDt) {
         this.debutDt = debutDt;
     }
+
     /**
      * 活動年月を取得します。
      * @return 活動年月
@@ -187,6 +216,7 @@ public class TopResource {
     public String getActivityDt() {
         return activityDt;
     }
+
     /**
      * 活動年月を設定します。
      * @param activityDt 活動年月
@@ -194,6 +224,7 @@ public class TopResource {
     public void setActivityDt(String activityDt) {
         this.activityDt = activityDt;
     }
+
     /**
      * 活動年数を取得します。
      * @return 活動年数
@@ -201,6 +232,7 @@ public class TopResource {
     public int getActivityNum() {
         return activityNum;
     }
+
     /**
      * 活動年数を設定します。
      * @param activityNum 活動年数
@@ -208,6 +240,7 @@ public class TopResource {
     public void setActivityNum(int activityNum) {
         this.activityNum = activityNum;
     }
+
     /**
      * 性別を取得します。
      * @return 性別
@@ -215,6 +248,7 @@ public class TopResource {
     public int getGender() {
         return gender;
     }
+
     /**
      * 性別を設定します。
      * @param gender 性別
@@ -222,6 +256,7 @@ public class TopResource {
     public void setGender(int gender) {
         this.gender = gender;
     }
+
     /**
      * 事務所IDを取得します。
      * @return 事務所ID
@@ -229,6 +264,7 @@ public class TopResource {
     public int getOfficeId() {
         return officeId;
     }
+
     /**
      * 事務所IDを設定します。
      * @param officeId 事務所ID
@@ -236,6 +272,7 @@ public class TopResource {
     public void setOfficeId(int officeId) {
         this.officeId = officeId;
     }
+
     /**
      * オフィス名を取得します。
      * @return オフィス名
@@ -243,6 +280,7 @@ public class TopResource {
     public String getOfficeName() {
         return officeName;
     }
+
     /**
      * オフィス名を設定します。
      * @param officeName オフィス名
@@ -250,6 +288,7 @@ public class TopResource {
     public void setOfficeName(String officeName) {
         this.officeName = officeName;
     }
+
     /**
      * 活動場所IDを取得します。
      * @return 活動場所ID
@@ -257,6 +296,7 @@ public class TopResource {
     public int getAreaId() {
         return areaId;
     }
+
     /**
      * 活動場所IDを設定します。
      * @param areaId 活動場所ID
@@ -264,6 +304,7 @@ public class TopResource {
     public void setAreaId(int areaId) {
         this.areaId = areaId;
     }
+
     /**
      * 活動地域名を取得します。
      * @return 活動地域名
@@ -271,6 +312,7 @@ public class TopResource {
     public String getAreaName() {
         return areaName;
     }
+
     /**
      * 活動地域名を設定します。
      * @param areaName 活動地域名
@@ -278,6 +320,7 @@ public class TopResource {
     public void setAreaName(String areaName) {
         this.areaName = areaName;
     }
+
     /**
      * 自己紹介文を取得します。
      * @return 自己紹介文
@@ -285,6 +328,7 @@ public class TopResource {
     public String getSelfIntroduction() {
         return selfIntroduction;
     }
+
     /**
      * 自己紹介文を設定します。
      * @param selfIntroduction 自己紹介文
@@ -292,6 +336,7 @@ public class TopResource {
     public void setSelfIntroduction(String selfIntroduction) {
         this.selfIntroduction = selfIntroduction;
     }
+
     /**
      * プロフィール画像を取得します。
      * @return プロフィール画像
@@ -299,6 +344,7 @@ public class TopResource {
     public byte[] getProfileImg() {
         return profileImg;
     }
+
     /**
      * プロフィール画像を設定します。
      * @param profileImg プロフィール画像
@@ -306,6 +352,7 @@ public class TopResource {
     public void setProfileImg(byte[] profileImg) {
         this.profileImg = profileImg;
     }
+
     /**
      * ログイン日時を取得します。
      * @return ログイン日時
@@ -313,6 +360,7 @@ public class TopResource {
     public LocalDateTime getLoginAt() {
         return loginAt;
     }
+
     /**
      * ログイン日時を設定します。
      * @param loginAt ログイン日時
@@ -320,6 +368,23 @@ public class TopResource {
     public void setLoginAt(LocalDateTime loginAt) {
         this.loginAt = loginAt;
     }
+
+    /**
+     * ログイン日時 並び替え用を取得します。
+     * @return ログイン日時 並び替え用
+     */
+    public Integer getLoginAtInt() {
+        return loginAtInt;
+    }
+
+    /**
+     * ログイン日時 並び替え用を設定します。
+     * @param loginAtInt ログイン日時 並び替え用
+     */
+    public void setLoginAtInt(Integer loginAtInt) {
+        this.loginAtInt = loginAtInt;
+    }
+
     /**
      * 更新日時を取得します。
      * @return 更新日時
@@ -327,6 +392,7 @@ public class TopResource {
     public LocalDateTime getUpdateAt() {
         return updateAt;
     }
+
     /**
      * 更新日時を設定します。
      * @param updateAt 更新日時
@@ -334,6 +400,23 @@ public class TopResource {
     public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
     }
+
+    /**
+     * 更新日時 並び替え用を取得します。
+     * @return 更新日時 並び替え用
+     */
+    public Integer getUpdateAtInt() {
+        return updateAtInt;
+    }
+
+    /**
+     * 更新日時 並び替え用を設定します。
+     * @param updateAtInt 更新日時 並び替え用
+     */
+    public void setUpdateAtInt(Integer updateAtInt) {
+        this.updateAtInt = updateAtInt;
+    }
+
     /**
      * 活動人数を取得します。
      * @return 活動人数
@@ -341,6 +424,7 @@ public class TopResource {
     public int getMemberNum() {
         return memberNum;
     }
+
     /**
      * 活動人数を設定します。
      * @param memberNum 活動人数
@@ -348,6 +432,7 @@ public class TopResource {
     public void setMemberNum(int memberNum) {
         this.memberNum = memberNum;
     }
+
     /**
      * 料金体系を取得します。
      * @return 料金体系
@@ -355,6 +440,7 @@ public class TopResource {
     public int getFeeType() {
         return feeType;
     }
+
     /**
      * 料金体系を設定します。
      * @param feeType 料金体系
@@ -362,6 +448,7 @@ public class TopResource {
     public void setFeeType(int feeType) {
         this.feeType = feeType;
     }
+
     /**
      * 料金を取得します。
      * @return 料金
@@ -369,6 +456,7 @@ public class TopResource {
     public int getFee() {
         return fee;
     }
+
     /**
      * 料金を設定します。
      * @param fee 料金
@@ -376,6 +464,7 @@ public class TopResource {
     public void setFee(int fee) {
         this.fee = fee;
     }
+
     /**
      * 得意分野一覧を取得します。
      * @return 得意分野一覧
@@ -383,6 +472,7 @@ public class TopResource {
     public List<Integer> getComedyStyleIdList() {
         return comedyStyleIdList;
     }
+  
     /**
      * 得意分野一覧を設定します。
      * @param comedyStyleIdList 得意分野一覧
@@ -390,6 +480,7 @@ public class TopResource {
     public void setComedyStyleIdList(List<Integer> comedyStyleIdList) {
         this.comedyStyleIdList = comedyStyleIdList;
     }
+  
     /**
      * コメディスタイル名を取得します。
      * @return コメディスタイル名
@@ -397,6 +488,7 @@ public class TopResource {
     public List<String> getComedyStyleNameList() {
         return comedyStyleNameList;
     }
+  
     /**
      * コメディスタイル名を設定します。
      * @param comedyStyleName コメディスタイル名
@@ -404,6 +496,7 @@ public class TopResource {
     public void setComedyStyleName(List<String> comedyStyleName) {
         this.comedyStyleNameList = comedyStyleName;
     }
+  
     /**
      * 特殊スキル一覧を取得します。
      * @return 特殊スキル一覧
@@ -411,6 +504,7 @@ public class TopResource {
     public List<Integer> getSpecialSkillIdList() {
         return specialSkillIdList;
     }
+  
     /**
      * 特殊スキル一覧を設定します。
      * @param specialSkillIdList 特殊スキル一覧
@@ -418,13 +512,15 @@ public class TopResource {
     public void setSpecialSkillIdList(List<Integer> specialSkillIdList) {
         this.specialSkillIdList = specialSkillIdList;
     }
+  
     /**
      * 特殊スキル名を取得します。
      * @return 特殊スキル名
      */
-    public List<String> getSpecialSkillNamelist() {
+    public List<String> getSpecialSkillNameList() {
         return specialSkillNameList;
     }
+  
     /**
      * 特殊スキル名を設定します。
      * @param specialSkillNameList 特殊スキル名
@@ -432,6 +528,39 @@ public class TopResource {
     public void setSpecialSkillNameList(List<String> specialSkillNameList) {
         this.specialSkillNameList = specialSkillNameList;
     }
+
+    /**
+     * idトークンを取得します。
+     * @return idトークン
+     */
+    public String getIdToken() {
+        return idToken;
+    }
+
+    /**
+     * idトークンを設定します。
+     * @param idToken idトークン
+     */
+    public void setIdToken(String idToken) {
+        this.idToken = idToken;
+    }
+
+    /**
+     * リフレッシュトークンを取得します。
+     * @return リフレッシュトークン
+     */
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    /**
+     * リフレッシュトークンを設定します。
+     * @param refreshToken リフレッシュトークン
+     */
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
     /**
      * 活動年月のセット処理  作家・芸人共通
      * @param users

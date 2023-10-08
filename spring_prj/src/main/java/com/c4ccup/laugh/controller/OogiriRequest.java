@@ -2,6 +2,8 @@ package com.c4ccup.laugh.controller;
 
 import java.util.List;
 
+import com.c4ccup.laugh.controller.bean.res.OogiriAnswerResources;
+
 public class OogiriRequest {
 
     /** ユーザーID */
@@ -21,7 +23,7 @@ public class OogiriRequest {
     /** 回答内容 */
     private String answerContent;
     /** 回答リスト */
-    private List<OogiriAnswerResponse> answers;
+    private List<OogiriAnswerResources> answers;
 
     // リアクション情報
     /** リアクションID */
@@ -144,7 +146,7 @@ public class OogiriRequest {
      * 
      * @return 回答リスト
      */
-    public List<OogiriAnswerResponse> getAnswers() {
+    public List<OogiriAnswerResources> getAnswers() {
         return answers;
     }
 
@@ -153,7 +155,7 @@ public class OogiriRequest {
      * 
      * @param answers 回答リスト
      */
-    public void setAnswers(List<OogiriAnswerResponse> answers) {
+    public void setAnswers(List<OogiriAnswerResources> answers) {
         this.answers = answers;
     }
 

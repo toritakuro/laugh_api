@@ -9,10 +9,8 @@ public class ChatBean {
     private int chatRoomId;
     /** ユーザ種別 */
     private int userType;
-    /** 作家ID */
-    private int userComposerId;
-    /** 芸人ID */
-    private int userComedianId;
+    /** 送信相手ID */
+    private int targetUserId;
     /** ユーザId */
     private int userId;
     /** メッセージ */
@@ -49,32 +47,18 @@ public class ChatBean {
         this.userType = userType;
     }
     /**
-     * 作家IDを取得します。
-     * @return 作家ID
+     * 送信相手IDを取得します。
+     * @return 送信相手ID
      */
-    public int getUserComposerId() {
-        return userComposerId;
+    public int getTargetUserId() {
+        return targetUserId;
     }
     /**
-     * 作家IDを設定します。
-     * @param userComposerId 作家ID
+     * 送信相手IDを設定します。
+     * @param targetUserId 送信相手ID
      */
-    public void setUserComposerId(int userComposerId) {
-        this.userComposerId = userComposerId;
-    }
-    /**
-     * 芸人IDを取得します。
-     * @return 芸人ID
-     */
-    public int getUserComedianId() {
-        return userComedianId;
-    }
-    /**
-     * 芸人IDを設定します。
-     * @param userComedianId 芸人ID
-     */
-    public void setUserComedianId(int userComedianId) {
-        this.userComedianId = userComedianId;
+    public void setTargetUserId(int targetUserId) {
+        this.targetUserId = targetUserId;
     }
     /**
      * ユーザIdを取得します。

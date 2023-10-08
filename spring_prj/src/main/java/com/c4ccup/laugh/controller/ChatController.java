@@ -109,9 +109,9 @@ public class ChatController {
         if (request.getChatRoomId() == 0) {
             if (request.getUserType() == UserEnum.COMEDIAN.getId()) {
                 chat.setUserComedianId(request.getUserId());
-                chat.setUserComposerId(request.getUserComposerId());
+                chat.setUserComposerId(request.getTargetUserId());
             } else {
-                chat.setUserComedianId(request.getUserComedianId());
+                chat.setUserComedianId(request.getTargetUserId());
                 chat.setUserComposerId(request.getUserId());
             }
             chatRepository.createChatRoom(chat);

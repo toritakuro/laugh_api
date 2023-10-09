@@ -13,10 +13,10 @@ public class AppConst {
 
     /** ユーザータイプ */
     public enum UserEnum {
-        /** 1:作家 */
-        COMPOSER(1, "作家"),
-        /** 2:芸人 */
-        COMEDIAN(2, "芸人"),
+        /** 1:芸人 */
+        COMEDIAN(1, "芸人"),
+        /** 2:作家 */
+        COMPOSER(2, "作家"),
         ;
 
         private int id;

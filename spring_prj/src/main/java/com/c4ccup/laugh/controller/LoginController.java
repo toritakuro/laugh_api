@@ -65,10 +65,11 @@ public class LoginController extends _CmnController {
         String idToken = jwtUtil.generateToken(email);
         String refreshToken = jwtUtil.generateRefreshToken(email);
         UserResource response = new UserResource();
+        // レスポンスとしてJWTとユーザーID,タイプを返す
         response.setIdToken(idToken);
         response.setRefreshToken(refreshToken);
         response.setId(user.getId());
-        // レスポンスとしてJWTとユーザーIDを返す
+        response.setUserType(user.getUserType());
         ApiResource<UserResource> res = new ApiResource<>(response);
         return ResponseEntity.ok(res);
     }

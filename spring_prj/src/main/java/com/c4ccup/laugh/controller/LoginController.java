@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
+import com.c4ccup.laugh.controller.bean.res.UserResource;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.JwtUtil;
@@ -41,7 +42,7 @@ public class LoginController extends _CmnController {
      * @return JWTとユーザー情報を含むレスポンスエンティティ
      */
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseEntity<ApiResource<LoginResponse>> login(@RequestBody LoginRequest request) throws LoginException {
+    public ResponseEntity<ApiResource<UserResource>> login(@RequestBody LoginRequest request) throws LoginException {
 
         String email = request.getEmail();
         String password = request.getPassword();
@@ -60,11 +61,16 @@ public class LoginController extends _CmnController {
         // ログイン日時を更新
         user.setLoginAt(now);
         userRepository.updateLoginAt(user);
-        // JWTを発行する処理
-        String jwt = jwtUtil.generateToken(email);
-        LoginResponse response = new LoginResponse(jwt, user);
-        // レスポンスとしてJWTとユーザー情報を返す
-        ApiResource<LoginResponse> res = new ApiResource<>(response);
+        // トークンを発行する処理
+        String idToken = jwtUtil.generateToken(email);
+        String refreshToken = jwtUtil.generateRefreshToken(email);
+        UserResource response = new UserResource();
+        // レスポンスとしてJWTとユーザーID,タイプを返す
+        response.setIdToken(idToken);
+        response.setRefreshToken(refreshToken);
+        response.setId(user.getId());
+        response.setUserType(user.getUserType());
+        ApiResource<UserResource> res = new ApiResource<>(response);
         return ResponseEntity.ok(res);
     }
 

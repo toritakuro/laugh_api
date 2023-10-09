@@ -89,7 +89,6 @@ CREATE TABLE chat_detail (
   chat_room_list_id INT NOT NULL COMMENT 'チャットルームリストID',
   send_user_id INT NOT NULL COMMENT '送信者ID',
   chat_message VARCHAR(500) NOT NULL COMMENT '送信文',
-  send_at DATETIME COMMENT '送信日時',
   create_at DATETIME COMMENT '作成日時',
   update_at DATETIME COMMENT '更新日時',
   CONSTRAINT chat_detail_PKC PRIMARY KEY (id),

@@ -42,7 +42,7 @@ CREATE TABLE user (
   user_address VARCHAR(255) NOT NULL COMMENT 'ユーザアドレス',
   user_name VARCHAR(255) NOT NULL COMMENT 'ユーザ名',
   user_name_kana VARCHAR(255) NOT NULL COMMENT 'ユーザ名(かな)',
-  user_type TINYINT NOT NULL COMMENT '活動種別:1:作家、2:芸人',
+  user_type TINYINT NOT NULL COMMENT '活動種別:1:芸人、2:作家',
   password VARCHAR(255) NOT NULL COMMENT 'パスワード',
   debut_dt DATE COMMENT '活動開始年月',
   gender TINYINT DEFAULT 0 COMMENT '性別:0:回答なし、1:男性、2:女性、3:男女',
@@ -219,7 +219,7 @@ create table special_skill (
 CREATE TABLE own_special_skill (
   id INT AUTO_INCREMENT NOT NULL COMMENT 'ID',
   user_id INT NOT NULL COMMENT 'ユーザID',
-  special_skill_id INT NOT NULL COMMENT '特殊スキルID',
+  special_skill_id INT COMMENT '特殊スキルID',
   another_skill VARCHAR(20) COMMENT 'その他スキル',
   create_at DATETIME COMMENT '作成日時',
   update_at DATETIME COMMENT '更新日時',

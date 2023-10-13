@@ -39,4 +39,11 @@ public interface MyPageRepository {
      */
     public List<Content> selectContent(int userId);
 
+    /**
+     * contentテーブルからデータを削除する
+     *
+     * @param id
+     */
+    public void deleteContent(int id);
+
 }

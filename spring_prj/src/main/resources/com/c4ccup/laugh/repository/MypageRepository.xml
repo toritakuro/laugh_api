@@ -20,7 +20,7 @@
     <result column="user_id" property="userId"/>
     <result column="title" property="title"/>
     <result column="detail" property="detail"/>
-    <result column="top_img_path" property="topImgPath"/>
+    <result column="file_type" property="fileType"/>
     <result column="content_path" property="contentPath"/>
     <result column="create_at" property="createAt"/>
     <result column="update_at" property="updateAt"/>
@@ -56,7 +56,7 @@
         user_id
         ,title
         ,detail
-        ,top_img_path
+        ,file_type
         ,content_path
         )
     VALUES
@@ -64,7 +64,7 @@
       #{userId}
       ,#{title}
       ,#{detail}
-      ,#{topImgPath}
+      ,#{fileType}
       ,#{contentPath}
       );
   </insert>
@@ -75,7 +75,7 @@
             ,user_id
             ,title
             ,detail
-            ,top_img_path
+            ,file_type
             ,content_path
             ,create_at
             ,update_at
@@ -85,4 +85,12 @@
         ORDER BY
             create_at desc
   </select>
+
+  <delete id="deleteContent">
+    DELETE FROM
+      content
+    WHERE
+      id = #{id}
+  </delete>
+
 </mapper>

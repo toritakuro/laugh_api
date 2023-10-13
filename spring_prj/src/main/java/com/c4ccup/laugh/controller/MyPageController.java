@@ -117,22 +117,22 @@ public class MyPageController extends _CmnController {
     @RequestMapping(value ="uploadFile" , method = RequestMethod.POST)
     private ResponseEntity<ApiResource<Messages>> uploadFile(@RequestBody MyPageBean bean) {
 
-        //サムネイルをS3に登録
-        if(bean.getTopImg() != null && !bean.getTopImg().isEmpty()) {
-            String DataUriSchema = bean.getTopImg().split(",")[0];  // Data URIスキーマ
-            String mimeType = DataUriSchema.split(";")[0].split(":")[1];  // MIME TYPE
-            String base64 = bean.getTopImg().split(",")[1];  // base64
-
-            byte[] decodedBytes = Base64.getDecoder().decode(base64);
-          //byte[] decodedBytes = Base64.getDecoder().decode(bean.getTopImg());
-            MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", bean.getTitle(), mimeType);
-
-            String uploadedFileName = awsS3Util.uploadFile(bean.getUserId(), multipartFile);
-
-            String s3Url = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/" + bean.getUserId() + "/" + uploadedFileName;
-            bean.setTopImgPath(s3Url);
-
-        }
+//        //サムネイルをS3に登録
+//        if(bean.getTopImg() != null && !bean.getTopImg().isEmpty()) {
+//            String DataUriSchema = bean.getTopImg().split(",")[0];  // Data URIスキーマ
+//            String mimeType = DataUriSchema.split(";")[0].split(":")[1];  // MIME TYPE
+//            String base64 = bean.getTopImg().split(",")[1];  // base64
+//
+//            byte[] decodedBytes = Base64.getDecoder().decode(base64);
+//          //byte[] decodedBytes = Base64.getDecoder().decode(bean.getTopImg());
+//            MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", bean.getTitle(), mimeType);
+//
+//            String uploadedFileName = awsS3Util.uploadFile(bean.getUserId(), multipartFile);
+//
+//            String s3Url = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/" + bean.getUserId() + "/" + uploadedFileName;
+//            bean.setTopImgPath(s3Url);
+//
+//        }
 
       //コンテンツをS3に登録
         if(bean.getContent() != null && !bean.getContent().isEmpty()) {
@@ -173,7 +173,7 @@ public class MyPageController extends _CmnController {
             r.setUserId(content.getUserId());
             r.setTitle(content.getTitle());
             r.setDetail(content.getDetail());
-            r.setTopImgPath(content.getTopImgPath());
+            r.setFileType(content.getFileType());
             r.setContentPath(content.getContentPath());
             r.setCreateAt(content.getCreateAt());
             r.setUpdateAt(content.getUpdateAt());
@@ -184,6 +184,17 @@ public class MyPageController extends _CmnController {
 
 
         return ResponseEntity.ok(new ApiResource<>(result));
+    }
+
+    /**
+     * コンテンツを削除する
+     * @param
+     */
+    @RequestMapping(value ="deleteFile" , method = RequestMethod.POST)
+    private ResponseEntity<ApiResource<Messages>> deleteFile(@RequestParam int id) {
+        mypageRepository.deleteContent(id);
+
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール", "削除"))));
     }
 
 

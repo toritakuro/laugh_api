@@ -1,32 +1,28 @@
-package com.c4ccup.laugh.controller.bean.req;
+package com.c4ccup.laugh.controller.bean.res;
 
-import java.util.Base64;
+import java.time.LocalDateTime;
 
 /**
  * マイページBean
  */
-public class MyPageBean {
+public class ContentResources {
 
-    /** ユーザID */
-    private int userId;
-
-    // contentテーブル用
     /** ID */
     private int id;
+    /** ユーザID */
+    private int userId;
     /** タイトル */
     private String title;
     /** 詳細 */
     private String detail;
-//    /** サムネイル画像 */
-//    private String topImg;
-//    /** サムネイル画像URL */
-//    private String topImgPath;
     /** ファイル種類 */
     private int fileType;
-    /** コンテント */
-    private String content;
     /** コンテントURL */
     private String contentPath;
+    /** 作成日時 */
+    private LocalDateTime createAt;
+    /** 更新日時 */
+    private LocalDateTime updateAt;
 
 
 
@@ -86,54 +82,17 @@ public class MyPageBean {
     }
     /**
      * ファイル種類を取得します。
-     * @return topImg
+     * @return fileType
      */
     public int getFileType() {
         return fileType;
     }
     /**
      * ファイル種類を設定します。
-     * @param topImg ファイル種類
+     * @param fileType ファイル種類
      */
     public void setFileType(int fileType) {
         this.fileType = fileType;
-    }
-//    /**
-//     * サムネイル画像URLを取得します。
-//     * @return topImgPath
-//     */
-//    public String getTopImgPath() {
-//        return topImgPath;
-//    }
-//    /**
-//     * サムネイル画像URLを設定します。
-//     * @param topImgPath サムネイル画像URL
-//     */
-//    public void setTopImgPath(String topImgPath) {
-//        this.topImgPath = topImgPath;
-//    }
-    /**
-     * 投稿ファイルを取得します。
-     * @return content
-     */
-    public String getContent() {
-        return content;
-//        if(content != null) {
-//            return Base64.getEncoder().encodeToString(content);
-//        }
-//        return null;
-    }
-    /**
-     * 投稿ファイルを設定します。
-     * @param content 投稿ファイル
-     */
-    public void setContent(String content) {
-        this.content = content;
-//        if(content != null) {
-//            this.content = Base64.getDecoder().decode(content);
-//            return;
-//        }
-//        this.content = null;
     }
     /**
      * 投稿ファイルURLを取得します。
@@ -148,6 +107,34 @@ public class MyPageBean {
      */
     public void setContentPath(String contentPath) {
         this.contentPath = contentPath;
+    }
+    /**
+     * 作成日時を取得する
+     * @return 作成日時
+     */
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+    /**
+     * 作成日時を設定する
+     * @param createAt 作成日時
+     */
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
+    }
+    /**
+     * 更新日時を取得する
+     * @return 更新日時
+     */
+    public LocalDateTime getUpdateAt() {
+        return updateAt;
+    }
+    /**
+     * 更新日時を設定する
+     * @param updateAt 更新日時
+     */
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
     }
 
 }

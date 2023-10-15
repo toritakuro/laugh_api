@@ -171,7 +171,7 @@ public class MyPageController extends _CmnController {
             r.setId(content.getId());
             r.setUserId(content.getUserId());
             r.setUserId(content.getUserId());
-            r.setTitle(content.getTitle());
+            r.setTitle(content.getTitle().split("\\.")[0]);
             r.setDetail(content.getDetail());
             r.setFileType(content.getFileType());
             r.setContentPath(content.getContentPath());
@@ -191,8 +191,8 @@ public class MyPageController extends _CmnController {
      * @param
      */
     @RequestMapping(value ="deleteFile" , method = RequestMethod.POST)
-    private ResponseEntity<ApiResource<Messages>> deleteFile(@RequestParam int id) {
-        mypageRepository.deleteContent(id);
+    private ResponseEntity<ApiResource<Messages>> deleteFile(@RequestBody MyPageBean bean) {
+        mypageRepository.deleteContent(bean.getId());
 
         return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール", "削除"))));
     }

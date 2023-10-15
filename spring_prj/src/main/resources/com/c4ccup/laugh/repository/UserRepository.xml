@@ -444,7 +444,7 @@
     WHERE
       user.user_type = #{userType}
     AND
-      user.user_id = #{userId}
+      user.id = #{userId}
     GROUP BY
       comedian_profile.id
   </select>

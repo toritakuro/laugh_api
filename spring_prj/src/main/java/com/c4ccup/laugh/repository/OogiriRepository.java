@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.c4ccup.laugh.controller.bean.req.MyPageBean;
 import com.c4ccup.laugh.controller.bean.res.OogiriAnswerResources;
 import com.c4ccup.laugh.controller.bean.res.OogiriReactionResources;
 import com.c4ccup.laugh.domain.Oogiri;
@@ -139,4 +140,12 @@ public interface OogiriRepository {
      * @return
      */
     public List<Integer> getAnsweredThemeId(int userId);
+
+    /**
+     * ユーザーが回答したお題のIDを全件取得
+     * 
+     * @param userId
+     * @return
+     */
+    public List<Oogiri> getAnswerByUserId(MyPageBean bean);
 }

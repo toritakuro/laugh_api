@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.c4ccup.laugh.domain.Oogiri;
+
 public class OogiriAnswerResources {
 
     public OogiriAnswerResources() {
@@ -25,6 +27,9 @@ public class OogiriAnswerResources {
 
     /** リアクションリスト */
     private List<OogiriReactionResources> reactions;
+
+    /** ユーザ詳細用回答リスト */
+    private List<Oogiri> answerList;
 
     /**
      * 回答IDを取得します。
@@ -150,6 +155,24 @@ public class OogiriAnswerResources {
      */
     public void setReactions(List<OogiriReactionResources> reactions) {
         this.reactions = reactions;
+    }
+
+    /**
+     * 回答リストを取得します。
+     * 
+     * @return answerList
+     */
+    public List<Oogiri> getAnswerList() {
+        return answerList;
+    }
+
+    /**
+     * 回答リストを設定します。
+     * 
+     * @param answerList セットする answerList
+     */
+    public void setAnswerList(List<Oogiri> answerList) {
+        this.answerList = answerList;
     }
 
 }

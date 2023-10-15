@@ -1,10 +1,9 @@
-package com.c4ccup.laugh.controller.bean.req;
+package com.c4ccup.laugh.domain;
 
-/**
- * ユーザ詳細Bean
- */
-public class UserDetailBean {
+public class MatchStatus {
 
+    /** id */
+    private int id;
     /** 送信ユーザID */
     private int sendUserId;
     /** 受信ユーザID */
@@ -12,7 +11,20 @@ public class UserDetailBean {
     /** マッチステータス */
     private int matchStatus;
 
-
+    /**
+     * IDを取得します。
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
+    /**
+     * IDを設定します。
+     * @param id セットする id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
     /**
      * 送信ユーザIDを取得します。
      * @return ユーザID
@@ -55,5 +67,4 @@ public class UserDetailBean {
     public void setMatchStatus(int matchStatus) {
         this.matchStatus = matchStatus;
     }
-
 }

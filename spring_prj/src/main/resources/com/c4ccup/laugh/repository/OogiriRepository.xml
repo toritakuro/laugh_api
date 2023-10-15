@@ -10,8 +10,10 @@
     <result property="answerContent" column="answer_content"/>
     <result property="answerCreatedAt" column="answer_create_at"/>
     <result property="answerDeletedAt" column="answer_delete_at"/>
+    <result property="themeId" column="theme_id"/>
     <result property="themeUserId" column="theme_user_id"/>
     <result property="themeUserName" column="theme_user_name"/>
+    <result property="themeContent" column="theme_content"/>
     <result property="themeCreatedAt" column="theme_create_at"/>
     <result property="reactionIds" column="reaction_ids"/>
     <result property="reactionUserIds" column="reaction_user_ids"/>
@@ -298,5 +300,27 @@
         oogiri_answer
     WHERE
         user_id = #{userId};
+</select>
+
+<select id="getAnswerByUserId" resultMap="OogiriResultMap">
+    SELECT
+        oogiri_answer.id as answer_id,
+        oogiri_answer.oogiri_theme_id,
+        oogiri_answer.user_id as answer_user_id,
+        oogiri_answer.answer_content,
+        oogiri_theme.theme_content,
+        oogiri_theme.id as theme_id
+    FROM
+        oogiri_answer
+    LEFT JOIN
+        oogiri_theme
+    ON 
+        oogiri_answer.oogiri_theme_id = oogiri_theme.id 
+    WHERE 
+        oogiri_answer.user_id = #{userId}
+    AND 
+        oogiri_answer.delete_at IS NULL
+    ORDER BY
+        oogiri_answer.create_at DESC 
 </select>
 </mapper>

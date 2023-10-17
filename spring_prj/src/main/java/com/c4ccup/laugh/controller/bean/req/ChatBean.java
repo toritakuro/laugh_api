@@ -14,7 +14,7 @@ public class ChatBean {
     /** ユーザId */
     private int userId;
     /** メッセージ */
-    private String chatMessasge;
+    private String chatMessage;
 
 
 
@@ -78,15 +78,15 @@ public class ChatBean {
      * メッセージを取得します。
      * @return メッセージ
      */
-    public String getChatMessasge() {
-        return chatMessasge;
+    public String getChatMessage() {
+        return chatMessage;
     }
     /**
      * メッセージを設定します。
-     * @param chatMessasge メッセージ
+     * @param chatMessage メッセージ
      */
-    public void setChatMessasge(String chatMessasge) {
-        this.chatMessasge = chatMessasge;
+    public void setChatMessage(String chatMessage) {
+        this.chatMessage = chatMessage;
     }
 
 }

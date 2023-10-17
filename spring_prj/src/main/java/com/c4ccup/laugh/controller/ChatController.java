@@ -119,7 +119,7 @@ public class ChatController {
 
         // メッセージ作成
         chat.setSendUserId(request.getUserId());
-        chat.setChatMessage(request.getChatMessasge());
+        chat.setChatMessage(request.getChatMessage());
         chatRepository.sendChat(chat);
     }
 

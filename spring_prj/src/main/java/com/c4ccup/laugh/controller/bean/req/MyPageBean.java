@@ -7,7 +7,8 @@ public class MyPageBean {
 
     /** ユーザID */
     private int userId;
-
+    /** ユーザID */
+    private int userType;
 
 
     /**
@@ -23,6 +24,20 @@ public class MyPageBean {
      */
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+    /**
+     * ユーザIDを取得します。
+     * @return ユーザID
+     */
+    public int getUserType() {
+        return userType;
+    }
+    /**
+     * ユーザIDを設定します。
+     * @param userType ユーザID
+     */
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
 
 }

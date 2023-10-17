@@ -31,6 +31,8 @@ public class ProfileBean {
     private int debutMonth;
     /** 活動開始年月 */
     private LocalDate debutDt;
+    /** 活動開始年月(yyyy-MM) */
+    private String debutDtStr;
     /** 性別 */
     private int gender;
     /** 事務所ID */
@@ -187,6 +189,20 @@ public class ProfileBean {
      */
     public void setDebutDt(LocalDate debutDt) {
         this.debutDt = debutDt;
+    }
+    /**
+     * 活動開始年月(yyyy-MM)を取得します。
+     * @return 活動開始年月(yyyy-MM)
+     */
+    public String getDebutDtStr() {
+        return debutDtStr;
+    }
+    /**
+     * 活動開始年月(yyyy-MM)を設定します。
+     * @param debutDtStr 活動開始年月(yyyy-MM)
+     */
+    public void setDebutDtStr(String debutDtStr) {
+        this.debutDtStr = debutDtStr;
     }
     /**
      * @return gender

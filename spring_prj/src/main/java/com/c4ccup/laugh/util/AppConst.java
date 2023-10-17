@@ -57,6 +57,8 @@ public class AppConst {
     public enum DateFormatEnum {
         /** yyyy-MM-dd */
         HYPHEN_YMD("yyyy-MM-dd"),
+        /** yyyy-MM */
+        HYPHEN_YM("yyyy-MM"),
         /** yyyy/MM/dd */
         SLASH_YMD("yyyy/MM/dd"),
         /** HH:mm */

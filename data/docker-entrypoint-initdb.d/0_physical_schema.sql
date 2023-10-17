@@ -219,7 +219,7 @@ create table special_skill (
 CREATE TABLE own_special_skill (
   id INT AUTO_INCREMENT NOT NULL COMMENT 'ID',
   user_id INT NOT NULL COMMENT 'ユーザID',
-  special_skill_id INT NOT NULL COMMENT '特殊スキルID',
+  special_skill_id INT COMMENT '特殊スキルID',
   another_skill VARCHAR(20) COMMENT 'その他スキル',
   create_at DATETIME COMMENT '作成日時',
   update_at DATETIME COMMENT '更新日時',

@@ -1,5 +1,6 @@
 package com.c4ccup.laugh.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -78,6 +79,27 @@ public class Util {
     public static String formatLocalDateTime(LocalDateTime date, DateFormatEnum format) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(format.getFormat());
         return date.format(dtf);
+    }
+
+    /**
+     * enumで指定した日付の形式に変換
+     * @param date
+     * @param format
+     * @return
+     */
+    public static String formatLocalDateTime(LocalDate date, DateFormatEnum format) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(format.getFormat());
+        return date.format(dtf);
+    }
+
+    /**
+     * enumで指定した日付の形式に変換
+     * @param date
+     * @param format
+     * @return
+     */
+    public static LocalDate toLocalDate(String date, DateFormatEnum format) {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern(format.getFormat()));
     }
 
     /**

@@ -444,7 +444,7 @@
     WHERE
       user.user_type = #{userType}
     AND
-      user.user_id = #{userId}
+      user.id = #{userId}
     GROUP BY
       comedian_profile.id
   </select>
@@ -453,17 +453,14 @@
     UPDATE
       user
     SET
-      user_address = #{userAddress}
-      ,user_name = #{userName}
+      user_name = #{userName}
       ,user_name_kana = #{userNameKana}
       ,user_type = #{userType}
-      ,password = #{password}
       ,debut_dt = #{debutDt}
       ,gender = #{gender}
       ,office_id = #{officeId}
       ,area_id = #{areaId}
       ,self_introduction = #{selfIntroduction}
-      ,profile_img_path = #{profileImgPath}
     WHERE
       id = #{id}
   </update>

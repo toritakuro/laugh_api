@@ -14,9 +14,9 @@ public class AppConst {
     /** ユーザータイプ */
     public enum UserEnum {
         /** 1:作家 */
-        COMPOSER(1, "作家"),
+        COMPOSER(2, "作家"),
         /** 2:芸人 */
-        COMEDIAN(2, "芸人"),
+        COMEDIAN(1, "芸人"),
         ;
 
         private int id;
@@ -57,6 +57,8 @@ public class AppConst {
     public enum DateFormatEnum {
         /** yyyy-MM-dd */
         HYPHEN_YMD("yyyy-MM-dd"),
+        /** yyyy-MM */
+        HYPHEN_YM("yyyy-MM"),
         /** yyyy/MM/dd */
         SLASH_YMD("yyyy/MM/dd"),
         /** HH:mm */

@@ -17,9 +17,9 @@ import com.c4ccup.laugh.controller.bean.res.ChatResource;
 import com.c4ccup.laugh.controller.bean.res.ChatWrapResource;
 import com.c4ccup.laugh.domain.Chat;
 import com.c4ccup.laugh.repository.ChatRepository;
-import com.c4ccup.laugh.util.Util;
 import com.c4ccup.laugh.util.AppConst.DateFormatEnum;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
+import com.c4ccup.laugh.util.Util;
 
 /**
  * チャットControllerクラス
@@ -33,6 +33,7 @@ public class ChatController {
 
     /**
      * チャット一覧を送信時間順に返却する
+     * 
      * @param request
      * @return
      */
@@ -41,8 +42,11 @@ public class ChatController {
         Chat chat = new Chat();
         boolean isComedian = request.getUserType() == UserEnum.COMEDIAN.getId();
 
-        if (isComedian) { chat.setUserComedianId(request.getUserId()); }
-        else { chat.setUserComposerId(request.getUserId()); }
+        if (isComedian) {
+            chat.setUserComedianId(request.getUserId());
+        } else {
+            chat.setUserComposerId(request.getUserId());
+        }
 
         // チャット一覧取得
         List<Chat> chatList = chatRepository.findChatList(chat);
@@ -55,9 +59,11 @@ public class ChatController {
             if (isComedian) {
                 // 自分が芸人の場合、作家の名前を表示
                 chatResource.setName(c.getComposer().getUserName());
+                chatResource.setTargetUserId(c.getComposer().getId());
             } else {
                 // 自分が作家の場合、芸人の名前を表示
                 chatResource.setName(c.getComedian().getUserName());
+                chatResource.setTargetUserId(c.getComedian().getId());
             }
             chatResource.setSendAt(Util.formatLocalDateTime(c.getCreateAt(), DateFormatEnum.SLASH_YMD));
             // TODO 画像
@@ -69,10 +75,11 @@ public class ChatController {
 
     /**
      * マッチング相手とのチャット一覧を返却する
+     * 
      * @param request
      * @return
      */
-    @RequestMapping(path = "/detail",  method = RequestMethod.GET)
+    @RequestMapping(path = "/detail", method = RequestMethod.GET)
     public ResponseEntity<ApiResource<ChatWrapResource>> chatDetailList(@ModelAttribute ChatBean request) {
         Chat chat = new Chat();
         chat.setChatRoomId(request.getChatRoomId());
@@ -99,6 +106,7 @@ public class ChatController {
 
     /**
      * メッセージを送信する
+     * 
      * @param request
      */
     @RequestMapping(method = RequestMethod.POST)

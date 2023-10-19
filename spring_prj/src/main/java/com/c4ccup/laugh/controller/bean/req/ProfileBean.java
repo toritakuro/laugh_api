@@ -5,6 +5,11 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotEmpty;
+
+import com.c4ccup.laugh.util.AppConst.FeeEnum;
+import com.c4ccup.laugh.util.AppConst.UserEnum;
 import com.c4ccup.laugh.util.PasswordUtil;
 
 /**
@@ -17,9 +22,10 @@ public class ProfileBean {
     private int id;
     /** ユーザアドレス */
     private String userAddress;
-    /** ユーザ名 */
+    /** 活動名 */
+    @NotEmpty
     private String userName;
-    /** ユーザ名(かな) */
+    /** 活動名(かな) */
     private String userNameKana;
     /** 活動種別 */
     private int userType;
@@ -70,6 +76,7 @@ public class ProfileBean {
     /** 得意分野 */
     private int comedyStyleId;
     /** 得意分野一覧 */
+    @NotEmpty
     private List<Integer> comedyStyleIdList;
 
     // own_comedy_styleテーブル用
@@ -427,5 +434,24 @@ public class ProfileBean {
     public void setSpecialSkillIdList(List<Integer> specialSkillIdList) {
         this.specialSkillIdList = specialSkillIdList;
     }
+
+    // 相関バリデーション
+    /**
+     * 作家の場合、金額必須
+     * @return
+     */
+    @AssertTrue(message = "金額は必須です。")
+    public boolean isMustFee() {
+        if (this.userType == UserEnum.COMPOSER.getId()) {
+            // 金額体系が選択されていること
+            if (!(this.feeType == FeeEnum.TIME.getId() || this.feeType == FeeEnum.PRODUCT.getId())) {
+                return false;
+            }
+            // 金額が入力されていること
+            return this.fee >= 0;
+        }
+        return true;
+    }
+
 
 }

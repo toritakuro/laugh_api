@@ -1,5 +1,6 @@
 package com.c4ccup.laugh.controller.bean;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -87,5 +88,14 @@ public class DemoBean {
      */
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    /**
+     * 相関チェック(メソッド名がfield名になる)
+     * @return
+     */
+    @AssertTrue(message = "だめだこりゃ")
+    public boolean isMessageNotEmptyIfToPresents() {
+        return false;
     }
 }

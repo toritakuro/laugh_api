@@ -126,7 +126,7 @@ CREATE TABLE content (
   user_id INT NOT NULL COMMENT 'ユーザID',
   title VARCHAR(255) NOT NULL COMMENT 'タイトル',
   detail VARCHAR(255) NOT NULL COMMENT '詳細',
-  top_img_path VARCHAR(255) COMMENT 'サムネイル画像',
+  file_type TINYINT NOT NULL COMMENT 'ファイルタイプ 1:動画 2:PDF',
   content_path VARCHAR(255) NOT NULL COMMENT '投稿ファイル',
   create_at DATETIME COMMENT '作成日時',
   update_at DATETIME COMMENT '更新日時',

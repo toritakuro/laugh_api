@@ -30,6 +30,25 @@ public class AppConst {
         public String getName() { return name; }
     }
 
+    /** 料金体系 */
+    public enum FeeEnum {
+        /** 1:時給 */
+        TIME(1, "時給"),
+        /** 2:成果物 */
+        PRODUCT(2, "成果物"),
+        ;
+
+        private int id;
+        private String name;
+
+        FeeEnum(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+        public int getId() { return id; }
+        public String getName() { return name; }
+    }
+
     /** 特殊スキル */
     public enum specialSkillEnum {
         /** 1:動画編集　*/
@@ -57,6 +76,8 @@ public class AppConst {
     public enum DateFormatEnum {
         /** yyyy-MM-dd */
         HYPHEN_YMD("yyyy-MM-dd"),
+        /** yyyy-MM */
+        HYPHEN_YM("yyyy-MM"),
         /** yyyy/MM/dd */
         SLASH_YMD("yyyy/MM/dd"),
         /** HH:mm */

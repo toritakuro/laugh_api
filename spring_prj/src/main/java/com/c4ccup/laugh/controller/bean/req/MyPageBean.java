@@ -17,10 +17,6 @@ public class MyPageBean {
     private String title;
     /** 詳細 */
     private String detail;
-//    /** サムネイル画像 */
-//    private String topImg;
-//    /** サムネイル画像URL */
-//    private String topImgPath;
     /** ファイル種類 */
     private int fileType;
     /** コンテント */
@@ -28,6 +24,8 @@ public class MyPageBean {
     /** コンテントURL */
     private String contentPath;
 
+    /** ユーザTYPE */
+    private int userType;
 
 
     /**
@@ -98,30 +96,12 @@ public class MyPageBean {
     public void setFileType(int fileType) {
         this.fileType = fileType;
     }
-//    /**
-//     * サムネイル画像URLを取得します。
-//     * @return topImgPath
-//     */
-//    public String getTopImgPath() {
-//        return topImgPath;
-//    }
-//    /**
-//     * サムネイル画像URLを設定します。
-//     * @param topImgPath サムネイル画像URL
-//     */
-//    public void setTopImgPath(String topImgPath) {
-//        this.topImgPath = topImgPath;
-//    }
     /**
      * 投稿ファイルを取得します。
      * @return content
      */
     public String getContent() {
         return content;
-//        if(content != null) {
-//            return Base64.getEncoder().encodeToString(content);
-//        }
-//        return null;
     }
     /**
      * 投稿ファイルを設定します。
@@ -129,11 +109,6 @@ public class MyPageBean {
      */
     public void setContent(String content) {
         this.content = content;
-//        if(content != null) {
-//            this.content = Base64.getDecoder().decode(content);
-//            return;
-//        }
-//        this.content = null;
     }
     /**
      * 投稿ファイルURLを取得します。
@@ -148,6 +123,20 @@ public class MyPageBean {
      */
     public void setContentPath(String contentPath) {
         this.contentPath = contentPath;
+    }
+    /**
+     * ユーザTYPEを取得します。
+     * @return ユーザTYPE
+     */
+    public int getUserType() {
+        return userType;
+    }
+    /**
+     * ユーザTYPEを設定します。
+     * @param userType ユーザTYPE
+     */
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
 
 }

@@ -55,7 +55,12 @@ public class MyPageController extends _CmnController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<ApiResource<UserResource>> mypage(MyPageBean bean) {
-        User user = userRepository.getComedianList(UserEnum.COMEDIAN.getId(), 3).get(0);
+        User user ;
+        if (bean.getUserType() == UserEnum.COMEDIAN.getId())  {
+            user = userRepository.getComedian(bean.getUserId());
+        } else {
+            user = userRepository.getComposer(bean.getUserId());
+        }
         return ResponseEntity.ok(new ApiResource<>(new UserResource(user)));
     }
 

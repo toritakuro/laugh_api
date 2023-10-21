@@ -5,19 +5,20 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.c4ccup.laugh.controller.bean.UserBean;
 import com.c4ccup.laugh.controller.bean.req.ProfileBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.Messages;
 import com.c4ccup.laugh.controller.bean.res.ProfileResource;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.UserRepository;
+import com.c4ccup.laugh.util.AppConst.DateFormatEnum;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
 import com.c4ccup.laugh.util.AwsSesUtil;
 import com.c4ccup.laugh.util.MessageUtil;
@@ -162,14 +163,13 @@ public class ProfileController extends _CmnController {
      * @param ProfileBean
      */
     @RequestMapping(path = "/edit", method = RequestMethod.POST)
-    public ResponseEntity<ApiResource<Messages>> edit(@RequestBody ProfileBean bean) {
+    public ResponseEntity<ApiResource<Messages>> edit(@Validated @RequestBody ProfileBean bean) {
         int loginUserType = bean.getUserType();
         int loginUserId = bean.getId();
         bean.setUserId(loginUserId);
 
         //debutDtをセット
-        LocalDate debutDt = LocalDate.of(bean.getDebutYear(), bean.getDebutMonth(), 1);
-        bean.setDebutDt(debutDt);
+        bean.setDebutDt(Util.toLocalDate(bean.getDebutDtStr() + "-01", DateFormatEnum.HYPHEN_YMD));
 
         // ユーザーをuserテーブルに登録する。
         userRepository.updateProfile(bean);

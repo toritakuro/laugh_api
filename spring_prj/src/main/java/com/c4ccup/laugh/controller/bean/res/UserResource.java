@@ -2,16 +2,16 @@ package com.c4ccup.laugh.controller.bean.res;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.c4ccup.laugh.domain.User;
+import com.c4ccup.laugh.util.AppConst.DateFormatEnum;
 import com.c4ccup.laugh.util.Util;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * UserResourceクラス
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class UserResource {
 
     /** ID */
@@ -26,6 +26,8 @@ public class UserResource {
     private int userType;
     /** 活動開始年月 */
     private LocalDate debutDt;
+    /** 活動開始年月(YYYY-MM) */
+    private String debutDtStr;
     /** 活動年月 */
     private String activityDt;
     /** 活動年数 */
@@ -59,13 +61,16 @@ public class UserResource {
     /** 料金 */
     private int fee;
     /** 得意分野・芸風Idリスト */
-    private List<Integer> comedyStyleIdList;
+    private List<Integer> comedyStyleIdList = new ArrayList<>();
     /** 得意分野・芸風リスト */
-    private List<String> comedyStyleNameList;
+    private List<String> comedyStyleNameList = new ArrayList<>();;
     /** 特殊スキル一覧 */
-    private List<Integer> specialSkillIdList;
+    private List<Integer> specialSkillIdList = new ArrayList<>();
     /** 特殊スキル名リスト */
-    private List<String> specialSkillNameList;
+    private List<String> specialSkillNameList = new ArrayList<>();
+    /** その他特殊スキル */
+    private String anotherSkill;
+
     /** idトークン */
     private String idToken;
     /** リフレッシュトークン */
@@ -84,6 +89,7 @@ public class UserResource {
         this.searchUserName = user.getUserName().replaceAll("　| ", "");
         this.userType = user.getUserType();
         this.debutDt = user.getDebutDt();
+        this.debutDtStr = Util.formatLocalDateTime(user.getDebutDt(), DateFormatEnum.HYPHEN_YM);
         this.gender = user.getGender();
         this.officeId = user.getOfficeId().getId();
         this.officeName = user.getOfficeId().getOfficeName();
@@ -105,10 +111,9 @@ public class UserResource {
         }
         if (user.getSpecialSkillIds() != null) {
             this.specialSkillIdList = Util.toIntList(user.getSpecialSkillIds());
-            if (user.getAnotherSkillNames() != null) { 
-                this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames() + user.getAnotherSkillNames());
-            } else {
-                this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames());
+            this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames());
+            if (user.getAnotherSkillNames() != null) {
+                this.anotherSkill = user.getAnotherSkillNames();
             }
         }
     }
@@ -207,6 +212,22 @@ public class UserResource {
      */
     public void setDebutDt(LocalDate debutDt) {
         this.debutDt = debutDt;
+    }
+
+    /**
+     * 活動開始年月(YYYY-MM)を取得します。
+     * @return 活動開始年月(YYYY-MM)
+     */
+    public String getDebutDtStr() {
+        return debutDtStr;
+    }
+
+    /**
+     * 活動開始年月(YYYY-MM)を設定します。
+     * @param debutDtStr 活動開始年月(YYYY-MM)
+     */
+    public void setDebutDtStr(String debutDtStr) {
+        this.debutDtStr = debutDtStr;
     }
 
     /**
@@ -472,7 +493,7 @@ public class UserResource {
     public List<Integer> getComedyStyleIdList() {
         return comedyStyleIdList;
     }
-  
+
     /**
      * 得意分野一覧を設定します。
      * @param comedyStyleIdList 得意分野一覧
@@ -480,7 +501,7 @@ public class UserResource {
     public void setComedyStyleIdList(List<Integer> comedyStyleIdList) {
         this.comedyStyleIdList = comedyStyleIdList;
     }
-  
+
     /**
      * コメディスタイル名を取得します。
      * @return コメディスタイル名
@@ -488,7 +509,7 @@ public class UserResource {
     public List<String> getComedyStyleNameList() {
         return comedyStyleNameList;
     }
-  
+
     /**
      * コメディスタイル名を設定します。
      * @param comedyStyleName コメディスタイル名
@@ -496,7 +517,7 @@ public class UserResource {
     public void setComedyStyleName(List<String> comedyStyleName) {
         this.comedyStyleNameList = comedyStyleName;
     }
-  
+
     /**
      * 特殊スキル一覧を取得します。
      * @return 特殊スキル一覧
@@ -504,7 +525,7 @@ public class UserResource {
     public List<Integer> getSpecialSkillIdList() {
         return specialSkillIdList;
     }
-  
+
     /**
      * 特殊スキル一覧を設定します。
      * @param specialSkillIdList 特殊スキル一覧
@@ -512,7 +533,7 @@ public class UserResource {
     public void setSpecialSkillIdList(List<Integer> specialSkillIdList) {
         this.specialSkillIdList = specialSkillIdList;
     }
-  
+
     /**
      * 特殊スキル名を取得します。
      * @return 特殊スキル名
@@ -520,13 +541,29 @@ public class UserResource {
     public List<String> getSpecialSkillNameList() {
         return specialSkillNameList;
     }
-  
+
     /**
      * 特殊スキル名を設定します。
      * @param specialSkillNameList 特殊スキル名
      */
     public void setSpecialSkillNameList(List<String> specialSkillNameList) {
         this.specialSkillNameList = specialSkillNameList;
+    }
+
+    /**
+     * その他特殊スキルを取得します。
+     * @return その他特殊スキル
+     */
+    public String getAnotherSkill() {
+        return anotherSkill;
+    }
+
+    /**
+     * その他特殊スキルを設定します。
+     * @param anotherSpecialSkill その他特殊スキル
+     */
+    public void setAnotherSkill(String anotherSkill) {
+        this.anotherSkill = anotherSkill;
     }
 
     /**

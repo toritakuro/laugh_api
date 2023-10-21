@@ -1,6 +1,6 @@
 package com.c4ccup.laugh.controller.bean.req;
 
-import java.util.Base64;
+import java.time.LocalDateTime;
 
 /**
  * マイページBean
@@ -23,6 +23,8 @@ public class MyPageBean {
     private String content;
     /** コンテントURL */
     private String contentPath;
+    /** 更新日時 */
+    private LocalDateTime updateAt;
 
     /** ユーザTYPE */
     private int userType;
@@ -137,6 +139,20 @@ public class MyPageBean {
      */
     public void setUserType(int userType) {
         this.userType = userType;
+    }
+    /**
+     * 更新日時を取得します。
+     * @return updateAt 更新日時
+     */
+    public LocalDateTime getUpdateAt() {
+        return updateAt;
+    }
+    /**
+     * 更新日時を設定します。
+     * @param updateAt 更新日時
+     */
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
     }
 
 }

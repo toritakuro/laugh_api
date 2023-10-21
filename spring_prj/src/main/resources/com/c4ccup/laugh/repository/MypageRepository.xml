@@ -93,6 +93,7 @@
     SET
       title = #{title}
       , detail = #{detail}
+      , update_at = #{updateAt}
     WHERE
       id = #{id}
   </update>

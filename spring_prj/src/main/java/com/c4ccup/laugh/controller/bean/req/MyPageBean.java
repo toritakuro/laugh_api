@@ -2,6 +2,8 @@ package com.c4ccup.laugh.controller.bean.req;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * マイページBean
  */
@@ -13,12 +15,14 @@ public class MyPageBean {
     // contentテーブル用
     /** ID */
     private int id;
+    @NotEmpty
     /** タイトル */
     private String title;
     /** 詳細 */
     private String detail;
     /** ファイル種類 */
     private int fileType;
+    @NotEmpty
     /** コンテント */
     private String content;
     /** コンテントURL */

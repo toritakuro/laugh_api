@@ -49,7 +49,7 @@
 			ms.create_at DESC
   </select>
 
-  <insert id="uploadFile" useGeneratedKeys="true" keyProperty="id">
+  <insert id="uploadContent" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO
       content
         (
@@ -70,21 +70,32 @@
   </insert>
 
   <select id="selectContent" parameterType="int" resultMap="contentResultMap">
-        SELECT
-            id
-            ,user_id
-            ,title
-            ,detail
-            ,file_type
-            ,content_path
-            ,create_at
-            ,update_at
-        FROM
-            content
-        WHERE user_id = #{userId}
-        ORDER BY
-            create_at desc
+    SELECT
+      id
+      ,user_id
+      ,title
+      ,detail
+      ,file_type
+      ,content_path
+      ,create_at
+      ,update_at
+    FROM
+      content
+    WHERE
+      user_id = #{userId}
+    ORDER BY
+      create_at desc
   </select>
+
+  <update id="editContent">
+    UPDATE
+      content
+    SET
+      title = #{title}
+      , detail = #{detail}
+    WHERE
+      id = #{id}
+  </update>
 
   <delete id="deleteContent">
     DELETE FROM

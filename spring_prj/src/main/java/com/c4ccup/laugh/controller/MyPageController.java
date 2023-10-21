@@ -114,25 +114,10 @@ public class MyPageController extends _CmnController {
      * コンテンツをS3に登録する
      * @param
      */
-    @RequestMapping(value ="uploadFile" , method = RequestMethod.POST)
-    private ResponseEntity<ApiResource<Messages>> uploadFile(@RequestBody MyPageBean bean) {
+    @RequestMapping(value ="uploadContent" , method = RequestMethod.POST)
+    private ResponseEntity<ApiResource<Messages>> uploadContent(@RequestBody MyPageBean bean) {
 
-//        //サムネイルをS3に登録
-//        if(bean.getTopImg() != null && !bean.getTopImg().isEmpty()) {
-//            String DataUriSchema = bean.getTopImg().split(",")[0];  // Data URIスキーマ
-//            String mimeType = DataUriSchema.split(";")[0].split(":")[1];  // MIME TYPE
-//            String base64 = bean.getTopImg().split(",")[1];  // base64
-//
-//            byte[] decodedBytes = Base64.getDecoder().decode(base64);
-//          //byte[] decodedBytes = Base64.getDecoder().decode(bean.getTopImg());
-//            MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", bean.getTitle(), mimeType);
-//
-//            String uploadedFileName = awsS3Util.uploadFile(bean.getUserId(), multipartFile);
-//
-//            String s3Url = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/" + bean.getUserId() + "/" + uploadedFileName;
-//            bean.setTopImgPath(s3Url);
-//
-//        }
+
 
       //コンテンツをS3に登録
         if(bean.getContent() != null && !bean.getContent().isEmpty()) {
@@ -150,9 +135,9 @@ public class MyPageController extends _CmnController {
 
 
         }
-        mypageRepository.uploadFile(bean);
+        mypageRepository.uploadContent(bean);
 
-        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール", "更新"))));
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "コンテンツ", "アップロード"))));
     }
 
     /**
@@ -181,9 +166,18 @@ public class MyPageController extends _CmnController {
             result.add(r);
         }
 
-
-
         return ResponseEntity.ok(new ApiResource<>(result));
+    }
+
+    /**
+     * コンテンツを編集する
+     * @param
+     */
+    @RequestMapping(value ="editFile" , method = RequestMethod.POST)
+    private ResponseEntity<ApiResource<Messages>> editFile(@RequestBody MyPageBean bean) {
+        mypageRepository.editContent(bean);
+
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "コンテンツ", "編集"))));
     }
 
     /**
@@ -194,7 +188,7 @@ public class MyPageController extends _CmnController {
     private ResponseEntity<ApiResource<Messages>> deleteFile(@RequestBody MyPageBean bean) {
         mypageRepository.deleteContent(bean.getId());
 
-        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール", "削除"))));
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "コンテンツ", "削除"))));
     }
 
 

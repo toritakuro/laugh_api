@@ -29,7 +29,7 @@ public interface MyPageRepository {
      *
      * @param myPageBean
      */
-    public void uploadFile(MyPageBean myPageBean);
+    public void uploadContent(MyPageBean myPageBean);
 
     /**
      * content一覧を取得
@@ -38,6 +38,13 @@ public interface MyPageRepository {
      * @return
      */
     public List<Content> selectContent(int userId);
+
+    /**
+     * contentテーブルのデータを編集する
+     *
+     * @param myPageBean
+     */
+    public void editContent(MyPageBean myPageBean);
 
     /**
      * contentテーブルからデータを削除する

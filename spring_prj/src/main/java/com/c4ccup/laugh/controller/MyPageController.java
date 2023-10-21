@@ -122,25 +122,32 @@ public class MyPageController extends _CmnController {
     @RequestMapping(value ="uploadContent" , method = RequestMethod.POST)
     private ResponseEntity<ApiResource<Messages>> uploadContent(@RequestBody MyPageBean bean) {
 
+    //コンテンツをS3に登録
+    if(bean.getContent() != null && !bean.getContent().isEmpty()) {
+        String DataUriSchema = bean.getContent().split(",")[0];  // Data URIスキーマ
+        String base64 = bean.getContent().split(",")[1];  // base64
 
+        byte[] decodedBytes = Base64.getDecoder().decode(base64);
+      //byte[] decodedBytes = Base64.getDecoder().decode(bean.getTopImg());
+        MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", bean.getTitle(), null);
 
-      //コンテンツをS3に登録
-        if(bean.getContent() != null && !bean.getContent().isEmpty()) {
-            String DataUriSchema = bean.getContent().split(",")[0];  // Data URIスキーマ
-            String base64 = bean.getContent().split(",")[1];  // base64
+        String uploadedFileName = awsS3Util.uploadFile(bean.getUserId(), multipartFile);
 
-            byte[] decodedBytes = Base64.getDecoder().decode(base64);
-          //byte[] decodedBytes = Base64.getDecoder().decode(bean.getTopImg());
-            MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", bean.getTitle(), null);
+        String s3Url = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/" + bean.getUserId() + "/" + uploadedFileName;
+        bean.setContentPath(s3Url);
+    }
 
-            String uploadedFileName = awsS3Util.uploadFile(bean.getUserId(), multipartFile);
-
-            String s3Url = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/" + bean.getUserId() + "/" + uploadedFileName;
-            bean.setContentPath(s3Url);
-
-
+    // awsS3Util使う際はタイトルに拡張子が必須だが、DBに登録する際は不要と思われるので、拡張子の部分を省いて登録する
+    StringBuilder title = new StringBuilder();
+    for (int i = 0; i < bean.getTitle().split("\\.").length - 1; i++) {
+        title.append(bean.getTitle().split("\\.")[i]);
+        if (i < bean.getTitle().split("\\.").length - 2) {
+            title.append(".");
         }
-        mypageRepository.uploadContent(bean);
+    }
+    bean.setTitle(title.toString());
+
+    mypageRepository.uploadContent(bean);
 
         return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "コンテンツ", "アップロード"))));
     }

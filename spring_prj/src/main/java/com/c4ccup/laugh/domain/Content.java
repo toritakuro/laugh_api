@@ -1,33 +1,26 @@
-package com.c4ccup.laugh.controller.bean.req;
+package com.c4ccup.laugh.domain;
 
 import java.time.LocalDateTime;
 
-/**
- * マイページBean
- */
-public class MyPageBean {
+public class Content {
 
-    /** ユーザID */
-    private int userId;
-
-    // contentテーブル用
     /** ID */
     private int id;
+    /** ユーザID */
+    private int userId;
     /** タイトル */
     private String title;
     /** 詳細 */
     private String detail;
     /** ファイル種類 */
     private int fileType;
-    /** コンテント */
-    private String content;
     /** コンテントURL */
     private String contentPath;
+    /** 作成日時 */
+    private LocalDateTime createAt;
     /** 更新日時 */
     private LocalDateTime updateAt;
 
-    /** ユーザTYPE */
-    private int userType;
 
 
     /**
@@ -86,31 +79,17 @@ public class MyPageBean {
     }
     /**
      * ファイル種類を取得します。
-     * @return topImg
+     * @return topImgPath
      */
     public int getFileType() {
         return fileType;
     }
     /**
      * ファイル種類を設定します。
-     * @param topImg ファイル種類
+     * @param topImgPath サムネイル画像URL
      */
     public void setFileType(int fileType) {
         this.fileType = fileType;
-    }
-    /**
-     * 投稿ファイルを取得します。
-     * @return content
-     */
-    public String getContent() {
-        return content;
-    }
-    /**
-     * 投稿ファイルを設定します。
-     * @param content 投稿ファイル
-     */
-    public void setContent(String content) {
-        this.content = content;
     }
     /**
      * 投稿ファイルURLを取得します。
@@ -127,28 +106,28 @@ public class MyPageBean {
         this.contentPath = contentPath;
     }
     /**
-     * ユーザTYPEを取得します。
-     * @return ユーザTYPE
+     * 作成日時を取得する
+     * @return 作成日時
      */
-    public int getUserType() {
-        return userType;
+    public LocalDateTime getCreateAt() {
+        return createAt;
     }
     /**
-     * ユーザTYPEを設定します。
-     * @param userType ユーザTYPE
+     * 作成日時を設定する
+     * @param createAt 作成日時
      */
-    public void setUserType(int userType) {
-        this.userType = userType;
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
     }
     /**
-     * 更新日時を取得します。
-     * @return updateAt 更新日時
+     * 更新日時を取得する
+     * @return 更新日時
      */
     public LocalDateTime getUpdateAt() {
         return updateAt;
     }
     /**
-     * 更新日時を設定します。
+     * 更新日時を設定する
      * @param updateAt 更新日時
      */
     public void setUpdateAt(LocalDateTime updateAt) {

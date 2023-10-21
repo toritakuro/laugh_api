@@ -61,11 +61,12 @@ public class ProfileController extends _CmnController {
      */
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public void register(@RequestBody ProfileBean bean) {
-        //debutDtをセット(作家のみ)
-        if(bean.getUserType() == UserEnum.COMEDIAN.getId()) {
-            LocalDate debutDt = LocalDate.of(bean.getDebutYear(), bean.getDebutMonth(), 1);
-            bean.setDebutDt(debutDt);
-        }
+//      //debutDtをセット(作家のみ)
+//      if(bean.getUserType() == UserEnum.COMEDIAN.getId()) {
+//          LocalDate debutDt = LocalDate.of(bean.getDebutYear(), bean.getDebutMonth(), 1);
+//          bean.setDebutDt(debutDt);
+//      }
+      bean.setDebutDt(LocalDate.now());
 
         // ユーザーをuserテーブルに登録する。
         userRepository.register(bean);

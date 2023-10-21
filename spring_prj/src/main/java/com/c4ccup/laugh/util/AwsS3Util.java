@@ -48,6 +48,7 @@ public class AwsS3Util {
      */
     public String uploadFile(int userId, MultipartFile file) {
         final String fileName = getS3FileName(file);
+        String mimeType = file.getContentType();
         try {
             // metaデータはどのように設定するか不明.metaで設定できる
             // Map<String, String> metadata = new HashMap<>();
@@ -55,6 +56,7 @@ public class AwsS3Util {
             PutObjectRequest putOb = PutObjectRequest.builder()
                 .bucket(prop.getBucket())
                 .key(userId + "/" + fileName)
+                .contentType(mimeType != null ? mimeType : "application/octet-stream")
                 .build();
             s3Client.putObject(putOb, RequestBody.fromFile(convert(file)));
         }

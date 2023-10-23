@@ -245,7 +245,7 @@ public class OogiriController extends _CmnController {
                 continue;
             }
             // 回答が削除済みでなければセット
-            if (o.getAnswerDeletedAt() == null) {
+            if (o.getAnswerDeletedAt() == null && o.getAnswerId() != 0) {
                 answerCount++;
                 res = res.setAnswerInfo(res, o);
             }

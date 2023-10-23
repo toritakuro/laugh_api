@@ -17,6 +17,8 @@ public class ChatResource {
     private String img;
     /** メッセージ */
     private String message;
+    /** 未読数 */
+    private int unreadCount;
     /** 送信日 */
     private String sendAt;
     /** 送信時間 */
@@ -128,6 +130,22 @@ public class ChatResource {
      */
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    /**
+     * 未読数を取得します。
+     * @return 未読数
+     */
+    public int getUnreadCount() {
+        return unreadCount;
+    }
+
+    /**
+     * 未読数を設定します。
+     * @param unreadCount 未読数
+     */
+    public void setUnreadCount(int unreadCount) {
+        this.unreadCount = unreadCount;
     }
 
     /**

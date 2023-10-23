@@ -56,6 +56,7 @@ public class ChatController {
             ChatResource chatResource = new ChatResource();
             chatResource.setChatRoomId(c.getChatRoomId());
             chatResource.setMessage(c.getChatMessage());
+            chatResource.setUnreadCount(c.getUnreadCount());
             if (isComedian) {
                 // 自分が芸人の場合、作家の名前を表示
                 chatResource.setName(c.getComposer().getUserName());
@@ -65,6 +66,7 @@ public class ChatController {
                 chatResource.setName(c.getComedian().getUserName());
                 chatResource.setTargetUserId(c.getComedian().getId());
             }
+
             chatResource.setSendAt(Util.formatLocalDateTime(c.getCreateAt(), DateFormatEnum.SLASH_YMD));
             // TODO 画像
             results.add(chatResource);
@@ -82,14 +84,17 @@ public class ChatController {
     @RequestMapping(path = "/detail", method = RequestMethod.GET)
     public ResponseEntity<ApiResource<ChatWrapResource>> chatDetailList(@ModelAttribute ChatBean request) {
         Chat chat = new Chat();
-        chat.setChatRoomId(request.getChatRoomId());
+        int chatRoomId = request.getChatRoomId();
+        int sendUserId = request.getUserId();
+        chat.setChatRoomId(chatRoomId);
         List<Chat> chatList = chatRepository.findChatDetail(chat);
 
         List<ChatResource> results = new ArrayList<>();
         for (Chat c : chatList) {
             ChatResource chatResource = new ChatResource();
+            chatResource.setChatId(c.getChatId());
             chatResource.setMessage(Util.changeRCtoBR(c.getChatMessage()));
-            chatResource.setIsMyMessage(request.getUserId() == c.getSendUserId());
+            chatResource.setIsMyMessage(sendUserId == c.getSendUserId());
             chatResource.setSendAt(Util.formatLocalDateTime(c.getCreateAt(), DateFormatEnum.SLASH_YMD));
             chatResource.setSendTime(Util.formatLocalDateTime(c.getCreateAt(), DateFormatEnum.TIME));
             results.add(chatResource);
@@ -100,6 +105,8 @@ public class ChatController {
             resource.setChatList(results);
             resource.setChatRoomId(chatList.get(0).getChatRoomId());
         }
+        // メッセージを既読にする
+        chatRepository.readMessage(chatRoomId, sendUserId);
 
         return ResponseEntity.ok(new ApiResource<>(resource));
     }

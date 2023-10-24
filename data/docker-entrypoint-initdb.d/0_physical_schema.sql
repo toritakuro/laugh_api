@@ -37,27 +37,29 @@ CREATE TABLE office (
 
 
 -- ユーザー
-CREATE TABLE user (
-  id INT AUTO_INCREMENT NOT NULL COMMENT 'ID',
-  user_address VARCHAR(255) NOT NULL COMMENT 'ユーザアドレス',
-  user_name VARCHAR(255) NOT NULL COMMENT 'ユーザ名',
-  user_name_kana VARCHAR(255) NOT NULL COMMENT 'ユーザ名(かな)',
-  user_type TINYINT NOT NULL COMMENT '活動種別:1:芸人、2:作家',
-  password VARCHAR(255) NOT NULL COMMENT 'パスワード',
-  debut_dt DATE COMMENT '活動開始年月',
-  gender TINYINT DEFAULT 0 COMMENT '性別:0:回答なし、1:男性、2:女性、3:男女',
-  office_id INT COMMENT '事務所ID',
-  area_id INT NOT NULL COMMENT '活動場所ID',
-  self_introduction VARCHAR(500) COMMENT '自己紹介文',
-  profile_img_path VARCHAR(255) COMMENT 'プロフィール画像',
-  delete_flg TINYINT DEFAULT 0 NOT NULL COMMENT '退会フラグ',
-  login_at DATETIME COMMENT 'ログイン日時',
-  create_at DATETIME COMMENT '作成日時',
-  update_at DATETIME COMMENT '更新日時',
-  CONSTRAINT user_PKC PRIMARY KEY (id),
-  CONSTRAINT user_FK1 FOREIGN KEY (office_id) REFERENCES office(id),
-  CONSTRAINT user_FK2 FOREIGN KEY (area_id) REFERENCES area(id)
-) COMMENT 'ユーザー';
+CREATE TABLE `user` (
+   `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+   `user_address` varchar(255) NOT NULL COMMENT 'ユーザアドレス',
+   `user_name` varchar(255) NOT NULL COMMENT 'ユーザ名',
+   `user_name_kana` varchar(255) NOT NULL COMMENT 'ユーザ名(かな)',
+   `user_type` tinyint NOT NULL COMMENT '活動種別:1:作家、2:芸人',
+   `password` varchar(255) NOT NULL COMMENT 'パスワード',
+   `debut_dt` date DEFAULT NULL COMMENT '活動開始年月',
+   `gender` tinyint DEFAULT '0' COMMENT '性別:0:回答なし、1:男性、2:女性、3:男女',
+   `office_id` int DEFAULT NULL COMMENT '事務所ID',
+   `area_id` int NOT NULL COMMENT '活動場所ID',
+   `self_introduction` varchar(500) DEFAULT NULL COMMENT '自己紹介文',
+   `profile_img_path` varchar(255) COMMENT 'プロフィール画像',
+   `delete_flg` tinyint NOT NULL DEFAULT '0' COMMENT '退会フラグ',
+   `login_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'ログイン日時',
+   `create_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '作成日時',
+   `update_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
+   PRIMARY KEY (`id`),
+   KEY `user_FK1` (`office_id`),
+   KEY `user_FK2` (`area_id`),
+   CONSTRAINT `user_FK1` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`),
+   CONSTRAINT `user_FK2` FOREIGN KEY (`area_id`) REFERENCES `area` (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='ユーザー';
 
 -- 芸人プロフィール
 CREATE TABLE comedian_profile (
@@ -89,6 +91,7 @@ CREATE TABLE chat_detail (
   chat_room_list_id INT NOT NULL COMMENT 'チャットルームリストID',
   send_user_id INT NOT NULL COMMENT '送信者ID',
   chat_message VARCHAR(500) NOT NULL COMMENT '送信文',
+  readed_flg tinyint NOT NULL DEFAULT '0' COMMENT '既読フラグ',
   create_at DATETIME COMMENT '作成日時',
   update_at DATETIME COMMENT '更新日時',
   CONSTRAINT chat_detail_PKC PRIMARY KEY (id),

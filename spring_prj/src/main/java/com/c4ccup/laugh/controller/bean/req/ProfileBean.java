@@ -2,7 +2,6 @@ package com.c4ccup.laugh.controller.bean.req;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
 
 import javax.validation.constraints.AssertTrue;
@@ -48,7 +47,7 @@ public class ProfileBean {
     /** 自己紹介文 */
     private String selfIntroduction;
     /** プロフィール画像 */
-    private byte[] profileImgPath;
+    private String profileImgPath;
     /** 退会フラグ */
     private int deleteFlg;
     /** ログイン日時 */
@@ -259,24 +258,20 @@ public class ProfileBean {
     public void setSelfIntroduction(String selfIntroduction) {
         this.selfIntroduction = selfIntroduction;
     }
+
     /**
-     * @return profileImgPath
+     * プロフィール画像を取得します。
+     * @return プロフィール画像
      */
-    public String getprofileImgPath() {
-        if(profileImgPath != null) {
-            return Base64.getEncoder().encodeToString(profileImgPath);
-        }
-        return null;
+    public String getProfileImgPath() {
+        return profileImgPath;
     }
     /**
-     * @param profileImgPath セットする profileImgPath
+     * プロフィール画像を設定します。
+     * @param profileImgPath プロフィール画像
      */
-    public void setprofileImgPath(String profileImgPath) {
-        if(profileImgPath != null) {
-            this.profileImgPath = Base64.getDecoder().decode(profileImgPath);
-            return;
-        }
-        this.profileImgPath = null;
+    public void setProfileImgPath(String profileImgPath) {
+        this.profileImgPath = profileImgPath;
     }
     /**
      * @return deleteFlg

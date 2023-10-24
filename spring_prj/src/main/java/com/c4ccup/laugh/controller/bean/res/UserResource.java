@@ -45,7 +45,7 @@ public class UserResource {
     /** 自己紹介文 */
     private String selfIntroduction;
     /** プロフィール画像 */
-    private byte[] profileImg;
+    private String profileImgPath;
     /** ログイン日時 */
     private LocalDateTime loginAt;
     /** ログイン日時 並び替え用 */
@@ -96,7 +96,7 @@ public class UserResource {
         this.areaId = user.getAreaId().getId();
         this.areaName = user.getAreaId().getAreaName();
         this.selfIntroduction = user.getSelfIntroduction();
-        this.profileImg = user.getProfileImgPath();
+        this.profileImgPath = user.getProfileImgPath();
         this.loginAt = user.getLoginAt();
         this.loginAtInt = Util.getFormatLocalDateTimeToInt(loginAt);
         this.updateAt = user.getUpdateAt();
@@ -358,20 +358,21 @@ public class UserResource {
         this.selfIntroduction = selfIntroduction;
     }
 
+
     /**
      * プロフィール画像を取得します。
      * @return プロフィール画像
      */
-    public byte[] getProfileImg() {
-        return profileImg;
+    public String getProfileImgPath() {
+        return profileImgPath;
     }
 
     /**
      * プロフィール画像を設定します。
-     * @param profileImg プロフィール画像
+     * @param profileImgPath プロフィール画像
      */
-    public void setProfileImg(byte[] profileImg) {
-        this.profileImg = profileImg;
+    public void setProfileImgPath(String profileImgPath) {
+        this.profileImgPath = profileImgPath;
     }
 
     /**

@@ -39,6 +39,13 @@ public interface UserRepository {
     public void register(ProfileBean userBean);
 
     /**
+     * S3へアップロードしたファイルのパスを保存する
+     * @param userId
+     * @param imgPath
+     */
+    public void updateImg(int id, String profileImgPath);
+
+    /**
      * comedian_profileテーブルにデータを追加する
      * @param UserBean
      */

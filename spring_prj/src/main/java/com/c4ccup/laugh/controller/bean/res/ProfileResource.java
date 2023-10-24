@@ -38,7 +38,7 @@ public class ProfileResource {
     /** 自己紹介文 */
     private String selfIntroduction;
     /** プロフィール画像 */
-    private byte[] profileImgPath;
+    private String profileImgPath;
     /** ログイン日時 */
     private LocalDateTime loginAt;
     /** 更新日時 */
@@ -274,14 +274,14 @@ public class ProfileResource {
     /**
      * @return profileImgPath
      */
-    public byte[] getprofileImgPath() {
+    public String getprofileImgPath() {
         return profileImgPath;
     }
 
     /**
      * @param profileImgPath セットする profileImgPath
      */
-    public void setprofileImgPath(byte[] profileImgPath) {
+    public void setprofileImgPath(String profileImgPath) {
         this.profileImgPath = profileImgPath;
     }
 

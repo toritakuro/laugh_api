@@ -11,6 +11,32 @@ public class AppConst {
     /** 大喜利一覧回答表示数 */
     public static final int oogiri_answer_disp_num = 3;
 
+    /** MimeType-拡張子 */
+    public enum MimeTypeEnum {
+        JPG("image/jpeg", ".jpg"),
+        PNG("image/png", ".png"),
+        ;
+        private String mimeType;
+        private String extention;
+
+        MimeTypeEnum(String mimeType, String extention) {
+            this.mimeType = mimeType;
+            this.extention = extention;
+        }
+
+        public String getMimetype() { return this.mimeType; }
+        public String getExtention() { return this.extention; }
+
+        public static String getExtention(String mineType) {
+            for (MimeTypeEnum mte : MimeTypeEnum.values()) {
+                if (mte.getMimetype().equals(mineType)) {
+                    return mte.getExtention();
+                }
+            }
+            return null;
+        }
+    }
+
     /** ユーザータイプ */
     public enum UserEnum {
         /** 1:芸人 */

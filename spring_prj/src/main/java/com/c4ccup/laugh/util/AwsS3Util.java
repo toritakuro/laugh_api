@@ -27,7 +27,9 @@ public class AwsS3Util {
     /** S3Client */
     S3Client s3Client = null;
     /** S3Url */
-    private static final String URL ="https://s3-ap-northeast-1.amazonaws.com" ;
+    private static final String URL = "https://s3-ap-northeast-1.amazonaws.com" ;
+    /** S3Url */
+    public static final String S3URL = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/";
 
     public AwsS3Util () {
         try {

@@ -31,7 +31,7 @@ public class User {
     /** 自己紹介文 */
     private String selfIntroduction;
     /** プロフィール画像 */
-    private byte[] profileImgPath;
+    private String profileImgPath;
     /** 退会フラグ */
     private int deleteFlg;
     /** ログイン日時 */
@@ -194,14 +194,14 @@ public class User {
      *
      * @return profileImgPath
      */
-    public byte[] getProfileImgPath() {
+    public String getProfileImgPath() {
         return profileImgPath;
     }
 
     /**
      * @param profileImgPath セットする profileImgPath
      */
-    public void setProfileImgPath(byte[] profileImgPath) {
+    public void setProfileImgPath(String profileImgPath) {
         this.profileImgPath = profileImgPath;
     }
 

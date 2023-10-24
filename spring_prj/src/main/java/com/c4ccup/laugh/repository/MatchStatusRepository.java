@@ -18,4 +18,10 @@ public interface MatchStatusRepository {
      */
     public void regMatchStatus(UserDetailBean bean);
 
+    /**
+     * マッチステータスをアップデート
+     *
+     * @param bean 
+     */
+    public void updateMatchStatus(UserDetailBean bean);
 }

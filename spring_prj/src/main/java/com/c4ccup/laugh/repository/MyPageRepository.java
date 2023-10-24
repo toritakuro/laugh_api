@@ -22,4 +22,12 @@ public interface MyPageRepository {
      */
     public List<Laugh> selectLaugh(int userId);
 
+    /**
+     * マッチステータスを取得
+     *
+     * @param sendUserId
+     * @param receiveUserId
+     * @return
+     */
+    public Laugh selectMatchStatus(int sendUserId, int receiveUserId);
 }

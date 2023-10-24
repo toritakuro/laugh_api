@@ -11,6 +11,8 @@ public class UserDetailBean {
     private int receiveUserId;
     /** マッチステータス */
     private int matchStatus;
+    /** ユーザType */
+    private int userType;
 
 
     /**
@@ -55,5 +57,18 @@ public class UserDetailBean {
     public void setMatchStatus(int matchStatus) {
         this.matchStatus = matchStatus;
     }
-
+    /**
+     * ユーザTypeを取得します。
+     * @return userType
+     */
+    public int getUserType() {
+        return userType;
+    }
+    /**
+     * ユーザTypeを設定します。
+     * @param userType
+     */
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
 }

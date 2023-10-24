@@ -54,7 +54,8 @@ public class User {
     private String comedyStyleIds;
     /** 芸風名 */
     private String comedyStyleNames;
-
+    /** マッチステータス */
+    private Integer matchStatus;
 
 
     /**
@@ -338,5 +339,19 @@ public class User {
      */
     public void setComedyStyleNames(String comedyStyleNames) {
         this.comedyStyleNames = comedyStyleNames;
+    }
+    /**
+     * matchStatusを取得します。
+     * @return matchStatus
+     */
+    public Integer getMatchStatus() {
+        return matchStatus;
+    }
+    /**
+     * matchStatusを設定します。
+     * @param matchStatus セットする matchStatus
+     */
+    public void setMatchStatus(Integer matchStatus) {
+        this.matchStatus = matchStatus;
     }
 }

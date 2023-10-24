@@ -121,4 +121,32 @@
       ,now()
       );
   </insert>
+
+  <!-- チャットルーム取得 -->
+  <select id="findChatRoom" resultMap="ChatListMap">
+    SELECT
+      *
+    FROM
+      chat_room_list
+    WHERE
+      user_comedian_id = #{userComedianId}   
+    AND
+     user_composer_id = #{userComposerId};
+  </select>
+
+  <!-- チャットルーム削除 -->
+  <delete id="deleteChatRoom">
+    DELETE FROM
+      chat_room_list
+    WHERE
+      id = #{id};
+  </delete>
+
+  <!-- チャットルーム削除 -->
+  <delete id="deleteChatDetail">
+    DELETE FROM
+      chat_detail
+    WHERE
+      chat_room_list_id = #{id};
+  </delete>
 </mapper>

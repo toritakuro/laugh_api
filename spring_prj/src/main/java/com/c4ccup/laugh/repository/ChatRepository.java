@@ -3,6 +3,7 @@ package com.c4ccup.laugh.repository;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+
 import com.c4ccup.laugh.domain.Chat;
 
 @Mapper
@@ -36,4 +37,22 @@ public interface ChatRepository {
      */
     public void sendChat(Chat chat);
 
+    /**
+     * チャットルームIDを取得する
+     * @param chat
+     * @return int
+     */
+    public Chat findChatRoom(Chat chat);
+
+    /**
+     * チャットルームを削除する
+     * @param id
+     */
+    public void deleteChatRoom(int id);
+
+    /**
+     * チャット詳細を削除する
+     * @param id
+     */
+    public void deleteChatDetail(int id);
 }

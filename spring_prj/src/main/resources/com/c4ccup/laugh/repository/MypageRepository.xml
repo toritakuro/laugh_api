@@ -37,4 +37,25 @@
 		ORDER BY
 			ms.create_at DESC
   </select>
+  
+  <select id="selectMatchStatus" parameterType="int" resultMap="LaughResultMap">
+		SELECT
+			ms.id,
+			ms.match_status,
+			ms.send_user_id,
+			ms.receive_user_id,
+			s_user.id AS user_id_send,
+			s_user.user_name AS user_name_send,
+			s_user.debut_dt AS user_debut_dt_send,
+			r_user.id AS user_id_receive,
+			r_user.user_name AS user_name_receive,
+			r_user.debut_dt AS user_debut_dt_receive
+		FROM
+			match_status ms
+		INNER JOIN user s_user ON
+			ms.send_user_id = s_user.id AND s_user.delete_flg = 0
+		INNER JOIN user r_user ON
+			ms.receive_user_id = r_user.id AND r_user.delete_flg = 0
+		WHERE (ms.send_user_id = #{sendUserId} AND ms.receive_user_id = #{receiveUserId}) AND ms.match_status != 20
+  </select>
 </mapper>

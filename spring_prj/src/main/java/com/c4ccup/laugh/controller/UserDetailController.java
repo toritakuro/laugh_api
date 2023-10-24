@@ -14,9 +14,13 @@ import com.c4ccup.laugh.controller.bean.req.UserDetailBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.OogiriAnswerResources;
 import com.c4ccup.laugh.controller.bean.res.UserResource;
+import com.c4ccup.laugh.domain.Chat;
+import com.c4ccup.laugh.domain.Laugh;
 import com.c4ccup.laugh.domain.Oogiri;
 import com.c4ccup.laugh.domain.User;
+import com.c4ccup.laugh.repository.ChatRepository;
 import com.c4ccup.laugh.repository.MatchStatusRepository;
+import com.c4ccup.laugh.repository.MyPageRepository;
 import com.c4ccup.laugh.repository.OogiriRepository;
 import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
@@ -27,7 +31,7 @@ import com.c4ccup.laugh.util.EnumConst.MatchStatus;
  */
 @RequestMapping(value = "userDetail")
 @RestController
-public class UserDetailController extends _CmnController{
+public class UserDetailController {
 
     @Autowired
     private UserRepository userRepository;
@@ -35,6 +39,10 @@ public class UserDetailController extends _CmnController{
     private OogiriRepository oogiriRepository;
     @Autowired
     private MatchStatusRepository matchStatusRepository;
+    @Autowired
+    private MyPageRepository mypageRepository;
+    @Autowired
+    private ChatRepository chatRepository;
 
     /**
      * ユーザー情報を取得する。
@@ -42,14 +50,20 @@ public class UserDetailController extends _CmnController{
      * @return
      */
     @RequestMapping(path = "/init", method = RequestMethod.GET)
-    public ResponseEntity<ApiResource<UserResource>> init(MyPageBean bean) {
+    public ResponseEntity<ApiResource<UserResource>> init(UserDetailBean bean) {
         int userType = bean.getUserType();
         User user = new User();
         if (userType == UserEnum.COMEDIAN.getId()) {
-            user = userRepository.getComedian(bean.getUserId());
+            user = userRepository.getComedian(bean.getReceiveUserId());
         } else {
-            user = userRepository.getComposer(bean.getUserId());
+            user = userRepository.getComposer(bean.getReceiveUserId());
         }
+        // 相手とのマッチングステータスを取得する
+        Laugh matchStatus = mypageRepository.selectMatchStatus(bean.getSendUserId(), bean.getReceiveUserId());
+        // データがあった場合
+        if (matchStatus != null) {
+            user.setMatchStatus(matchStatus.getStatus());
+        } 
         
         return ResponseEntity.ok(new ApiResource<>(new UserResource(user)));
     }
@@ -76,13 +90,34 @@ public class UserDetailController extends _CmnController{
     @RequestMapping(path = "/regMatch", method = RequestMethod.POST)
     public void regMatch(@RequestBody UserDetailBean bean) {
         int matchStatus = bean.getMatchStatus();
-
+        Chat chat = new Chat();
+        if (bean.getUserType() == UserEnum.COMEDIAN.getId()) {
+            chat.setUserComedianId(bean.getSendUserId());
+            chat.setUserComposerId(bean.getReceiveUserId());
+        } else {
+            chat.setUserComedianId(bean.getReceiveUserId());
+            chat.setUserComposerId(bean.getSendUserId());
+        }
+        // 未マッチ
         if (matchStatus == MatchStatus.PRE_MATCH.getStatus()) {
             matchStatusRepository.regMatchStatus(bean);
-        } else if (matchStatus == MatchStatus.SUPER_LAUGHT.getStatus()) {
-            //スーパーラフの処理を記述
-        } else if (matchStatus == MatchStatus.CANCEL.getStatus()) {
-            //キャンセルの処理を記述
+        }
+        // マッチ
+        if (matchStatus == MatchStatus.MATCH.getStatus()) {
+            matchStatusRepository.updateMatchStatus(bean);
+            chatRepository.createChatRoom(chat);
+        }
+        // スーパーラフ
+        if (matchStatus == MatchStatus.SUPER_LAUGHT.getStatus()) {
+            matchStatusRepository.regMatchStatus(bean);
+            chatRepository.createChatRoom(chat);
+        }
+        // キャンセル
+        if (matchStatus == MatchStatus.CANCEL.getStatus()) {
+            matchStatusRepository.updateMatchStatus(bean);
+            Chat chatRoomId = chatRepository.findChatRoom(chat);
+            chatRepository.deleteChatRoom(chatRoomId.getChatRoomId());
+            chatRepository.deleteChatDetail(chatRoomId.getChatRoomId());
         }
     }
 }

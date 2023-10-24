@@ -70,7 +70,8 @@ public class UserResource {
     private String idToken;
     /** リフレッシュトークン */
     private String refreshToken;
-
+    /** マッチステータス */
+    private Integer matchStatus;
 
 
     public UserResource() {
@@ -99,6 +100,7 @@ public class UserResource {
         this.feeType = user.getComposerProfile().getFeeType();
         this.fee = user.getComposerProfile().getFee();
         this.memberNum = user.getComedianProfile().getMemberNum();
+        this.matchStatus = user.getMatchStatus();
         if (user.getComedyStyleIds() != null) {
             this.comedyStyleIdList = Util.toIntList(user.getComedyStyleIds());
             this.comedyStyleNameList = Util.toStrList(user.getComedyStyleNames());
@@ -559,6 +561,22 @@ public class UserResource {
      */
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    /**
+     * matchStatusを取得します。
+     * @return matchStatus
+     */
+    public Integer getMatchStatus() {
+        return matchStatus;
+    }
+
+    /**
+     * matchStatusを設定します。
+     * @param matchStatus セットする matchStatus
+     */
+    public void setMatchStatus(Integer matchStatus) {
+        this.matchStatus = matchStatus;
     }
 
     /**

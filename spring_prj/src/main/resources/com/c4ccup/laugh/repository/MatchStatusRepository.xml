@@ -22,4 +22,16 @@
       ,now()
       );
   </insert>
+
+  <update id="updateMatchStatus">
+    UPDATE
+      match_status
+    SET
+      match_status = #{matchStatus}
+      ,update_at = now()
+    WHERE 
+      send_user_id = #{receiveUserId}
+    AND
+      receive_user_id = #{sendUserId};  
+  </update>
 </mapper>

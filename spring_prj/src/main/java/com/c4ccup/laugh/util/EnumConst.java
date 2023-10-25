@@ -7,7 +7,7 @@ public class EnumConst {
 
     /** マッチングステータスEnum */
     public enum MatchStatus {
-        /** 未マッチ */PRE_MATCH(0, "No-Laugh"),
+        /** 未マッチ */PRE_MATCH(0, "未マッチ"),
         /** マッチ */MATCH(10, "Laugh"),
         /** SuperLaugh */SUPER_LAUGHT(11, "SuperLaugh"),
         /** 解除 */CANCEL(99, "解除"),

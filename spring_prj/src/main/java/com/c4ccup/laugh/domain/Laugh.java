@@ -24,7 +24,10 @@ public class Laugh {
     private String userNameReceive;
     /** Laugh受信ユーザ名 */
     private LocalDate userDebutAtReceive;
-
+    /** 送信画像 */
+    private String profileImgPathSend;
+    /** 受信画像 */
+    private String profileImgPathReceive;
 
 
     /**
@@ -166,6 +169,34 @@ public class Laugh {
      */
     public void setUserDebutAtReceive(LocalDate userDebutAtReceive) {
         this.userDebutAtReceive = userDebutAtReceive;
+    }
+    /**
+     * 送信画像を取得します。
+     * @return 送信画像
+     */
+    public String getProfileImgPathSend() {
+        return profileImgPathSend;
+    }
+    /**
+     * 送信画像を設定します。
+     * @param profileImgPathSend 送信画像
+     */
+    public void setProfileImgPathSend(String profileImgPathSend) {
+        this.profileImgPathSend = profileImgPathSend;
+    }
+    /**
+     * 受信画像を取得します。
+     * @return 受信画像
+     */
+    public String getProfileImgPathReceive() {
+        return profileImgPathReceive;
+    }
+    /**
+     * 受信画像を設定します。
+     * @param profileImgPathReceive 受信画像
+     */
+    public void setProfileImgPathReceive(String profileImgPathReceive) {
+        this.profileImgPathReceive = profileImgPathReceive;
     }
 
 }

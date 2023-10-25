@@ -21,7 +21,8 @@ public class LaughResource {
     private  int activeTermMonth;
     /** 自分が送ったLaughか */
     private boolean isMySendLough;
-
+    /** 画像パス */
+    private String imgPath;
 
 
     /**
@@ -135,6 +136,20 @@ public class LaughResource {
      */
     public void setMySendLough(boolean isMySendLough) {
         this.isMySendLough = isMySendLough;
+    }
+    /**
+     * 画像パスを取得します。
+     * @return 画像パス
+     */
+    public String getImgPath() {
+        return imgPath;
+    }
+    /**
+     * 画像パスを設定します。
+     * @param imgPath 画像パス
+     */
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
 }

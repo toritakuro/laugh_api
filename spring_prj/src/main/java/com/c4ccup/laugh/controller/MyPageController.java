@@ -85,15 +85,19 @@ public class MyPageController extends _CmnController {
             r.setStatus(l.getStatus());
             r.setStatusStr(MatchStatus.getValByKey(l.getStatus()));
 
+            // 受信が自分の場合
             if (l.getReceiveUserId() == bean.getUserId()) {
                 r.setName(l.getUserNameSend());
                 r.setTargetUserId(l.getUserIdSend());
+                r.setImgPath(l.getProfileImgPathSend());
                 r.setMySendLough(false);
                 activeTerm= getActiveTerm(l.getUerDebutAtSend());
             }
+            // 送信が自分の場合
             if (l.getSendUserId() == bean.getUserId()) {
                 r.setName(l.getUserNameReceive());
                 r.setTargetUserId(l.getUserIdReceive());
+                r.setImgPath(l.getProfileImgPathReceive());
                 r.setMySendLough(true);
                 activeTerm = getActiveTerm(l.getUserDebutAtReceive());
             }

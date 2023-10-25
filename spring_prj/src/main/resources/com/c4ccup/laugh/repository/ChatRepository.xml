@@ -149,6 +149,6 @@
       readed_flg = 1
     WHERE
       chat_room_list_id = #{chatRoomId}
-      AND send_user_id != #{sendUserid}
+      AND send_user_id != #{sendUserId}
   </update>
 </mapper>

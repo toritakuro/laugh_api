@@ -232,4 +232,25 @@ public class ProfileController extends _CmnController {
         return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール", "更新"))));
     }
 
+    /**
+     * プロフ画面を更新するメソッド
+     * @param ProfileBean
+     */
+    @RequestMapping(path = "/editImg", method = RequestMethod.POST)
+    public ResponseEntity<ApiResource<Messages>> editImg(@RequestBody ProfileBean bean) {
+
+        int userId = bean.getId();
+
+        //サムネイルをS3に登録
+        String[] awsUploadFileInfo = Util.toAwsUploadFileInfo(bean.getProfileImgPath());
+
+        byte[] decodedBytes = Base64.getDecoder().decode(awsUploadFileInfo[0]);
+        MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", "dummy" + awsUploadFileInfo[2], awsUploadFileInfo[1]);
+        String fileName = s3Util.uploadFile(userId, multipartFile);
+        String url = AwsS3Util.S3URL + userId +"/" + fileName;
+        userRepository.updateImg(userId, url);
+
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール画像", "更新"))));
+    }
+
 }

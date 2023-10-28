@@ -28,17 +28,6 @@
     <result column="update_at" property="updateAt"/>
   </resultMap>
 
-  <resultMap id="contentResultMap" type="com.c4ccup.laugh.domain.Content">
-    <id column="id" property="id"/>
-    <result column="user_id" property="userId"/>
-    <result column="title" property="title"/>
-    <result column="detail" property="detail"/>
-    <result column="file_type" property="fileType"/>
-    <result column="content_path" property="contentPath"/>
-    <result column="create_at" property="createAt"/>
-    <result column="update_at" property="updateAt"/>
-  </resultMap>
-
   <select id="selectLaugh" parameterType="int" resultMap="LaughResultMap">
 		SELECT
 			ms.id,

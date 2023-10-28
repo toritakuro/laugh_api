@@ -20,6 +20,17 @@
     <result property="reactionStatuses" column="reaction_status"/>
 </resultMap>
 
+<!-- 大喜利回答結果 -->
+<resultMap id="OogiriAnswerContentResultMap" type="com.c4ccup.laugh.domain.Oogiri">
+    <result property="themeId" column="theme_id"/>
+    <result property="themeContent" column="theme_content"/>
+    <result property="answerContent" column="answer_content"/>
+    <result property="reactionNum" column="total_num"/>
+    <result property="goodNum" column="good_num"/>
+    <result property="veryGoodNum" column="very_good_num"/>
+    <result property="badNum" column="bad_num"/>
+</resultMap>
+
 <!-- OogiriThemeのResultMap -->
 <resultMap id="OogiriThemeResultMap" type="com.c4ccup.laugh.domain.Oogiri">
     <id property="themeId" column="theme_id"/>
@@ -302,25 +313,26 @@
         user_id = #{userId};
 </select>
 
-<select id="getAnswerByUserId" resultMap="OogiriResultMap">
-    SELECT
-        oogiri_answer.id as answer_id,
-        oogiri_answer.oogiri_theme_id,
-        oogiri_answer.user_id as answer_user_id,
-        oogiri_answer.answer_content,
-        oogiri_theme.theme_content,
-        oogiri_theme.id as theme_id
-    FROM
-        oogiri_answer
-    LEFT JOIN
-        oogiri_theme
-    ON 
-        oogiri_answer.oogiri_theme_id = oogiri_theme.id 
-    WHERE 
-        oogiri_answer.user_id = #{userId}
-    AND 
-        oogiri_answer.delete_at IS NULL
-    ORDER BY
-        oogiri_answer.create_at DESC 
+<select id="getAnswerByUserId" resultMap="OogiriAnswerContentResultMap">
+  SELECT
+    ot.id as theme_id,
+    ot.theme_content,
+    oa.id as answer_id,
+    oa.answer_content,
+    ot.update_at,
+    count(oor.reaction_status or null) as total_num,
+    count(oor.reaction_status = 11 or null) as good_num, -- いいね
+    count(oor.reaction_status = 12 or null) as very_good_num, -- とてもいいね
+    count(oor.reaction_status = 21 or null) as bad_num -- 悪い
+  FROM
+    oogiri_answer oa
+  INNER JOIN oogiri_theme ot ON
+    ot.id = oa.oogiri_theme_id
+  LEFT JOIN oogiri_reaction oor ON oor.oogiri_answer_id = oa.id
+  WHERE
+    oa.user_id = #{userId}
+  GROUP by ot.id, oa.id
+  ORDER BY ot.update_at DESC, ot.id DESC, total_num DESC
 </select>
+
 </mapper>

@@ -56,8 +56,14 @@ public class Oogiri {
     private LocalDateTime reactionUpdatedAt;
     /** リアクション数 */
     private int reactionNum;
+    /** いいね数 */
+    private int goodNum;
+    /** とてもいいね数 */
+    private int veryGoodNum;
+    /** わるい数 */
+    private int badNum;
 
-    /**
+   /**
      * お題IDを取得します。
      * 
      * @return お題ID
@@ -451,6 +457,54 @@ public class Oogiri {
      */
     public void setReactionNum(int reactionNum) {
         this.reactionNum = reactionNum;
+    }
+
+    /**
+     * いいね数を取得します。
+     * @return いいね数
+     */
+    public int getGoodNum() {
+        return goodNum;
+    }
+
+    /**
+     * いいね数を設定します。
+     * @param goodNum いいね数
+     */
+    public void setGoodNum(int goodNum) {
+        this.goodNum = goodNum;
+    }
+
+    /**
+     * とてもいいね数を取得します。
+     * @return とてもいいね数
+     */
+    public int getVeryGoodNum() {
+        return veryGoodNum;
+    }
+
+    /**
+     * とてもいいね数を設定します。
+     * @param veryGoodNum とてもいいね数
+     */
+    public void setVeryGoodNum(int veryGoodNum) {
+        this.veryGoodNum = veryGoodNum;
+    }
+
+    /**
+     * わるい数を取得します。
+     * @return わるい数
+     */
+    public int getBadNum() {
+        return badNum;
+    }
+
+    /**
+     * わるい数を設定します。
+     * @param badNum わるい数
+     */
+    public void setBadNum(int badNum) {
+        this.badNum = badNum;
     }
 
 }

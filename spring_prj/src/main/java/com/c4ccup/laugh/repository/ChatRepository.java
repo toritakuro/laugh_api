@@ -11,6 +11,7 @@ public interface ChatRepository {
 
     /**
      * チャット一覧を取得する
+     * 
      * @param chat
      * @return List<Chat>
      */
@@ -18,6 +19,7 @@ public interface ChatRepository {
 
     /**
      * チャット詳細を取得する
+     * 
      * @param chat
      * @return List<Chat>
      */
@@ -25,6 +27,7 @@ public interface ChatRepository {
 
     /**
      * チャットルームを作成する
+     * 
      * @param chat
      * @return int
      */
@@ -32,6 +35,7 @@ public interface ChatRepository {
 
     /**
      * チャットルームを送信する
+     * 
      * @param chat
      * @return int
      */
@@ -55,4 +59,11 @@ public interface ChatRepository {
      * @param id
      */
     public void deleteChatDetail(int id);
+
+    /**
+     * メッセージを既読にする
+     * @param id
+     */
+    public void readMessage(int chatRoomId, int sendUserId);
+
 }

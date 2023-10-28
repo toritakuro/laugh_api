@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import javax.security.auth.login.LoginException;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +36,7 @@ public class LoginController extends _CmnController {
 
     /**
      * ログイン認証
-     * 
+     *
      * @param request ログインリクエストのボディ
      * @return JWTとユーザー情報を含むレスポンスエンティティ
      */
@@ -52,8 +51,10 @@ public class LoginController extends _CmnController {
         User user = userRepository.findByMail(email);
 
         // ユーザーが取得できない場合エラーを返す
-        if (user == null)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (user == null) {
+            String errMsg = msgUtil.getMessage("e001", "パスワード認証");
+            throw new LoginException(errMsg);
+        }
 
         // パスワードチェック
         pwdUtil.matches(password, user.getPassword());
@@ -65,11 +66,12 @@ public class LoginController extends _CmnController {
         String idToken = jwtUtil.generateToken(email);
         String refreshToken = jwtUtil.generateRefreshToken(email);
         UserResource response = new UserResource();
-        // レスポンスとしてJWTとユーザーID,タイプを返す
+        // レスポンスとしてJWTとユーザーID,タイプ,名前を返す
         response.setIdToken(idToken);
         response.setRefreshToken(refreshToken);
         response.setId(user.getId());
         response.setUserType(user.getUserType());
+        response.setUserName(user.getUserName());
         ApiResource<UserResource> res = new ApiResource<>(response);
         return ResponseEntity.ok(res);
     }

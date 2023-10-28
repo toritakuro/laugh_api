@@ -27,7 +27,9 @@ public class AwsS3Util {
     /** S3Client */
     S3Client s3Client = null;
     /** S3Url */
-    private static final String URL ="https://s3-ap-northeast-1.amazonaws.com" ;
+    private static final String URL = "https://s3-ap-northeast-1.amazonaws.com" ;
+    /** S3Url */
+    public static final String S3URL = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/";
 
     public AwsS3Util () {
         try {
@@ -48,6 +50,7 @@ public class AwsS3Util {
      */
     public String uploadFile(int userId, MultipartFile file) {
         final String fileName = getS3FileName(file);
+        String mimeType = file.getContentType();
         try {
             // metaデータはどのように設定するか不明.metaで設定できる
             // Map<String, String> metadata = new HashMap<>();
@@ -55,6 +58,7 @@ public class AwsS3Util {
             PutObjectRequest putOb = PutObjectRequest.builder()
                 .bucket(prop.getBucket())
                 .key(userId + "/" + fileName)
+                .contentType(mimeType != null ? mimeType : "application/octet-stream")
                 .build();
             s3Client.putObject(putOb, RequestBody.fromFile(convert(file)));
         }

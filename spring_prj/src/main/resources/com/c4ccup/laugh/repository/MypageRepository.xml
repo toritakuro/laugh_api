@@ -10,9 +10,22 @@
     <result column="user_id_send" property="userIdSend"/>
     <result column="user_name_send" property="userNameSend"/>
     <result column="user_debut_dt_send" property="uerDebutAtSend"/>
+    <result column="profile_img_path_send" property="profileImgPathSend"/>
     <result column="user_id_receive" property="userIdReceive"/>
     <result column="user_name_receive" property="userNameReceive"/>
     <result column="user_debut_dt_receive" property="userDebutAtReceive"/>
+    <result column="profile_img_path_receive" property="profileImgPathReceive"/>
+  </resultMap>
+
+  <resultMap id="contentResultMap" type="com.c4ccup.laugh.domain.Content">
+    <id column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="title" property="title"/>
+    <result column="detail" property="detail"/>
+    <result column="file_type" property="fileType"/>
+    <result column="content_path" property="contentPath"/>
+    <result column="create_at" property="createAt"/>
+    <result column="update_at" property="updateAt"/>
   </resultMap>
 
   <resultMap id="contentResultMap" type="com.c4ccup.laugh.domain.Content">
@@ -35,9 +48,11 @@
 			s_user.id AS user_id_send,
 			s_user.user_name AS user_name_send,
 			s_user.debut_dt AS user_debut_dt_send,
+      s_user.profile_img_path AS profile_img_path_send,
 			r_user.id AS user_id_receive,
 			r_user.user_name AS user_name_receive,
-			r_user.debut_dt AS user_debut_dt_receive
+			r_user.debut_dt AS user_debut_dt_receive,
+      r_user.profile_img_path AS profile_img_path_receive
 		FROM
 			match_status ms
 		INNER JOIN user s_user ON
@@ -48,7 +63,7 @@
 		ORDER BY
 			ms.create_at DESC
   </select>
-  
+
   <select id="selectMatchStatus" parameterType="int" resultMap="LaughResultMap">
 		SELECT
 			ms.id,
@@ -70,7 +85,26 @@
 		WHERE (ms.send_user_id = #{sendUserId} AND ms.receive_user_id = #{receiveUserId}) AND ms.match_status != 20
   </select>
 
-  <!-- ユーザ詳細画面用 投稿取得 -->
+  <insert id="uploadContent" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO
+      content
+        (
+        user_id
+        ,title
+        ,detail
+        ,file_type
+        ,content_path
+        )
+    VALUES
+      (
+      #{userId}
+      ,#{title}
+      ,#{detail}
+      ,#{fileType}
+      ,#{contentPath}
+      );
+  </insert>
+
   <select id="selectContent" parameterType="int" resultMap="contentResultMap">
     SELECT
       id
@@ -88,4 +122,23 @@
     ORDER BY
       create_at desc
   </select>
+
+  <update id="editContent">
+    UPDATE
+      content
+    SET
+      title = #{title}
+      , detail = #{detail}
+      , update_at = #{updateAt}
+    WHERE
+      id = #{id}
+  </update>
+
+  <delete id="deleteContent">
+    DELETE FROM
+      content
+    WHERE
+      id = #{id}
+  </delete>
+
 </mapper>

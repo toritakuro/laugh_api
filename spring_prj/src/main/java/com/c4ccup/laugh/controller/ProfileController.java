@@ -1,25 +1,30 @@
 package com.c4ccup.laugh.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.c4ccup.laugh.controller.bean.UserBean;
 import com.c4ccup.laugh.controller.bean.req.ProfileBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.Messages;
 import com.c4ccup.laugh.controller.bean.res.ProfileResource;
 import com.c4ccup.laugh.domain.User;
 import com.c4ccup.laugh.repository.UserRepository;
+import com.c4ccup.laugh.util.AppConst.DateFormatEnum;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
+import com.c4ccup.laugh.util.AwsS3Util;
 import com.c4ccup.laugh.util.AwsSesUtil;
+import com.c4ccup.laugh.util.ByteArrayMultipartFile;
 import com.c4ccup.laugh.util.MessageUtil;
 import com.c4ccup.laugh.util.PropBean;
 import com.c4ccup.laugh.util.Util;
@@ -35,6 +40,8 @@ public class ProfileController extends _CmnController {
     private UserRepository userRepository;
     @Autowired
     private AwsSesUtil awsSesUtil;
+    @Autowired
+    private AwsS3Util s3Util;
     @Autowired
     MessageUtil msgUtil;
 
@@ -60,20 +67,30 @@ public class ProfileController extends _CmnController {
      */
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public void register(@RequestBody ProfileBean bean) {
-        //debutDtをセット(作家のみ)
-        if(bean.getUserType() == UserEnum.COMEDIAN.getId()) {
-            LocalDate debutDt = LocalDate.of(bean.getDebutYear(), bean.getDebutMonth(), 1);
-            bean.setDebutDt(debutDt);
-        }
+
+//      //debutDtをセット(作家のみ)
+//      if(bean.getUserType() == UserEnum.COMEDIAN.getId()) {
+//          LocalDate debutDt = LocalDate.of(bean.getDebutYear(), bean.getDebutMonth(), 1);
+//          bean.setDebutDt(debutDt);
+//      }
+      bean.setDebutDt(LocalDate.now());
 
         // ユーザーをuserテーブルに登録する。
         userRepository.register(bean);
-
         // 採番されたidを取得しregisterUserIdに入れる
         int registerUserId = bean.getId();
 
         // 登録したユーザーのuserIdをセットしておく
         bean.setUserId(registerUserId);
+
+        //サムネイルをS3に登録
+        String[] awsUploadFileInfo = Util.toAwsUploadFileInfo(bean.getProfileImgPath());
+
+        byte[] decodedBytes = Base64.getDecoder().decode(awsUploadFileInfo[0]);
+        MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", "dummy" + awsUploadFileInfo[2], awsUploadFileInfo[1]);
+        String fileName = s3Util.uploadFile(registerUserId, multipartFile);
+        String url = AwsS3Util.S3URL + registerUserId +"/" + fileName;
+        userRepository.updateImg(registerUserId, url);
 
         // 作家プロフィールの登録
         if(bean.getUserType() == UserEnum.COMPOSER.getId()) {
@@ -162,14 +179,13 @@ public class ProfileController extends _CmnController {
      * @param ProfileBean
      */
     @RequestMapping(path = "/edit", method = RequestMethod.POST)
-    public ResponseEntity<ApiResource<Messages>> edit(@RequestBody ProfileBean bean) {
+    public ResponseEntity<ApiResource<Messages>> edit(@Validated @RequestBody ProfileBean bean) {
         int loginUserType = bean.getUserType();
         int loginUserId = bean.getId();
         bean.setUserId(loginUserId);
 
         //debutDtをセット
-        LocalDate debutDt = LocalDate.of(bean.getDebutYear(), bean.getDebutMonth(), 1);
-        bean.setDebutDt(debutDt);
+        bean.setDebutDt(Util.toLocalDate(bean.getDebutDtStr() + "-01", DateFormatEnum.HYPHEN_YMD));
 
         // ユーザーをuserテーブルに登録する。
         userRepository.updateProfile(bean);
@@ -214,6 +230,27 @@ public class ProfileController extends _CmnController {
         }
 
         return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール", "更新"))));
+    }
+
+    /**
+     * プロフ画面を更新するメソッド
+     * @param ProfileBean
+     */
+    @RequestMapping(path = "/editImg", method = RequestMethod.POST)
+    public ResponseEntity<ApiResource<Messages>> editImg(@RequestBody ProfileBean bean) {
+
+        int userId = bean.getId();
+
+        //サムネイルをS3に登録
+        String[] awsUploadFileInfo = Util.toAwsUploadFileInfo(bean.getProfileImgPath());
+
+        byte[] decodedBytes = Base64.getDecoder().decode(awsUploadFileInfo[0]);
+        MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", "dummy" + awsUploadFileInfo[2], awsUploadFileInfo[1]);
+        String fileName = s3Util.uploadFile(userId, multipartFile);
+        String url = AwsS3Util.S3URL + userId +"/" + fileName;
+        userRepository.updateImg(userId, url);
+
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール画像", "更新"))));
     }
 
 }

@@ -38,10 +38,10 @@ public class TopController {
         // ユーザーの一覧を取得
         if (loginUserType == UserEnum.COMEDIAN.getId()) {
             // 作家一覧を取得
-            userList = userRepository.getComposerList(UserEnum.COMPOSER.getId(), null);
+            userList = userRepository.getComposerList(UserEnum.COMPOSER.getId());
         } else {
             // 芸人一覧を取得
-            userList = userRepository.getComedianList(UserEnum.COMEDIAN.getId(), null);
+            userList = userRepository.getComedianList(UserEnum.COMEDIAN.getId());
         }
         // ユーザーの情報をセット
         for (User user : userList) {

@@ -7,6 +7,7 @@
     <id column="chat_id" property="chatId" />
     <result column="send_user_id" property="sendUserId"/>
     <result column="chat_message" property="chatMessage"/>
+    <result column="unread_count" property="unreadCount"/>
     <result column="create_at" property="createAt"/>
     <!-- Javaの変数名を設定 -->
     <association property="comedian" resultMap="ComedianResultMap"/>
@@ -32,7 +33,8 @@
         cd.chat_message,
         comedian.user_name AS comedian_name,
         composer.user_name AS composer_name,
-        cd.create_at
+        cd.create_at,
+        COALESCE(um.unread_messages_count, 0) AS unread_count
     FROM
     	chat_detail cd
     INNER JOIN (
@@ -48,6 +50,23 @@
     	ON comedian.id = crl.user_comedian_id
     INNER JOIN user AS composer
     	ON composer.id = crl.user_composer_id
+    LEFT JOIN (
+        SELECT
+          chat_room_list_id,
+          COUNT(*) AS unread_messages_count
+        FROM
+          chat_detail
+        WHERE
+        <if test="userComedianId != null">
+            send_user_id != #{userComedianId}
+        </if>
+        <if test="userComposerId != null">
+            send_user_id != #{userComposerId}
+        </if>
+        AND
+          readed_flg = 0
+        GROUP BY chat_room_list_id) as um on
+          um.chat_room_list_id = crl.id
     WHERE
     <if test="userComedianId != null">
         user_comedian_id = #{userComedianId}
@@ -149,4 +168,15 @@
     WHERE
       chat_room_list_id = #{id};
   </delete>
+  
+  <!-- メッセージ既読 -->
+  <update id="readMessage">
+    UPDATE
+      chat_detail
+    SET
+      readed_flg = 1
+    WHERE
+      chat_room_list_id = #{chatRoomId}
+      AND send_user_id != #{sendUserId}
+  </update>
 </mapper>

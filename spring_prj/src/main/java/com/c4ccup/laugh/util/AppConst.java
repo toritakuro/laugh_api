@@ -11,6 +11,32 @@ public class AppConst {
     /** 大喜利一覧回答表示数 */
     public static final int oogiri_answer_disp_num = 3;
 
+    /** MimeType-拡張子 */
+    public enum MimeTypeEnum {
+        JPG("image/jpeg", ".jpg"),
+        PNG("image/png", ".png"),
+        ;
+        private String mimeType;
+        private String extention;
+
+        MimeTypeEnum(String mimeType, String extention) {
+            this.mimeType = mimeType;
+            this.extention = extention;
+        }
+
+        public String getMimetype() { return this.mimeType; }
+        public String getExtention() { return this.extention; }
+
+        public static String getExtention(String mineType) {
+            for (MimeTypeEnum mte : MimeTypeEnum.values()) {
+                if (mte.getMimetype().equals(mineType)) {
+                    return mte.getExtention();
+                }
+            }
+            return null;
+        }
+    }
+
     /** ユーザータイプ */
     public enum UserEnum {
         /** 1:芸人 */
@@ -23,6 +49,25 @@ public class AppConst {
         private String name;
 
         UserEnum(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+        public int getId() { return id; }
+        public String getName() { return name; }
+    }
+
+    /** 料金体系 */
+    public enum FeeEnum {
+        /** 1:時給 */
+        TIME(1, "時給"),
+        /** 2:成果物 */
+        PRODUCT(2, "成果物"),
+        ;
+
+        private int id;
+        private String name;
+
+        FeeEnum(int id, String name) {
             this.id = id;
             this.name = name;
         }
@@ -53,10 +98,28 @@ public class AppConst {
         public String getName() { return name; }
     }
 
+    /** お知らせ種別 */
+    public enum NoticeType {
+        LAUGH(1),
+        MESSAGE(2),
+        MATCH(3)
+        ;
+
+        private int type;
+
+        private NoticeType(int type) {
+           this.type = type;
+        }
+
+        public int getType() { return this.type; }
+    }
+
     /** 日付フォーマット */
     public enum DateFormatEnum {
         /** yyyy-MM-dd */
         HYPHEN_YMD("yyyy-MM-dd"),
+        /** yyyy-MM */
+        HYPHEN_YM("yyyy-MM"),
         /** yyyy/MM/dd */
         SLASH_YMD("yyyy/MM/dd"),
         /** HH:mm */

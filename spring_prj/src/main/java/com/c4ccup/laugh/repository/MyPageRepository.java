@@ -40,4 +40,34 @@ public interface MyPageRepository {
      * @return
      */
     public List<Content> selectContent(MyPageBean bean);
+
+    /**
+     * contentテーブルにデータを追加する
+     *
+     * @param myPageBean
+     */
+    public void uploadContent(MyPageBean myPageBean);
+
+    /**
+     * content一覧を取得
+     *
+     * @param userId
+     * @return
+     */
+    public List<Content> selectContent(int userId);
+
+    /**
+     * contentテーブルのデータを編集する
+     *
+     * @param myPageBean
+     */
+    public void editContent(MyPageBean myPageBean);
+
+    /**
+     * contentテーブルからデータを削除する
+     *
+     * @param id
+     */
+    public void deleteContent(int id);
+
 }

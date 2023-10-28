@@ -27,6 +27,7 @@ public class ContentResources {
     private LocalDateTime updateAt;
 
 
+
     public ContentResources() {
 
     }
@@ -41,6 +42,8 @@ public class ContentResources {
         this.createAt = content.getCreateAt();
         this.updateAt = content.getUpdateAt();
     }
+
+
 
     /**
      * ユーザIDを取得します。
@@ -152,5 +155,5 @@ public class ContentResources {
     public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
     }
-
 }
+

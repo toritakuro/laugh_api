@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.c4ccup.laugh.controller.bean.UserBean;
 import com.c4ccup.laugh.controller.bean.req.ProfileBean;
 import com.c4ccup.laugh.domain.User;
 
@@ -38,6 +37,13 @@ public interface UserRepository {
      * @return user_id
      */
     public void register(ProfileBean userBean);
+
+    /**
+     * S3へアップロードしたファイルのパスを保存する
+     * @param userId
+     * @param imgPath
+     */
+    public void updateImg(int id, String profileImgPath);
 
     /**
      * comedian_profileテーブルにデータを追加する
@@ -80,19 +86,17 @@ public interface UserRepository {
 
     /**
      * ユーザータイプで作家ユーザーを取得
-     * @param userType
      * @param userId
      * @return
      */
-    public List<User> getComposerList(int userType, Integer userId);
+    public List<User> getComposerList(int userType);
 
     /**
      * ユーザータイプで芸人ユーザーを取得
      * @param userType
-     * @param userId
      * @return
      */
-    public List<User> getComedianList(int userType, Integer userId);
+    public List<User> getComedianList(int userType);
 
     /**
      * ユーザーIDで作家ユーザーを取得

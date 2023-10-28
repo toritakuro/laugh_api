@@ -96,8 +96,7 @@
         ,office_id
         ,area_id
         ,self_introduction
-        ,profile_img_path
-        )
+          )
     VALUES
       (
       #{userAddress}
@@ -110,7 +109,6 @@
       ,#{officeId}
       ,#{areaId}
       ,#{selfIntroduction}
-      ,#{profileImgPath}
       );
   </insert>
 
@@ -196,6 +194,14 @@
   <update id="updateLoginAt" parameterType="com.c4ccup.laugh.domain.User">
     UPDATE user
     SET login_at = #{loginAt}
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateImg">
+    UPDATE
+      user
+    SET
+      profile_img_path = #{profileImgPath}
     WHERE id = #{id}
   </update>
 
@@ -442,7 +448,7 @@
     ON
       comedy_style.id = own_comedy_style.comedy_style_id
     WHERE
-      user.user_type = #{userType}
+      user.user_type = 1
     AND
       user.id = #{userId}
     GROUP BY
@@ -453,17 +459,14 @@
     UPDATE
       user
     SET
-      user_address = #{userAddress}
-      ,user_name = #{userName}
+      user_name = #{userName}
       ,user_name_kana = #{userNameKana}
       ,user_type = #{userType}
-      ,password = #{password}
       ,debut_dt = #{debutDt}
       ,gender = #{gender}
       ,office_id = #{officeId}
       ,area_id = #{areaId}
       ,self_introduction = #{selfIntroduction}
-      ,profile_img_path = #{profileImgPath}
     WHERE
       id = #{id}
   </update>

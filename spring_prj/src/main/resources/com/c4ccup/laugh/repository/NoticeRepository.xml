@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.c4ccup.laugh.repository.NoticeRepository">
+
+  <resultMap id="NoticeResultMap" type="com.c4ccup.laugh.domain.Notice">
+    <id column="id" property="id" />
+    <result column="target_type" property="targetType"/>
+    <result column="target_id" property="targetId"/>
+    <result column="target_user_id" property="targetUserId"/>
+    <result column="is_read" property="isRead"/>
+    <result column="message" property="message"/>
+  </resultMap>
+
+  <select id="findById" parameterType="int" resultMap="NoticeResultMap">
+    SELECT
+      *
+    FROM
+      notice
+    WHERE
+      target_user_id = #{userId} and is_read = 0
+    ORDER BY id ASC
+  </select>
+
+  <update id="read">
+    UPDATE notice SET is_read = 1 where id = #{id}
+  </update>
+
+  <insert id="create">
+    INSERT notice
+    (
+      target_type,
+      target_id,
+      target_user_id,
+      is_read, message,
+      create_at,
+      update_at)
+    VALUS
+    (
+      #{targetType}
+      ,#{targetId}
+      ,#{targetUserId}
+      ,0
+      ,now()
+      ,now()
+     )
+  </insert>
+</mapper>

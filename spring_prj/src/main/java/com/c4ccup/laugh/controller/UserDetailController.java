@@ -59,7 +59,7 @@ public class UserDetailController {
             user = userRepository.getComposer(bean.getReceiveUserId());
         }
         // 相手とのマッチングステータスを取得する
-        Laugh matchStatus = mypageRepository.selectMatchStatus(bean.getSendUserId(), bean.getReceiveUserId());
+        Laugh matchStatus = mypageRepository.selectMatchStatus(bean);
         // データがあった場合
         if (matchStatus != null) {
             user.setMatchStatus(matchStatus.getStatus());

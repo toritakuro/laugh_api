@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.c4ccup.laugh.controller.bean.req.UserDetailBean;
 import com.c4ccup.laugh.domain.Laugh;
 
 /**
@@ -29,5 +30,5 @@ public interface MyPageRepository {
      * @param receiveUserId
      * @return
      */
-    public Laugh selectMatchStatus(int sendUserId, int receiveUserId);
+    public Laugh selectMatchStatus(UserDetailBean bean);
 }

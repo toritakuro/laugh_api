@@ -28,7 +28,7 @@ public class TopController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(path = "/init", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<ApiResource<List<UserResource>>> init(TopBean bean) {
 
         List<UserResource> topUserList = new ArrayList<>();

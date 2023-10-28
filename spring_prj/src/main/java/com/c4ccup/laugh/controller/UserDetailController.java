@@ -107,8 +107,8 @@ public class UserDetailController {
      * @param request
      * @return
      */
-    @RequestMapping(path = "/regMatch", method = RequestMethod.POST)
-    public void regMatch(@RequestBody UserDetailBean bean) {
+    @RequestMapping(path = "/match", method = RequestMethod.POST)
+    public void match(@RequestBody UserDetailBean bean) {
         int matchStatus = bean.getMatchStatus();
         Chat chat = new Chat();
         if (bean.getUserType() == UserEnum.COMEDIAN.getId()) {
@@ -118,7 +118,7 @@ public class UserDetailController {
             chat.setUserComedianId(bean.getReceiveUserId());
             chat.setUserComposerId(bean.getSendUserId());
         }
-        // 未マッチ
+        // ラフ送信
         if (matchStatus == MatchStatus.PRE_MATCH.getStatus()) {
             matchStatusRepository.regMatchStatus(bean);
         }
@@ -127,12 +127,12 @@ public class UserDetailController {
             matchStatusRepository.updateMatchStatus(bean);
             chatRepository.createChatRoom(chat);
         }
-        // スーパーラフ
+        // スーパーラフ送信
         if (matchStatus == MatchStatus.SUPER_LAUGHT.getStatus()) {
             matchStatusRepository.regMatchStatus(bean);
             chatRepository.createChatRoom(chat);
         }
-        // キャンセル
+        // マッチ解消
         if (matchStatus == MatchStatus.CANCEL.getStatus()) {
             matchStatusRepository.updateMatchStatus(bean);
             Chat chatRoomId = chatRepository.findChatRoom(chat);

@@ -30,6 +30,10 @@ public class OogiriResources extends _Cmn {
     private int themeUserId;
     /** お題ユーザーネーム */
     private String themeUserName;
+    /** プロフィール画像 */
+    private String img;
+    /** ユーザータイプ */
+    private int userType;
     /** お題内容 */
     private String themeContent;
     /** お題作成日時 */
@@ -95,6 +99,38 @@ public class OogiriResources extends _Cmn {
      */
     public void setThemeUserName(String themeUserName) {
         this.themeUserName = themeUserName;
+    }
+
+    /**
+     * プロフィール画像を取得します。
+     * @return プロフィール画像
+     */
+    public String getImg() {
+        return img;
+    }
+
+    /**
+     * プロフィール画像を設定します。
+     * @param img プロフィール画像
+     */
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    /**
+     * ユーザータイプを取得します。
+     * @return ユーザータイプ
+     */
+    public int getUserType() {
+        return userType;
+    }
+
+    /**
+     * ユーザータイプを設定します。
+     * @param userType ユーザータイプ
+     */
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
 
     /**

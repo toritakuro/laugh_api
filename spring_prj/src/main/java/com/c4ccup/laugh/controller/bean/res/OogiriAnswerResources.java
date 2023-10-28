@@ -16,6 +16,10 @@ public class OogiriAnswerResources {
     private int answerUserId;
     /** 回答ユーザーネーム */
     private String answerUserName;
+    /** プロフィール画像 */
+    private String img;
+    /** ユーザータイプ */
+    private int userType;
     /** 回答内容 */
     private String answerContent;
     /** 回答作成日時 */
@@ -78,6 +82,40 @@ public class OogiriAnswerResources {
      */
     public void setAnswerUserName(String answerUserName) {
         this.answerUserName = answerUserName;
+    }
+
+    /**
+     * プロフィール画像を取得します。
+     * 
+     * @return プロフィール画像
+     */
+    public String getImg() {
+        return img;
+    }
+
+    /**
+     * プロフィール画像を設定します。
+     * 
+     * @param img プロフィール画像
+     */
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    /**
+     * ユーザータイプを取得します。
+     * @return ユーザータイプ
+     */
+    public int getUserType() {
+        return userType;
+    }
+
+    /**
+     * ユーザータイプを設定します。
+     * @param userType ユーザータイプ
+     */
+    public void setUserType(int userType) {
+        this.userType = userType;
     }
 
     /**

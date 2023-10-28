@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.Messages;
+import com.c4ccup.laugh.controller.bean.res.OogiriAnswerResources;
 import com.c4ccup.laugh.controller.bean.res.OogiriResources;
 import com.c4ccup.laugh.domain.Oogiri;
 import com.c4ccup.laugh.domain.User;
@@ -74,6 +75,7 @@ public class OogiriController extends _CmnController {
         // お題に紐づく回答リストを取得
         List<Oogiri> oogiriList = oogiriRepository.getAllAnswers(themeId);
         OogiriResources oogiriRes = new OogiriResources(oogiriList);
+        oogiriRes = setImgAndType(oogiriRes);
         ApiResource<OogiriResources> oogiri = new ApiResource<>(oogiriRes);
         return ResponseEntity.ok(oogiri);
     }
@@ -236,6 +238,9 @@ public class OogiriController extends _CmnController {
                 }
                 res = new OogiriResources();
                 res = res.setThemeInfo(o);
+                User u = userRepository.findById(o.getThemeUserId());
+                res.setImg(u.getProfileImgPath());
+                res.setUserType(u.getUserType());
                 answerCount = 0;
             }
             // 回答が3件セットされている場合スキップ
@@ -255,6 +260,21 @@ public class OogiriController extends _CmnController {
         res.setAnswerCount(answerCount);
         resList.add(res);
         return resList;
+    }
+
+    /**
+     * 回答者のプロフィール画像、ユーザータイプをセット
+     * 
+     * @param res
+     * @return
+     */
+    private OogiriResources setImgAndType(OogiriResources res) {
+        for (OogiriAnswerResources r : res.getAnswers()) {
+            User u = userRepository.findById(r.getAnswerUserId());
+            r.setImg(u.getProfileImgPath());
+            r.setUserType(u.getUserType());
+        }
+        return res;
     }
 
     /**

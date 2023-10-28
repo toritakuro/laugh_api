@@ -1,5 +1,6 @@
 package com.c4ccup.laugh.controller;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -54,7 +55,7 @@ public class ProfileController extends _CmnController {
     public void init(@RequestBody PropBean propBean) {
         String userMailAddress = propBean.getEmail();
         String Title = "Laughの登録";
-        String Text = "<p>以下のURLから登録をお願いします。</p><br>"
+        String Text = "<p>メールアドレスを登録いただきありがとうございます。</p><br><p>以下のURLから本登録をお願いします。</p><br>"
                      + "http://localhost:3000/profile/register/"
                      + propBean.getEmail().replace(".", "+");
         awsSesUtil.send(userMailAddress, Title, Text);
@@ -68,12 +69,12 @@ public class ProfileController extends _CmnController {
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public void register(@RequestBody ProfileBean bean) {
 
-//      //debutDtをセット(作家のみ)
-//      if(bean.getUserType() == UserEnum.COMEDIAN.getId()) {
-//          LocalDate debutDt = LocalDate.of(bean.getDebutYear(), bean.getDebutMonth(), 1);
-//          bean.setDebutDt(debutDt);
-//      }
-      bean.setDebutDt(LocalDate.now());
+      //debutDtをセット(作家のみ)
+      if(bean.getUserType() == UserEnum.COMEDIAN.getId()) {
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+          LocalDate debutDt = LocalDate.parse(bean.getDebutDtStr() + "-01", formatter);
+          bean.setDebutDt(debutDt);
+      }
 
         // ユーザーをuserテーブルに登録する。
         userRepository.register(bean);

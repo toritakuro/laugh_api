@@ -151,7 +151,7 @@ public class MyPageController extends _CmnController {
     }
 
     /**
-     * コンテンツを取得する
+     * 投稿ファイルを取得する
      * @param
      * @return
      */
@@ -161,18 +161,7 @@ public class MyPageController extends _CmnController {
         List<ContentResources> result = new ArrayList<>();
 
         for (Content content : contentList) {
-            ContentResources r = new ContentResources();
-
-            r.setId(content.getId());
-            r.setUserId(content.getUserId());
-            r.setUserId(content.getUserId());
-            r.setTitle(content.getTitle());
-            r.setDetail(content.getDetail());
-            r.setFileType(content.getFileType());
-            r.setContentPath(content.getContentPath());
-            r.setCreateAt(content.getCreateAt());
-            r.setUpdateAt(content.getUpdateAt());
-
+            ContentResources r = new ContentResources(content);
             result.add(r);
         }
 
@@ -180,7 +169,7 @@ public class MyPageController extends _CmnController {
     }
 
     /**
-     * コンテンツを編集する
+     * 投稿ファイルを編集する
      * @param
      */
     @RequestMapping(value ="editFile" , method = RequestMethod.POST)
@@ -188,18 +177,18 @@ public class MyPageController extends _CmnController {
         bean.setUpdateAt(LocalDateTime.now());
         mypageRepository.editContent(bean);
 
-        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "コンテンツ", "編集"))));
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "ファイル", "編集"))));
     }
 
     /**
-     * コンテンツを削除する
+     * 投稿ファイルを削除する
      * @param
      */
     @RequestMapping(value ="deleteFile" , method = RequestMethod.POST)
     private ResponseEntity<ApiResource<Messages>> deleteFile(@RequestBody MyPageBean bean) {
         mypageRepository.deleteContent(bean.getId());
 
-        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "コンテンツ", "削除"))));
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "ファイル", "削除"))));
     }
 
 

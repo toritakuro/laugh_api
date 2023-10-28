@@ -2,6 +2,8 @@ package com.c4ccup.laugh.controller.bean.res;
 
 import java.time.LocalDateTime;
 
+import com.c4ccup.laugh.domain.Content;
+
 /**
  * マイページBean
  */
@@ -23,6 +25,23 @@ public class ContentResources {
     private LocalDateTime createAt;
     /** 更新日時 */
     private LocalDateTime updateAt;
+
+
+
+    public ContentResources() {
+
+    }
+
+    public ContentResources(Content content) {
+        this.id = content.getId();
+        this.userId = content.getUserId();
+        this.title = content.getTitle();
+        this.detail = content.getDetail();
+        this.fileType = content.getFileType();
+        this.contentPath = content.getContentPath();
+        this.createAt = content.getCreateAt();
+        this.updateAt = content.getUpdateAt();
+    }
 
 
 

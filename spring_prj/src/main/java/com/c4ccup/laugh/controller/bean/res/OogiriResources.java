@@ -6,7 +6,9 @@ import java.util.List;
 
 import com.c4ccup.laugh.domain.Oogiri;
 import com.c4ccup.laugh.util.Util;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class OogiriResources extends _Cmn {
 
     public OogiriResources() {
@@ -15,7 +17,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * 大喜利詳細用コンストラクタ
-     * 
+     *
      * @param oogiriList
      */
     public OogiriResources(List<Oogiri> oogiriList) {
@@ -45,7 +47,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題IDを取得します。
-     * 
+     *
      * @return お題ID
      */
     public int getThemeId() {
@@ -54,7 +56,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題IDを設定します。
-     * 
+     *
      * @param themeId お題ID
      */
     public void setThemeId(int themeId) {
@@ -63,7 +65,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題ユーザーIDを取得します。
-     * 
+     *
      * @return お題ユーザーID
      */
     public int getThemeUserId() {
@@ -72,7 +74,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題ユーザーIDを設定します。
-     * 
+     *
      * @param themeUserId お題ユーザーID
      */
     public void setThemeUserId(int themeUserId) {
@@ -81,7 +83,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題ユーザーネームを取得します。
-     * 
+     *
      * @return お題ユーザーネーム
      */
     public String getThemeUserName() {
@@ -90,7 +92,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題ユーザーネームを設定します。
-     * 
+     *
      * @param themeUserName お題ユーザーネーム
      */
     public void setThemeUserName(String themeUserName) {
@@ -99,7 +101,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題内容を取得します。
-     * 
+     *
      * @return お題内容
      */
     public String getThemeContent() {
@@ -108,7 +110,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題内容を設定します。
-     * 
+     *
      * @param themeContent お題内容
      */
     public void setThemeContent(String themeContent) {
@@ -117,7 +119,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題作成日時を取得します。
-     * 
+     *
      * @return お題作成日時
      */
     public LocalDateTime getThemeCreatedAt() {
@@ -126,7 +128,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題作成日時を設定します。
-     * 
+     *
      * @param themeCreatedAt お題作成日時
      */
     public void setThemeCreatedAt(LocalDateTime themeCreatedAt) {
@@ -135,7 +137,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題更新日時を取得します。
-     * 
+     *
      * @return お題更新日時
      */
     public LocalDateTime getThemeUpdatedAt() {
@@ -144,7 +146,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題更新日時を設定します。
-     * 
+     *
      * @param themeUpdatedAt お題更新日時
      */
     public void setThemeUpdatedAt(LocalDateTime themeUpdatedAt) {
@@ -153,7 +155,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * 回答数を取得します。
-     * 
+     *
      * @return 回答数
      */
     public int getAnswerCount() {
@@ -162,7 +164,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * 回答数を設定します。
-     * 
+     *
      * @param answerCount 回答数
      */
     public void setAnswerCount(int answerCount) {
@@ -171,7 +173,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * 回答リストを取得します。
-     * 
+     *
      * @return 回答リスト
      */
     public List<OogiriAnswerResources> getAnswers() {
@@ -180,7 +182,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * 回答リストを設定します。
-     * 
+     *
      * @param answers 回答リスト
      */
     public void setAnswers(List<OogiriAnswerResources> answers) {
@@ -189,7 +191,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題情報をセットする（詳細用）
-     * 
+     *
      * @param oogiriRes
      * @param responses
      * @return
@@ -205,7 +207,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * 回答情報をセットする（詳細用）
-     * 
+     *
      * @param oogiriRes
      * @param responses
      * @return
@@ -234,7 +236,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * リアクション情報をセットする
-     * 
+     *
      * @param res
      * @param oogiriReacResList
      * @return
@@ -260,7 +262,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * お題情報をセットする（初期表示時用）
-     * 
+     *
      * @param o
      * @return
      */
@@ -276,7 +278,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * 回答情報をセットする(初期表示時用)
-     * 
+     *
      * @param res
      * @param o
      * @return
@@ -295,7 +297,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * エラーレスポンスを生成
-     * 
+     *
      * @param errorCode
      * @param errorMessage
      * @return

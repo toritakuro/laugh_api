@@ -15,6 +15,7 @@ import com.c4ccup.laugh.controller.bean.req.UserDetailBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.ContentResources;
 import com.c4ccup.laugh.controller.bean.res.OogiriAnswerResources;
+import com.c4ccup.laugh.controller.bean.res.OogiriResources;
 import com.c4ccup.laugh.controller.bean.res.UserResource;
 import com.c4ccup.laugh.domain.Chat;
 import com.c4ccup.laugh.domain.Content;
@@ -66,8 +67,8 @@ public class UserDetailController {
         // データがあった場合
         if (matchStatus != null) {
             user.setMatchStatus(matchStatus.getStatus());
-        } 
-        
+        }
+
         return ResponseEntity.ok(new ApiResource<>(new UserResource(user)));
     }
 
@@ -77,11 +78,33 @@ public class UserDetailController {
      * @return
      */
     @RequestMapping(path = "/oogiriAnswer", method = RequestMethod.GET)
-    public ResponseEntity<ApiResource<OogiriAnswerResources>> oogiriAnswer(MyPageBean bean) {
-        List<Oogiri> oogiriList  = oogiriRepository.getAnswerByUserId(bean);
-        OogiriAnswerResources res = new OogiriAnswerResources();
-        res.setAnswerList(oogiriList);
-        return ResponseEntity.ok(new ApiResource<>(res));
+    public ResponseEntity<ApiResource<List<OogiriResources>>> oogiriAnswer(MyPageBean bean) {
+        List<Oogiri> oogiriList = oogiriRepository.getAnswerByUserId(bean);
+        int prevId = 0;
+        List<OogiriResources> oogiriResultList = new ArrayList<>();
+        OogiriResources o = new OogiriResources();
+
+        for (Oogiri oogiri : oogiriList) {
+           if (oogiri.getThemeId() != prevId) {
+               o = new OogiriResources();
+               o.setThemeContent(oogiri.getThemeContent());
+               o.setAnswers(new ArrayList<OogiriAnswerResources>());
+               oogiriResultList.add(o);
+           }
+           OogiriAnswerResources answer = new OogiriAnswerResources();
+
+           answer.setAnswerContent(oogiri.getAnswerContent());
+           answer.setTotalNum(oogiri.getReactionNum());
+           answer.setGoodNum(oogiri.getGoodNum());
+           answer.setVeryGoodNum(oogiri.getVeryGoodNum());
+           answer.setBadNum(oogiri.getBadNum());
+           // お題に追加する
+           o.getAnswers().add(answer);
+
+           prevId = oogiri.getThemeId();
+        }
+
+        return ResponseEntity.ok(new ApiResource<>(oogiriResultList));
     }
 
     /**
@@ -103,7 +126,7 @@ public class UserDetailController {
 
     /**
      * マッチステータス登録
-     * 
+     *
      * @param request
      * @return
      */

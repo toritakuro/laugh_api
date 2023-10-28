@@ -15,6 +15,17 @@
     <result column="user_debut_dt_receive" property="userDebutAtReceive"/>
   </resultMap>
 
+  <resultMap id="contentResultMap" type="com.c4ccup.laugh.domain.Content">
+    <id column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="title" property="title"/>
+    <result column="detail" property="detail"/>
+    <result column="file_type" property="fileType"/>
+    <result column="content_path" property="contentPath"/>
+    <result column="create_at" property="createAt"/>
+    <result column="update_at" property="updateAt"/>
+  </resultMap>
+
   <select id="selectLaugh" parameterType="int" resultMap="LaughResultMap">
 		SELECT
 			ms.id,
@@ -57,5 +68,24 @@
 		INNER JOIN user r_user ON
 			ms.receive_user_id = r_user.id AND r_user.delete_flg = 0
 		WHERE (ms.send_user_id = #{sendUserId} AND ms.receive_user_id = #{receiveUserId}) AND ms.match_status != 20
+  </select>
+
+  <!-- ユーザ詳細画面用 投稿取得 -->
+  <select id="selectContent" parameterType="int" resultMap="contentResultMap">
+    SELECT
+      id
+      ,user_id
+      ,title
+      ,detail
+      ,file_type
+      ,content_path
+      ,create_at
+      ,update_at
+    FROM
+      content
+    WHERE
+      user_id = #{userId}
+    ORDER BY
+      create_at desc
   </select>
 </mapper>

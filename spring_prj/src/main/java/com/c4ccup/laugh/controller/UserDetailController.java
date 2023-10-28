@@ -1,5 +1,6 @@
 package com.c4ccup.laugh.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.c4ccup.laugh.controller.bean.req.MyPageBean;
 import com.c4ccup.laugh.controller.bean.req.UserDetailBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
+import com.c4ccup.laugh.controller.bean.res.ContentResources;
 import com.c4ccup.laugh.controller.bean.res.OogiriAnswerResources;
 import com.c4ccup.laugh.controller.bean.res.UserResource;
 import com.c4ccup.laugh.domain.Chat;
+import com.c4ccup.laugh.domain.Content;
 import com.c4ccup.laugh.domain.Laugh;
 import com.c4ccup.laugh.domain.Oogiri;
 import com.c4ccup.laugh.domain.User;
@@ -79,6 +82,23 @@ public class UserDetailController {
         OogiriAnswerResources res = new OogiriAnswerResources();
         res.setAnswerList(oogiriList);
         return ResponseEntity.ok(new ApiResource<>(res));
+    }
+
+    /**
+     * ユーザーの投稿一覧を取得する。
+     * @param bean
+     * @return
+     */
+    @RequestMapping(path = "/content", method = RequestMethod.GET)
+    public ResponseEntity<ApiResource<List<ContentResources>>> getContent(MyPageBean bean) {
+        List<ContentResources> contentResList = new ArrayList<>();
+        List<Content> contentList = mypageRepository.selectContent(bean);
+        // 投稿の情報をセット
+        for (Content content : contentList) {
+            ContentResources res = new ContentResources(content);
+            contentResList.add(res);
+        }
+        return ResponseEntity.ok(new ApiResource<>(contentResList));
     }
 
     /**

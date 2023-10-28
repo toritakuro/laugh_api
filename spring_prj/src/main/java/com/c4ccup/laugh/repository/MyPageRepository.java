@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.c4ccup.laugh.controller.bean.req.MyPageBean;
 import com.c4ccup.laugh.controller.bean.req.UserDetailBean;
+import com.c4ccup.laugh.domain.Content;
 import com.c4ccup.laugh.domain.Laugh;
 
 /**
@@ -26,9 +28,16 @@ public interface MyPageRepository {
     /**
      * マッチステータスを取得
      *
-     * @param sendUserId
-     * @param receiveUserId
+     * @param bean
      * @return
      */
     public Laugh selectMatchStatus(UserDetailBean bean);
+
+    /**
+     * ユーザ詳細用の投稿一覧を取得
+     *
+     * @param bean
+     * @return
+     */
+    public List<Content> selectContent(MyPageBean bean);
 }

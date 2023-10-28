@@ -28,7 +28,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(tokenInterceptor).excludePathPatterns("/login", "/profile/register", "/profile/editInit", "/master/**"); // トークン検証をスキップするパスを指定
+        registry.addInterceptor(tokenInterceptor).excludePathPatterns("/login", "/profile/register", "/profile/init", "/master/**"); // トークン検証をスキップするパスを指定
     }
 
     /**

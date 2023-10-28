@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS oogiri_reaction;
 DROP TABLE IF EXISTS own_comedy_style;
 DROP TABLE IF EXISTS special_skill;
 DROP TABLE IF EXISTS own_special_skill;
+DROP TABLE IF EXISTS notice
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- 地方
@@ -232,3 +233,15 @@ CREATE TABLE own_special_skill (
   INDEX own_special_skill_user_id_idx (user_id),
   INDEX own_special_skill_special_skill_id_idx (special_skill_id)
 ) COMMENT 'ユーザー特殊スキル';
+
+-- お知らせ
+CREATE TABLE notice (
+  id INT AUTO_INCREMENT NOT NULL COMMENT 'ID',
+  target_type int NOT NULL COMMENT '種別:1:Luagh通知(ユーザIDがtarget_idに入る) 2:メッセージ(チャットルームIDがtarget_idに入る) 3:マッチ通知(ユーザIDがtarget_idに入る)',
+  target_id int  NOT NULL  COMMENT '遷移先ID',
+  is_read tinyint COMMENT '既読フラグ',
+  message VARCHAR(255) COMMENT 'メッセージ',
+  create_at DATETIME COMMENT '作成日時',
+  update_at DATETIME COMMENT '更新日時',
+  CONSTRAINT notice_PKC PRIMARY KEY (id)
+) COMMENT 'お知らせ';

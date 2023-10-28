@@ -98,6 +98,22 @@ public class AppConst {
         public String getName() { return name; }
     }
 
+    /** お知らせ種別 */
+    public enum NoticeType {
+        LAUGH(1),
+        MESSAGE(2),
+        MATCH(3)
+        ;
+
+        private int type;
+
+        private NoticeType(int type) {
+           this.type = type;
+        }
+
+        public int getType() { return this.type; }
+    }
+
     /** 日付フォーマット */
     public enum DateFormatEnum {
         /** yyyy-MM-dd */

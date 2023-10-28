@@ -33,6 +33,7 @@ import com.c4ccup.laugh.util.AwsS3Util;
 import com.c4ccup.laugh.util.ByteArrayMultipartFile;
 import com.c4ccup.laugh.util.EnumConst.MatchStatus;
 import com.c4ccup.laugh.util.MessageUtil;
+import com.c4ccup.laugh.util.Util;
 
 /**
  * マイページ Controllerクラス
@@ -122,44 +123,35 @@ public class MyPageController extends _CmnController {
     }
 
     /**
-     * コンテンツをS3に登録する
-     * @param
+     * 投稿ファイルをS3に登録する
+     * @param bean
      */
     @RequestMapping(value ="uploadContent" , method = RequestMethod.POST)
     private ResponseEntity<ApiResource<Messages>> uploadContent(@Validated @RequestBody MyPageBean bean) {
 
-    //コンテンツをS3に登録
-    if(bean.getContent() != null && !bean.getContent().isEmpty()) {
-        String DataUriSchema = bean.getContent().split(",")[0];  // Data URIスキーマ
-        String base64 = bean.getContent().split(",")[1];  // base64
+        String[] awsUploadFileInfo = Util.toAwsUploadFileInfo(bean.getContent());
 
-        byte[] decodedBytes = Base64.getDecoder().decode(base64);
-      //byte[] decodedBytes = Base64.getDecoder().decode(bean.getTopImg());
-        MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", bean.getTitle(), null);
+        byte[] decodedBytes = Base64.getDecoder().decode(awsUploadFileInfo[0]);
+        MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", "dummy" + bean.getTitle(), null);
 
         String uploadedFileName = awsS3Util.uploadFile(bean.getUserId(), multipartFile);
 
-        String s3Url = "https://c4claugh.s3.ap-northeast-1.amazonaws.com/" + bean.getUserId() + "/" + uploadedFileName;
+        String s3Url = AwsS3Util.S3URL + bean.getUserId() + "/" + uploadedFileName;
         bean.setContentPath(s3Url);
-    }
 
-    // awsS3Util使う際はタイトルに拡張子が必須だが、DBに登録する際は不要と思われるので、拡張子の部分を省いて登録する
-    StringBuilder title = new StringBuilder();
-    for (int i = 0; i < bean.getTitle().split("\\.").length - 1; i++) {
-        title.append(bean.getTitle().split("\\.")[i]);
-        if (i < bean.getTitle().split("\\.").length - 2) {
-            title.append(".");
+        // awsS3Util使う際はタイトルに拡張子が必須だが、DBに登録する際は不要と思われるので、拡張子の部分を省いて登録する
+        if(bean.getTitle().lastIndexOf(".") != -1) {
+            String title = bean.getTitle().substring(0, bean.getTitle().lastIndexOf("."));
+            bean.setTitle(title);
         }
-    }
-    bean.setTitle(title.toString());
 
-    mypageRepository.uploadContent(bean);
+        mypageRepository.uploadContent(bean);
 
-        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "コンテンツ", "アップロード"))));
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "ファイル", "アップロード"))));
     }
 
     /**
-     * コンテンツを取得する
+     * 投稿ファイルを取得する
      * @param
      * @return
      */
@@ -169,18 +161,7 @@ public class MyPageController extends _CmnController {
         List<ContentResources> result = new ArrayList<>();
 
         for (Content content : contentList) {
-            ContentResources r = new ContentResources();
-
-            r.setId(content.getId());
-            r.setUserId(content.getUserId());
-            r.setUserId(content.getUserId());
-            r.setTitle(content.getTitle());
-            r.setDetail(content.getDetail());
-            r.setFileType(content.getFileType());
-            r.setContentPath(content.getContentPath());
-            r.setCreateAt(content.getCreateAt());
-            r.setUpdateAt(content.getUpdateAt());
-
+            ContentResources r = new ContentResources(content);
             result.add(r);
         }
 
@@ -188,7 +169,7 @@ public class MyPageController extends _CmnController {
     }
 
     /**
-     * コンテンツを編集する
+     * 投稿ファイルを編集する
      * @param
      */
     @RequestMapping(value ="editFile" , method = RequestMethod.POST)
@@ -196,18 +177,18 @@ public class MyPageController extends _CmnController {
         bean.setUpdateAt(LocalDateTime.now());
         mypageRepository.editContent(bean);
 
-        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "コンテンツ", "編集"))));
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "ファイル", "編集"))));
     }
 
     /**
-     * コンテンツを削除する
+     * 投稿ファイルを削除する
      * @param
      */
     @RequestMapping(value ="deleteFile" , method = RequestMethod.POST)
     private ResponseEntity<ApiResource<Messages>> deleteFile(@RequestBody MyPageBean bean) {
         mypageRepository.deleteContent(bean.getId());
 
-        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "コンテンツ", "削除"))));
+        return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "ファイル", "削除"))));
     }
 
 

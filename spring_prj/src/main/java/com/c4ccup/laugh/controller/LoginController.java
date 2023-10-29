@@ -52,7 +52,7 @@ public class LoginController extends _CmnController {
 
         // ユーザーが取得できない場合エラーを返す
         if (user == null) {
-            String errMsg = msgUtil.getMessage("e001", "パスワード認証");
+            String errMsg = msgUtil.getMessage("e001", "ログイン認証");
             throw new LoginException(errMsg);
         }
 

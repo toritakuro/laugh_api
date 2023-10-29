@@ -17,6 +17,7 @@ import com.c4ccup.laugh.controller.bean.res.ChatResource;
 import com.c4ccup.laugh.controller.bean.res.ChatWrapResource;
 import com.c4ccup.laugh.domain.Chat;
 import com.c4ccup.laugh.repository.ChatRepository;
+import com.c4ccup.laugh.repository.UserRepository;
 import com.c4ccup.laugh.util.AppConst.DateFormatEnum;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
 import com.c4ccup.laugh.util.Util;
@@ -30,6 +31,8 @@ public class ChatController {
 
     @Autowired
     private ChatRepository chatRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * チャット一覧を送信時間順に返却する
@@ -61,14 +64,16 @@ public class ChatController {
                 // 自分が芸人の場合、作家の名前を表示
                 chatResource.setName(c.getComposer().getUserName());
                 chatResource.setTargetUserId(c.getComposer().getId());
+                chatResource.setImg(userRepository.getProfileImg(c.getComposer().getId()));
             } else {
                 // 自分が作家の場合、芸人の名前を表示
                 chatResource.setName(c.getComedian().getUserName());
                 chatResource.setTargetUserId(c.getComedian().getId());
+                chatResource.setImg(userRepository.getProfileImg(c.getComedian().getId()));
             }
 
-            chatResource.setSendAt(Util.formatLocalDateTime(c.getCreateAt(), DateFormatEnum.SLASH_YMD));
-            // TODO 画像
+            if (c.getCreateAt() != null)
+                chatResource.setSendAt(Util.formatLocalDateTime(c.getCreateAt(), DateFormatEnum.SLASH_YMD));
             results.add(chatResource);
         }
 

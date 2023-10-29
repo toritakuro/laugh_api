@@ -26,30 +26,33 @@
   <select id="findChatList" resultMap="ChatListMap">
     SELECT
         crl.id,
-        cd.id AS chat_id,
+        cd.chat_id,
         crl.user_comedian_id,
         crl.user_composer_id,
-    	cd.send_user_id,
-        cd.chat_message,
+        _cd.send_user_id,
+        _cd.chat_message,
         comedian.user_name AS comedian_name,
         composer.user_name AS composer_name,
-        cd.create_at,
+        _cd.create_at,
         COALESCE(um.unread_messages_count, 0) AS unread_count
     FROM
-    	chat_detail cd
-    INNER JOIN (
-    	SELECT
-    		max(id) as id
-    	FROM
-    		chat_detail
-    	GROUP BY chat_room_list_id) as _cd on
-    	  _cd.id = cd.id
-    INNER JOIN chat_room_list crl
-    	ON crl.id = cd.chat_room_list_id
+        chat_room_list crl
+    LEFT JOIN (
+        SELECT
+            max(id) as chat_id,
+            chat_room_list_id
+        FROM chat_detail
+        GROUP BY chat_room_list_id)
+        as cd
+        ON crl.id = cd.chat_room_list_id
+    LEFT JOIN(
+        SELECT *
+        FROM chat_detail) as _cd
+        ON cd.chat_id = _cd.id
     INNER JOIN user AS comedian
-    	ON comedian.id = crl.user_comedian_id
+        ON comedian.id = crl.user_comedian_id
     INNER JOIN user AS composer
-    	ON composer.id = crl.user_composer_id
+        ON composer.id = crl.user_composer_id
     LEFT JOIN (
         SELECT
           chat_room_list_id,
@@ -74,7 +77,7 @@
     <if test="userComposerId != null">
         user_composer_id = #{userComposerId}
     </if>
-    ORDER BY cd.create_at DESC
+    ORDER BY _cd.create_at DESC
   </select>
 
   <!-- チャット詳細を取得する -->

@@ -33,6 +33,7 @@ public interface UserRepository {
 
     /**
      * userテーブルにデータを追加する
+     * 
      * @param UserBean
      * @return user_id
      */
@@ -40,6 +41,7 @@ public interface UserRepository {
 
     /**
      * S3へアップロードしたファイルのパスを保存する
+     * 
      * @param userId
      * @param imgPath
      */
@@ -47,24 +49,28 @@ public interface UserRepository {
 
     /**
      * comedian_profileテーブルにデータを追加する
+     * 
      * @param UserBean
      */
     public void registerComedian(ProfileBean userBean);
 
     /**
      * composer_profileテーブルにデータを追加する
+     * 
      * @param UserBean
      */
     public void registerComposer(ProfileBean userBean);
 
     /**
      * own_comedy_styleテーブルにデータを追加する
+     * 
      * @param UserBean
      */
     public void registerOwnComedyStyle(ProfileBean userBean);
 
     /**
      * own_special_skillテーブルにデータを追加する
+     * 
      * @param UserBean
      */
     public void registerOwnSpecialSkill(@Param("userBeanList") List<ProfileBean> userBeanList);
@@ -86,6 +92,7 @@ public interface UserRepository {
 
     /**
      * ユーザータイプで作家ユーザーを取得
+     * 
      * @param userId
      * @return
      */
@@ -93,6 +100,7 @@ public interface UserRepository {
 
     /**
      * ユーザータイプで芸人ユーザーを取得
+     * 
      * @param userType
      * @return
      */
@@ -115,35 +123,46 @@ public interface UserRepository {
     public User getComedian(int id);
 
     /**
+     * ユーザーIDでプロフィール画像を取得
+     *
+     * @param userBean
+     * @return prifile_img_path
+     */
+    public String getProfileImg(int id);
+
+    /**
      * userテーブルのデータを更新する
+     * 
      * @param userId
      */
     public void updateProfile(ProfileBean bean);
 
     /**
      * comedian_profileテーブルのデータを更新する
+     * 
      * @param userId
      */
     public void updateComedian(ProfileBean bean);
 
     /**
      * composer_profileテーブルのデータを更新する
+     * 
      * @param userId
      */
     public void updateComposer(ProfileBean bean);
 
     /**
      * own_comedy_styleテーブルのデータを物理削除する
+     * 
      * @param userId
      */
     public void deleteOwnComedyStyle(int userId);
 
     /**
      * own_special_skillテーブルのデータを物理削除する
+     * 
      * @param userId
      */
     public void deleteOwnSpecialSkill(int userId);
 
-
 }
-

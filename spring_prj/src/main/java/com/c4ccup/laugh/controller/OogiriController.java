@@ -97,6 +97,21 @@ public class OogiriController extends _CmnController {
     }
 
     /**
+     * お題削除
+     * 
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/theme/delete", method = RequestMethod.POST)
+    public ResponseEntity<ApiResource<Messages>> delTheme(@RequestBody OogiriRequest request) {
+
+        int themeId = request.getThemeId();
+        // お題削除処理
+        oogiriRepository.delTheme(themeId);
+        return ResponseEntity.ok(createMsg("s001", "お題", "削除"));
+    }
+
+    /**
      * 回答登録
      * 
      * @param request

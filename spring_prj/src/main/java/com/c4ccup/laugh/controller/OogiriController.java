@@ -271,6 +271,8 @@ public class OogiriController extends _CmnController {
     private OogiriResources setImgAndType(OogiriResources res) {
         for (OogiriAnswerResources r : res.getAnswers()) {
             User u = userRepository.findById(r.getAnswerUserId());
+            if (u == null)
+                return res;
             r.setImg(u.getProfileImgPath());
             r.setUserType(u.getUserType());
         }

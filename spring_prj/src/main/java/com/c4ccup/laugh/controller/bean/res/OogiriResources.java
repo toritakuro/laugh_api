@@ -103,6 +103,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * プロフィール画像を取得します。
+     * 
      * @return プロフィール画像
      */
     public String getImg() {
@@ -111,6 +112,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * プロフィール画像を設定します。
+     * 
      * @param img プロフィール画像
      */
     public void setImg(String img) {
@@ -119,6 +121,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * ユーザータイプを取得します。
+     * 
      * @return ユーザータイプ
      */
     public int getUserType() {
@@ -127,6 +130,7 @@ public class OogiriResources extends _Cmn {
 
     /**
      * ユーザータイプを設定します。
+     * 
      * @param userType ユーザータイプ
      */
     public void setUserType(int userType) {

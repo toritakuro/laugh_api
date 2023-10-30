@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.req.ChatBean;
+import com.c4ccup.laugh.controller.bean.req.NoticeBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.ChatResource;
 import com.c4ccup.laugh.controller.bean.res.ChatWrapResource;
 import com.c4ccup.laugh.domain.Chat;
 import com.c4ccup.laugh.repository.ChatRepository;
 import com.c4ccup.laugh.repository.UserRepository;
+import com.c4ccup.laugh.util.AppConst;
 import com.c4ccup.laugh.util.AppConst.DateFormatEnum;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
 import com.c4ccup.laugh.util.Util;
@@ -34,9 +36,11 @@ public class ChatController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private NoticeController noticeController;
     /**
      * チャット一覧を送信時間順に返却する
-     * 
+     *
      * @param request
      * @return
      */
@@ -82,7 +86,7 @@ public class ChatController {
 
     /**
      * マッチング相手とのチャット一覧を返却する
-     * 
+     *
      * @param request
      * @return
      */
@@ -118,7 +122,7 @@ public class ChatController {
 
     /**
      * メッセージを送信する
-     * 
+     *
      * @param request
      */
     @RequestMapping(method = RequestMethod.POST)
@@ -141,6 +145,15 @@ public class ChatController {
         chat.setSendUserId(request.getUserId());
         chat.setChatMessage(request.getChatMessage());
         chatRepository.sendChat(chat);
+
+        // お知らせ送信
+        NoticeBean noticeBean = new NoticeBean();
+        noticeBean.setTargetType(AppConst.NoticeType.LAUGH.getType());
+        noticeBean.setTargetId(chat.getChatRoomId());
+        noticeBean.setUserIdFrom(request.getUserId());
+        noticeBean.setUserId(request.getTargetUserId());
+        noticeController.createNotice(noticeBean);
+
     }
 
 }

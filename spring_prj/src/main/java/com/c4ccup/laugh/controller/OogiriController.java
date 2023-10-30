@@ -51,15 +51,13 @@ public class OogiriController extends _CmnController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<ApiResource<List<OogiriResources>>> getOogiri(@RequestParam int page) {
+    public ResponseEntity<ApiResource<List<OogiriResources>>> getOogiri() {
         // お題を全件取得
         List<Integer> themeIds = new ArrayList<>();
         List<Oogiri> oogiriList = oogiriRepository.getAllOogiri(themeIds);
         List<OogiriResources> resList = createInitResList(oogiriList);
         // お題の更新順に並び替え
         resList.sort((o1, o2) -> o2.getThemeUpdatedAt().compareTo(o1.getThemeUpdatedAt()));
-        // ページング
-        resList = resetResByPage(resList, page);
         ApiResource<List<OogiriResources>> oogiri = new ApiResource<>(resList);
         return ResponseEntity.ok(oogiri);
     }
@@ -224,7 +222,6 @@ public class OogiriController extends _CmnController {
         // レスポンスを生成する
         List<Oogiri> oogiriList = oogiriRepository.getAllOogiri(themeIds);
         List<OogiriResources> resList = createInitResList(oogiriList);
-        resList = resetResByPage(resList, page);
         ApiResource<List<OogiriResources>> oogiri = new ApiResource<>(resList);
         return ResponseEntity.ok(oogiri);
     }
@@ -308,25 +305,6 @@ public class OogiriController extends _CmnController {
             userIds.add(user.getId());
         }
         return userIds;
-    }
-
-    /**
-     * ページ数によって要素をセットしなおす
-     * 
-     * @param responses
-     * @param page
-     * @return responses
-     */
-    private List<OogiriResources> resetResByPage(List<OogiriResources> responses, int page) {
-        // レスポンスリストの要素数
-        int totalElements = responses.size();
-        // 抽出開始位置、終了位置
-        int fromInd = (page - 1) * AppConst.oogiri_theme_disp_num;
-        int toInd = fromInd + AppConst.oogiri_theme_disp_num;
-        // 該当ページの最大数に要素数が満たない場合
-        if (toInd > totalElements)
-            toInd = totalElements;
-        return responses.subList(fromInd, toInd);
     }
 
     /**

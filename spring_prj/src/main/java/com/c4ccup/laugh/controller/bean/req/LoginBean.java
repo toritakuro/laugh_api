@@ -1,10 +1,10 @@
-package com.c4ccup.laugh.controller;
+package com.c4ccup.laugh.controller.bean.req;
 
 /**
- * ログイン リクエストクラス
+ * ログインBean
  *
  */
-public class LoginRequest {
+public class LoginBean {
 
     private String email;
     private String password;

@@ -64,9 +64,16 @@ public class UserDetailController {
         }
         // 相手とのマッチングステータスを取得する
         Laugh matchStatus = mypageRepository.selectMatchStatus(bean);
+
         // データがあった場合
         if (matchStatus != null) {
-            user.setMatchStatus(matchStatus.getStatus());
+            // 送信者が自分の場合
+            if (matchStatus.getSendUserId() == bean.getSendUserId()) {
+                // ボタン非表示のために99をセット
+                user.setMatchStatus(MatchStatus.CANCEL.getStatus());
+            } else {
+                user.setMatchStatus(matchStatus.getStatus());
+            }
         }
 
         return ResponseEntity.ok(new ApiResource<>(new UserResource(user)));

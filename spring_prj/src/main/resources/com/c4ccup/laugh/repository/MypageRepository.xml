@@ -71,7 +71,10 @@
 			ms.send_user_id = s_user.id AND s_user.delete_flg = 0
 		INNER JOIN user r_user ON
 			ms.receive_user_id = r_user.id AND r_user.delete_flg = 0
-		WHERE (ms.send_user_id = #{sendUserId} AND ms.receive_user_id = #{receiveUserId}) AND ms.match_status != 20
+		WHERE
+			(ms.send_user_id = #{sendUserId} AND ms.receive_user_id = #{receiveUserId})
+		OR
+			(ms.send_user_id = #{receiveUserId} AND ms.receive_user_id = #{sendUserId})
   </select>
 
   <insert id="uploadContent" useGeneratedKeys="true" keyProperty="id">

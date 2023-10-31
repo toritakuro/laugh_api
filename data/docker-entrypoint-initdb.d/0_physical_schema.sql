@@ -239,6 +239,7 @@ CREATE TABLE notice (
   id INT AUTO_INCREMENT NOT NULL COMMENT 'ID',
   target_type int NOT NULL COMMENT '種別:1:Luagh通知(ユーザIDがtarget_idに入る) 2:メッセージ(チャットルームIDがtarget_idに入る) 3:マッチ通知(ユーザIDがtarget_idに入る)',
   target_id int  NOT NULL  COMMENT '遷移先ID',
+  target_user_id int  NOT NULL  COMMENT '遷移元ID',
   is_read tinyint COMMENT '既読フラグ',
   message VARCHAR(255) COMMENT 'メッセージ',
   create_at DATETIME COMMENT '作成日時',

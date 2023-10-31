@@ -31,15 +31,17 @@
       target_type,
       target_id,
       target_user_id,
-      is_read, message,
+      is_read,
+      message,
       create_at,
       update_at)
-    VALUS
+    VALUES
     (
       #{targetType}
       ,#{targetId}
       ,#{targetUserId}
       ,0
+      ,#{message}
       ,now()
       ,now()
      )

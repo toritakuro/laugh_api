@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.req.MyPageBean;
+import com.c4ccup.laugh.controller.bean.req.NoticeBean;
 import com.c4ccup.laugh.controller.bean.req.UserDetailBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.ContentResources;
@@ -27,6 +28,7 @@ import com.c4ccup.laugh.repository.MatchStatusRepository;
 import com.c4ccup.laugh.repository.MyPageRepository;
 import com.c4ccup.laugh.repository.OogiriRepository;
 import com.c4ccup.laugh.repository.UserRepository;
+import com.c4ccup.laugh.util.AppConst.NoticeType;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
 import com.c4ccup.laugh.util.EnumConst.MatchStatus;
 
@@ -47,6 +49,8 @@ public class UserDetailController {
     private MyPageRepository mypageRepository;
     @Autowired
     private ChatRepository chatRepository;
+    @Autowired
+    private NoticeController noticeController;
 
     /**
      * ユーザー情報を取得する。
@@ -68,7 +72,8 @@ public class UserDetailController {
         // データがあった場合
         if (matchStatus != null) {
             // 送信者が自分の場合
-            if (matchStatus.getSendUserId() == bean.getSendUserId()) {
+            if (matchStatus.getSendUserId() == bean.getSendUserId()
+             && matchStatus.getStatus() == MatchStatus.PRE_MATCH.getStatus()) {
                 // ボタン非表示のために99をセット
                 user.setMatchStatus(MatchStatus.CANCEL.getStatus());
             } else {
@@ -140,6 +145,8 @@ public class UserDetailController {
     @RequestMapping(path = "/match", method = RequestMethod.POST)
     public void match(@RequestBody UserDetailBean bean) {
         int matchStatus = bean.getMatchStatus();
+        
+        // chat作成の情報セット
         Chat chat = new Chat();
         if (bean.getUserType() == UserEnum.COMEDIAN.getId()) {
             chat.setUserComedianId(bean.getSendUserId());
@@ -148,19 +155,32 @@ public class UserDetailController {
             chat.setUserComedianId(bean.getReceiveUserId());
             chat.setUserComposerId(bean.getSendUserId());
         }
+        
+        // お知らせ作成の情報セット
+        NoticeBean noticeBean = new NoticeBean();
+        noticeBean.setUserIdFrom(bean.getSendUserId());
+        noticeBean.setUserId(bean.getReceiveUserId());
+        noticeBean.setTargetId(bean.getSendUserId());
+        
         // ラフ送信
         if (matchStatus == MatchStatus.PRE_MATCH.getStatus()) {
             matchStatusRepository.regMatchStatus(bean);
+            noticeBean.setTargetType(NoticeType.LAUGH.getType());
+            noticeController.createNotice(noticeBean);
         }
         // マッチ
         if (matchStatus == MatchStatus.MATCH.getStatus()) {
             matchStatusRepository.updateMatchStatus(bean);
             chatRepository.createChatRoom(chat);
+            noticeBean.setTargetType(NoticeType.MATCH.getType());
+            noticeController.createNotice(noticeBean);
         }
         // スーパーラフ送信
         if (matchStatus == MatchStatus.SUPER_LAUGHT.getStatus()) {
             matchStatusRepository.regMatchStatus(bean);
             chatRepository.createChatRoom(chat);
+            noticeBean.setTargetType(NoticeType.MATCH.getType());
+            noticeController.createNotice(noticeBean);
         }
         // マッチ解消
         if (matchStatus == MatchStatus.CANCEL.getStatus()) {

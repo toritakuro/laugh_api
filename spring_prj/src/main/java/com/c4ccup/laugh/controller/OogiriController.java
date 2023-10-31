@@ -264,7 +264,8 @@ public class OogiriController extends _CmnController {
             // 回答が削除済みでなければセット
             if (o.getAnswerDeletedAt() == null && o.getAnswerId() != 0) {
                 answerCount++;
-                res = res.setAnswerInfo(res, o);
+                User u = userRepository.findById(o.getAnswerUserId());
+                res = res.setAnswerInfo(res, o, u.getUserType(), u.getProfileImgPath());
             }
             prevId = themeId;
         }

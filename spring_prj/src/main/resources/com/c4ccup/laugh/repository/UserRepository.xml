@@ -455,6 +455,15 @@
       comedian_profile.id
   </select>
 
+  <select id="getProfileImg" parameterType="int" resultType="String">
+    SELECT
+      profile_img_path
+    FROM
+      user
+    WHERE
+      id = #{id}
+  </select>
+
   <update id="updateProfile">
     UPDATE
       user

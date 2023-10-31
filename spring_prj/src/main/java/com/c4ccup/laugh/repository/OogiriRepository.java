@@ -73,6 +73,13 @@ public interface OogiriRepository {
     public void regTheme(int userId, String themeContent, LocalDateTime now);
 
     /**
+     * お題を削除する
+     * 
+     * @param themeId お題ID
+     */
+    public void delTheme(int themeId);
+
+    /**
      * お題の更新日時を更新する
      * 
      * @param themeId お題ID

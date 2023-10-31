@@ -56,12 +56,12 @@ public class NoticeController {
     }
 
     /**
-     * 各機能から呼び出される
+     * 各機能から呼び出される(UserIdFromはお知らせ送信ユーザ、userIdはお知らせ受取ユーザ)
      * @param bean
      */
     public void createNotice(NoticeBean bean) {
         String message = null;
-        User targetUser = userRepository.findById(1);
+        User targetUser = userRepository.findById(bean.getUserIdFrom());
         String userName = targetUser.getUserName() + "さん";
         if (bean.getTargetType() == NoticeType.LAUGH.getType()) {
             message = userName + "からLaughが届いています。";

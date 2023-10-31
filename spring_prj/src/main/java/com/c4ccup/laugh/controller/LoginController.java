@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.c4ccup.laugh.controller.bean.req.LoginBean;
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.UserResource;
 import com.c4ccup.laugh.domain.User;
@@ -41,7 +42,7 @@ public class LoginController extends _CmnController {
      * @return JWTとユーザー情報を含むレスポンスエンティティ
      */
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseEntity<ApiResource<UserResource>> login(@RequestBody LoginRequest request) throws LoginException {
+    public ResponseEntity<ApiResource<UserResource>> login(@RequestBody LoginBean request) throws LoginException {
 
         String email = request.getEmail();
         String password = request.getPassword();
@@ -52,7 +53,7 @@ public class LoginController extends _CmnController {
 
         // ユーザーが取得できない場合エラーを返す
         if (user == null) {
-            String errMsg = msgUtil.getMessage("e001", "パスワード認証");
+            String errMsg = msgUtil.getMessage("e001", "ログイン認証");
             throw new LoginException(errMsg);
         }
 

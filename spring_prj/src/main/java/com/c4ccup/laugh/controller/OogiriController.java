@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.c4ccup.laugh.controller.bean.res.ApiResource;
 import com.c4ccup.laugh.controller.bean.res.Messages;
+import com.c4ccup.laugh.controller.bean.res.OogiriAnswerResources;
 import com.c4ccup.laugh.controller.bean.res.OogiriResources;
 import com.c4ccup.laugh.domain.Oogiri;
 import com.c4ccup.laugh.domain.User;
@@ -50,15 +51,13 @@ public class OogiriController extends _CmnController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<ApiResource<List<OogiriResources>>> getOogiri(@RequestParam int page) {
+    public ResponseEntity<ApiResource<List<OogiriResources>>> getOogiri() {
         // お題を全件取得
         List<Integer> themeIds = new ArrayList<>();
         List<Oogiri> oogiriList = oogiriRepository.getAllOogiri(themeIds);
         List<OogiriResources> resList = createInitResList(oogiriList);
         // お題の更新順に並び替え
         resList.sort((o1, o2) -> o2.getThemeUpdatedAt().compareTo(o1.getThemeUpdatedAt()));
-        // ページング
-        resList = resetResByPage(resList, page);
         ApiResource<List<OogiriResources>> oogiri = new ApiResource<>(resList);
         return ResponseEntity.ok(oogiri);
     }
@@ -74,6 +73,7 @@ public class OogiriController extends _CmnController {
         // お題に紐づく回答リストを取得
         List<Oogiri> oogiriList = oogiriRepository.getAllAnswers(themeId);
         OogiriResources oogiriRes = new OogiriResources(oogiriList);
+        oogiriRes = setImgAndType(oogiriRes);
         ApiResource<OogiriResources> oogiri = new ApiResource<>(oogiriRes);
         return ResponseEntity.ok(oogiri);
     }
@@ -92,6 +92,21 @@ public class OogiriController extends _CmnController {
         // お題登録
         oogiriRepository.regTheme(userId, themeContent, now);
         return ResponseEntity.ok(createMsg("s001", "お題", "登録"));
+    }
+
+    /**
+     * お題削除
+     * 
+     * @param request
+     * @return
+     */
+    @RequestMapping(path = "/theme/delete", method = RequestMethod.POST)
+    public ResponseEntity<ApiResource<Messages>> delTheme(@RequestBody OogiriRequest request) {
+
+        int themeId = request.getThemeId();
+        // お題削除処理
+        oogiriRepository.delTheme(themeId);
+        return ResponseEntity.ok(createMsg("s001", "お題", "削除"));
     }
 
     /**
@@ -207,7 +222,6 @@ public class OogiriController extends _CmnController {
         // レスポンスを生成する
         List<Oogiri> oogiriList = oogiriRepository.getAllOogiri(themeIds);
         List<OogiriResources> resList = createInitResList(oogiriList);
-        resList = resetResByPage(resList, page);
         ApiResource<List<OogiriResources>> oogiri = new ApiResource<>(resList);
         return ResponseEntity.ok(oogiri);
     }
@@ -236,6 +250,9 @@ public class OogiriController extends _CmnController {
                 }
                 res = new OogiriResources();
                 res = res.setThemeInfo(o);
+                User u = userRepository.findById(o.getThemeUserId());
+                res.setImg(u.getProfileImgPath());
+                res.setUserType(u.getUserType());
                 answerCount = 0;
             }
             // 回答が3件セットされている場合スキップ
@@ -258,6 +275,23 @@ public class OogiriController extends _CmnController {
     }
 
     /**
+     * 回答者のプロフィール画像、ユーザータイプをセット
+     * 
+     * @param res
+     * @return
+     */
+    private OogiriResources setImgAndType(OogiriResources res) {
+        for (OogiriAnswerResources r : res.getAnswers()) {
+            User u = userRepository.findById(r.getAnswerUserId());
+            if (u == null)
+                return res;
+            r.setImg(u.getProfileImgPath());
+            r.setUserType(u.getUserType());
+        }
+        return res;
+    }
+
+    /**
      * ユーザー名でユーザーのIDリストを取得
      * 
      * @param userName
@@ -271,25 +305,6 @@ public class OogiriController extends _CmnController {
             userIds.add(user.getId());
         }
         return userIds;
-    }
-
-    /**
-     * ページ数によって要素をセットしなおす
-     * 
-     * @param responses
-     * @param page
-     * @return responses
-     */
-    private List<OogiriResources> resetResByPage(List<OogiriResources> responses, int page) {
-        // レスポンスリストの要素数
-        int totalElements = responses.size();
-        // 抽出開始位置、終了位置
-        int fromInd = (page - 1) * AppConst.oogiri_theme_disp_num;
-        int toInd = fromInd + AppConst.oogiri_theme_disp_num;
-        // 該当ページの最大数に要素数が満たない場合
-        if (toInd > totalElements)
-            toInd = totalElements;
-        return responses.subList(fromInd, toInd);
     }
 
     /**

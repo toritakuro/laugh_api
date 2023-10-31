@@ -232,6 +232,13 @@
         (#{userId}, #{themeContent}, #{now}, #{now})
 </insert>
 
+<!-- 回答を削除する -->
+<delete id="delTheme">
+    DELETE FROM
+        oogiri_theme
+    WHERE id = #{themeId}
+</delete>
+
 <!-- お題の更新日時を更新する -->
 <insert id="updTheme">
     UPDATE

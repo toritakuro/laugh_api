@@ -323,7 +323,7 @@ public class OogiriResources extends _Cmn {
      * @param o
      * @return
      */
-    public OogiriResources setAnswerInfo(OogiriResources res, Oogiri o) {
+    public OogiriResources setAnswerInfo(OogiriResources res, Oogiri o, int userType, String img) {
         OogiriAnswerResources ansRes = new OogiriAnswerResources();
         ansRes.setAnswerId(o.getAnswerId());
         ansRes.setAnswerUserId(o.getAnswerUserId());
@@ -331,6 +331,8 @@ public class OogiriResources extends _Cmn {
         ansRes.setAnswerContent(o.getAnswerContent());
         ansRes.setAnswerCreatedAt(o.getAnswerCreatedAt());
         ansRes.setAnswerDeletedAt(o.getAnswerDeletedAt());
+        ansRes.setUserType(userType);
+        ansRes.setImg(img);
         res.getAnswers().add(ansRes);
         return res;
     }

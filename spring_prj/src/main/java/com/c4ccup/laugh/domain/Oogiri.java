@@ -14,6 +14,10 @@ public class Oogiri {
     private int themeUserId;
     /** お題ユーザーネーム */
     private String themeUserName;
+    /** お題ユーザータイプ */
+    private int themeUserType;
+    /** お題ユーザー画像 */
+    private String themeUserImg;
     /** お題内容 */
     private String themeContent;
     /** お題作成日時 */
@@ -28,6 +32,10 @@ public class Oogiri {
     private int answerUserId;
     /** 回答ユーザーネーム */
     private String answerUserName;
+    /** 回答ユーザータイプ */
+    private int answerUserType;
+    /** 回答ユーザー画像 */
+    private String answerUserImg;
     /** 回答内容 */
     private String answerContent;
     /** 回答作成日時 */
@@ -63,7 +71,7 @@ public class Oogiri {
     /** わるい数 */
     private int badNum;
 
-   /**
+    /**
      * お題IDを取得します。
      * 
      * @return お題ID
@@ -115,6 +123,38 @@ public class Oogiri {
      */
     public void setThemeUserName(String themeUserName) {
         this.themeUserName = themeUserName;
+    }
+
+    /**
+     * お題ユーザータイプを取得します。
+     * @return お題ユーザータイプ
+     */
+    public int getThemeUserType() {
+        return themeUserType;
+    }
+
+    /**
+     * お題ユーザータイプを設定します。
+     * @param themeUserType お題ユーザータイプ
+     */
+    public void setThemeUserType(int themeUserType) {
+        this.themeUserType = themeUserType;
+    }
+
+    /**
+     * お題ユーザー画像を取得します。
+     * @return お題ユーザー画像
+     */
+    public String getThemeUserImg() {
+        return themeUserImg;
+    }
+
+    /**
+     * お題ユーザー画像を設定します。
+     * @param themeUserImg お題ユーザー画像
+     */
+    public void setThemeUserImg(String themeUserImg) {
+        this.themeUserImg = themeUserImg;
     }
 
     /**
@@ -223,6 +263,38 @@ public class Oogiri {
      */
     public void setAnswerUserName(String answerUserName) {
         this.answerUserName = answerUserName;
+    }
+
+    /**
+     * 回答ユーザータイプを取得します。
+     * @return 回答ユーザータイプ
+     */
+    public int getAnswerUserType() {
+        return answerUserType;
+    }
+
+    /**
+     * 回答ユーザータイプを設定します。
+     * @param answerUserType 回答ユーザータイプ
+     */
+    public void setAnswerUserType(int answerUserType) {
+        this.answerUserType = answerUserType;
+    }
+
+    /**
+     * 回答ユーザー画像を取得します。
+     * @return 回答ユーザー画像
+     */
+    public String getAnswerUserImg() {
+        return answerUserImg;
+    }
+
+    /**
+     * 回答ユーザー画像を設定します。
+     * @param answerUserImg 回答ユーザー画像
+     */
+    public void setAnswerUserImg(String answerUserImg) {
+        this.answerUserImg = answerUserImg;
     }
 
     /**
@@ -461,6 +533,7 @@ public class Oogiri {
 
     /**
      * いいね数を取得します。
+     * 
      * @return いいね数
      */
     public int getGoodNum() {
@@ -469,6 +542,7 @@ public class Oogiri {
 
     /**
      * いいね数を設定します。
+     * 
      * @param goodNum いいね数
      */
     public void setGoodNum(int goodNum) {
@@ -477,6 +551,7 @@ public class Oogiri {
 
     /**
      * とてもいいね数を取得します。
+     * 
      * @return とてもいいね数
      */
     public int getVeryGoodNum() {
@@ -485,6 +560,7 @@ public class Oogiri {
 
     /**
      * とてもいいね数を設定します。
+     * 
      * @param veryGoodNum とてもいいね数
      */
     public void setVeryGoodNum(int veryGoodNum) {
@@ -493,6 +569,7 @@ public class Oogiri {
 
     /**
      * わるい数を取得します。
+     * 
      * @return わるい数
      */
     public int getBadNum() {
@@ -501,6 +578,7 @@ public class Oogiri {
 
     /**
      * わるい数を設定します。
+     * 
      * @param badNum わるい数
      */
     public void setBadNum(int badNum) {

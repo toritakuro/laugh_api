@@ -188,7 +188,7 @@ public class OogiriController extends _CmnController {
      * @return
      */
     @RequestMapping(path = "/user", method = RequestMethod.GET)
-    public ResponseEntity<?> getOogiriByUser(@RequestParam String themeUserName, String answerUserName, int page) {
+    public ResponseEntity<?> getOogiriByUser(@RequestParam String themeUserName, String answerUserName) {
         // お題IDリスト
         List<Integer> themeIds = new ArrayList<>();
 

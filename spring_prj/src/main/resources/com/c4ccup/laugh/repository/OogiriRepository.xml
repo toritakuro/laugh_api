@@ -7,12 +7,16 @@
     <id property="answerId" column="answer_id"/>
     <result property="answerUserId" column="answer_user_id"/>
     <result property="answerUserName" column="answer_user_name"/>
+    <result property="answerUserType" column="answer_user_type"/>
+    <result property="answerUserImg" column="answer_user_img"/>
     <result property="answerContent" column="answer_content"/>
     <result property="answerCreatedAt" column="answer_create_at"/>
     <result property="answerDeletedAt" column="answer_delete_at"/>
     <result property="themeId" column="theme_id"/>
     <result property="themeUserId" column="theme_user_id"/>
     <result property="themeUserName" column="theme_user_name"/>
+    <result property="themeUserType" column="theme_user_type"/>
+    <result property="themeUserImg" column="theme_user_img"/>
     <result property="themeContent" column="theme_content"/>
     <result property="themeCreatedAt" column="theme_create_at"/>
     <result property="reactionIds" column="reaction_ids"/>
@@ -55,10 +59,14 @@
     <result property="answerUserId" column="answer_user_id"/>
     <result property="answerContent" column="answer_content"/>
     <result property="answerUserName" column="answer_user_name"/>
+    <result property="answerUserType" column="answer_user_type"/>
+    <result property="answerUserImg" column="answer_user_img"/>
     <result property="themeUserName" column="theme_user_name"/>
     <result property="answerCreatedAt" column="answer_create_at"/>
     <result property="answerDeletedAt" column="answer_delete_at"/>
     <result property="themeUserId" column="theme_user_id"/>
+    <result property="themeUserType" column="theme_user_type"/>
+    <result property="themeUserImg" column="theme_user_img"/>
     <result property="themeCreatedAt" column="theme_create_at"/>
     <result property="reactionIds" column="reaction_ids"/>
     <result property="reactionUserIds" column="reaction_user_ids"/>
@@ -120,11 +128,15 @@
         a.answer_content,
         a.user_id as answer_user_id,
         au.user_name as answer_user_name,
+        au.user_type as answer_user_type,
+        au.profile_img_path as answer_user_img,
         a.create_at as answer_create_at,
         a.delete_at as answer_delete_at,
         t.id as theme_id,
         t.user_id as theme_user_id,
         tu.user_name as theme_user_name,
+        tu.user_type as theme_user_type,
+        tu.profile_img_path as theme_user_img,
         t.theme_content,
         t.update_at as theme_updated_at,
         COUNT(r.id) as reaction_num
@@ -176,11 +188,15 @@
         a.answer_content,
         a.user_id as answer_user_id,
         au.user_name as answer_user_name,
+        au.user_type as answer_user_type,
+        au.profile_img_path as answer_user_img,
         tu.user_name as theme_user_name,
         a.create_at as answer_create_at,
         a.delete_at as answer_delete_at,
         t.id as theme_id,
         t.user_id as theme_user_id,
+        tu.user_type as theme_user_type,
+        tu.profile_img_path as theme_user_img,
         t.theme_content,
         t.create_at as theme_create_at,
         COUNT(r.id) as reaction_num,

@@ -241,6 +241,8 @@ public class OogiriResources extends _Cmn {
         this.themeId = oogiri.getThemeId();
         this.themeUserId = oogiri.getThemeUserId();
         this.themeUserName = oogiri.getThemeUserName();
+        this.userType = oogiri.getThemeUserType();
+        this.img = oogiri.getThemeUserImg();
         this.themeContent = oogiri.getThemeContent();
         this.themeCreatedAt = oogiri.getThemeCreatedAt();
     }
@@ -264,6 +266,8 @@ public class OogiriResources extends _Cmn {
             ansRes.setAnswerId(oogiri.getAnswerId());
             ansRes.setAnswerUserId(oogiri.getAnswerUserId());
             ansRes.setAnswerUserName(oogiri.getAnswerUserName());
+            ansRes.setUserType(oogiri.getAnswerUserType());
+            ansRes.setImg(oogiri.getAnswerUserImg());
             ansRes.setAnswerContent(oogiri.getAnswerContent());
             ansRes.setAnswerCreatedAt(oogiri.getAnswerCreatedAt());
             ansRes.setAnswerDeletedAt(oogiri.getAnswerDeletedAt());
@@ -310,6 +314,8 @@ public class OogiriResources extends _Cmn {
         this.setThemeId(o.getThemeId());
         this.setThemeUserId(o.getThemeUserId());
         this.setThemeUserName(o.getThemeUserName());
+        this.setUserType(o.getThemeUserType());
+        this.setImg(o.getThemeUserImg());
         this.setThemeContent(o.getThemeContent());
         this.setThemeUpdatedAt(o.getThemeUpdatedAt());
         this.setAnswers(new ArrayList<>());
@@ -323,7 +329,7 @@ public class OogiriResources extends _Cmn {
      * @param o
      * @return
      */
-    public OogiriResources setAnswerInfo(OogiriResources res, Oogiri o, int userType, String img) {
+    public OogiriResources setAnswerInfo(OogiriResources res, Oogiri o) {
         OogiriAnswerResources ansRes = new OogiriAnswerResources();
         ansRes.setAnswerId(o.getAnswerId());
         ansRes.setAnswerUserId(o.getAnswerUserId());
@@ -331,8 +337,8 @@ public class OogiriResources extends _Cmn {
         ansRes.setAnswerContent(o.getAnswerContent());
         ansRes.setAnswerCreatedAt(o.getAnswerCreatedAt());
         ansRes.setAnswerDeletedAt(o.getAnswerDeletedAt());
-        ansRes.setUserType(userType);
-        ansRes.setImg(img);
+        ansRes.setUserType(o.getAnswerUserType());
+        ansRes.setImg(o.getAnswerUserImg());
         res.getAnswers().add(ansRes);
         return res;
     }

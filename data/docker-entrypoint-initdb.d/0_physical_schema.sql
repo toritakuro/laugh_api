@@ -67,8 +67,8 @@ CREATE TABLE comedian_profile (
   id INT AUTO_INCREMENT NOT NULL COMMENT 'ID',
   user_id INT NOT NULL COMMENT 'ユーザID',
   member_num INT NOT NULL COMMENT '活動人数',
-  create_at DATETIME COMMENT '作成日時',
-  update_at DATETIME COMMENT '更新日時',
+  create_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
+  update_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
   CONSTRAINT comedian_profile_PKC PRIMARY KEY (id),
   CONSTRAINT comedian_profile_FK1 FOREIGN KEY (user_id) REFERENCES user(id),
   INDEX comedian_profile_FK1 (user_id)
@@ -117,8 +117,8 @@ CREATE TABLE composer_profile (
   user_id INT NOT NULL COMMENT 'ユーザID',
   fee_type TINYINT NOT NULL COMMENT '料金体系:1:時給、2:成果物',
   fee INT NOT NULL COMMENT '金額',
-  create_at DATETIME COMMENT '作成日時',
-  update_at DATETIME COMMENT '更新日時',
+  create_at DATETIME COMMENT DEFAULT CURRENT_TIMESTAMP '作成日時',
+  update_at DATETIME COMMENT DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP '更新日時',
   CONSTRAINT composer_profile_PKC PRIMARY KEY (id),
   CONSTRAINT composer_profile_FK1 FOREIGN KEY (user_id) REFERENCES user(id),
   INDEX composer_profile_user_id_idx (user_id)

@@ -69,12 +69,10 @@ public class ProfileController extends _CmnController {
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public void register(@RequestBody ProfileBean bean) {
 
-      //debutDtをセット(作家のみ)
-      if(bean.getUserType() == UserEnum.COMEDIAN.getId()) {
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-          LocalDate debutDt = LocalDate.parse(bean.getDebutDtStr() + "-01", formatter);
-          bean.setDebutDt(debutDt);
-      }
+        // debutDtをセット
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate debutDt = LocalDate.parse(bean.getDebutDtStr() + "-01", formatter);
+        bean.setDebutDt(debutDt);
 
         // ユーザーをuserテーブルに登録する。
         userRepository.register(bean);

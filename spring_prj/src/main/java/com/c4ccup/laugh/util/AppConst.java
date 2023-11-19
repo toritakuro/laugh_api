@@ -80,7 +80,7 @@ public class AppConst {
         /** 1:動画編集　*/
         VIDEO_EDITTING(1, "動画編集"),
         /** 2:イラスト　*/
-        DESIGN(2, "イラスト"),
+        DESIGN(2, "イラスト制作"),
         /** 3:音源作成　*/
         SOUND_PRODUCTION(3, "音源制作"),
         /** 4:その他　*/

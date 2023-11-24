@@ -14,7 +14,9 @@ DROP TABLE IF EXISTS oogiri_reaction;
 DROP TABLE IF EXISTS own_comedy_style;
 DROP TABLE IF EXISTS special_skill;
 DROP TABLE IF EXISTS own_special_skill;
-DROP TABLE IF EXISTS notice
+DROP TABLE IF EXISTS notice;
+DROP TABLE IF EXISTS area;
+DROP TABLE IF EXISTS office;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- 地方
@@ -117,8 +119,8 @@ CREATE TABLE composer_profile (
   user_id INT NOT NULL COMMENT 'ユーザID',
   fee_type TINYINT NOT NULL COMMENT '料金体系:1:時給、2:成果物',
   fee INT NOT NULL COMMENT '金額',
-  create_at DATETIME COMMENT DEFAULT CURRENT_TIMESTAMP '作成日時',
-  update_at DATETIME COMMENT DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP '更新日時',
+  create_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
+  update_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
   CONSTRAINT composer_profile_PKC PRIMARY KEY (id),
   CONSTRAINT composer_profile_FK1 FOREIGN KEY (user_id) REFERENCES user(id),
   INDEX composer_profile_user_id_idx (user_id)

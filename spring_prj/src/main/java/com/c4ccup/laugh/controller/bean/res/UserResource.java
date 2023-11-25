@@ -630,6 +630,14 @@ public class UserResource {
         // String型に変換
         String activityYear = Integer.valueOf(differenceDate.getYear()).toString();
         String activityMonth = Integer.valueOf(differenceDate.getMonthValue()).toString();
+
+        if(date.getYear() == this.getDebutDt().getYear() && date.getMonthValue() == this.getDebutDt().getMonthValue()) {
+            // デビューした年月が今月の場合は0年0ヶ月目
+            // このようにしないと、上の計算方法では－1年12ヶ月目と計算されてしまう
+            activityYear = "0";
+            activityMonth = "0";
+        }
+
         String activityDate;
         // 活動年数
         int activityNum = differenceDate.getYear();

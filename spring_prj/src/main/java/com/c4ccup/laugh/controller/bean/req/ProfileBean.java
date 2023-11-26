@@ -449,7 +449,6 @@ public class ProfileBean {
         }
         return true;
     }
-
     /**
      * @return
      */
@@ -464,6 +463,17 @@ public class ProfileBean {
         int month = (int) ChronoUnit.MONTHS.between(dt.withDayOfMonth(1), LocalDate.now().withDayOfMonth(1));
         return (month >= 0 && (month / 12) <= 100);
     }
+    /**
+     * @return
+     */
+    @AssertTrue(message = "自己紹介文は500文字以内で入力して下さい")
+    public boolean isValidLong() {
+        if (this.selfIntroduction.isEmpty()) {
+            return true;
+        }
+        return (this.selfIntroduction.length() <= 500);
+    }
+
 
 
 }

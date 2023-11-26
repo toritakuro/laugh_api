@@ -80,6 +80,8 @@
       user
     WHERE
       user_address = #{mail}
+    AND
+      user.delete_flg = 0
   </select>
 
   <insert id="register" useGeneratedKeys="true" keyProperty="id">

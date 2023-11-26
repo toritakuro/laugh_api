@@ -2,6 +2,8 @@ package com.c4ccup.laugh.controller.bean.req;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.validation.constraints.AssertTrue;
@@ -447,6 +449,31 @@ public class ProfileBean {
         }
         return true;
     }
+    /**
+     * @return
+     */
+    @AssertTrue(message = "開始年月が適切ではありません。")
+    public boolean isValidDebut() {
+        if (this.getDebutDtStr().isEmpty()) {
+            return false;
+        }
+        // 開始年月が、今月～100年前の間であること
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dt = LocalDate.parse(this.getDebutDtStr() + "-01", formatter);
+        int month = (int) ChronoUnit.MONTHS.between(dt.withDayOfMonth(1), LocalDate.now().withDayOfMonth(1));
+        return (month >= 0 && (month / 12) <= 100);
+    }
+    /**
+     * @return
+     */
+    @AssertTrue(message = "自己紹介文は500文字以内で入力して下さい")
+    public boolean isValidLong() {
+        if (this.selfIntroduction.isEmpty()) {
+            return true;
+        }
+        return (this.selfIntroduction.length() <= 500);
+    }
+
 
 
 }

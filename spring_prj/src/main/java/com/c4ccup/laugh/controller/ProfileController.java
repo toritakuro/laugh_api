@@ -240,6 +240,11 @@ public class ProfileController extends _CmnController {
 
         int userId = bean.getId();
 
+        if(bean.getProfileImgPath().isEmpty()) {
+            userRepository.updateImg(userId, null);
+            return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール画像", "削除"))));
+        }
+
         //サムネイルをS3に登録
         String[] awsUploadFileInfo = Util.toAwsUploadFileInfo(bean.getProfileImgPath());
 
@@ -251,5 +256,7 @@ public class ProfileController extends _CmnController {
 
         return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール画像", "更新"))));
     }
+
+
 
 }

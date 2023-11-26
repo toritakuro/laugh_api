@@ -173,7 +173,7 @@ public class MyPageController extends _CmnController {
      * @param
      */
     @RequestMapping(value ="editFile" , method = RequestMethod.POST)
-    private ResponseEntity<ApiResource<Messages>> editFile(@RequestBody MyPageBean bean) {
+    private ResponseEntity<ApiResource<Messages>> editFile(@Validated @RequestBody MyPageBean bean) {
         bean.setUpdateAt(LocalDateTime.now());
         mypageRepository.editContent(bean);
 

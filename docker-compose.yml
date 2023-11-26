@@ -26,6 +26,8 @@ services:
       - 5005:5005
     depends_on:
       - db
+    environment:
+      - TZ=Asia/Tokyo
   db:
     container_name: db
     build:
@@ -52,6 +54,7 @@ services:
       - MYSQL_USER=${DB_USERNAME:-java}
       - MYSQL_PASSWORD=${DB_PASSWORD:-secret}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-secret}
+      - TZ=Asia/Tokyo
 
 volumes:
   m2:

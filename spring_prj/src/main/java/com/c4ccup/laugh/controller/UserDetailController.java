@@ -186,8 +186,8 @@ public class UserDetailController {
         if (matchStatus == MatchStatus.CANCEL.getStatus()) {
             matchStatusRepository.updateMatchStatus(bean);
             Chat chatRoomId = chatRepository.findChatRoom(chat);
-            chatRepository.deleteChatRoom(chatRoomId.getChatRoomId());
             chatRepository.deleteChatDetail(chatRoomId.getChatRoomId());
+            chatRepository.deleteChatRoom(chatRoomId.getChatRoomId());
         }
     }
 }

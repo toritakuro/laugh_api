@@ -30,8 +30,8 @@
       match_status = #{matchStatus}
       ,update_at = now()
     WHERE 
-      send_user_id = #{receiveUserId}
+      send_user_id = #{receiveUserId} OR send_user_id = #{sendUserId}
     AND
-      receive_user_id = #{sendUserId};  
+      receive_user_id = #{sendUserId} OR receive_user_id = #{receiveUserId};
   </update>
 </mapper>

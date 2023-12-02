@@ -354,6 +354,8 @@
   LEFT JOIN oogiri_reaction oor ON oor.oogiri_answer_id = oa.id
   WHERE
     oa.user_id = #{userId}
+  AND 
+    oa.delete_at IS NULL
   GROUP by ot.id, oa.id
   ORDER BY ot.update_at DESC, ot.id DESC, total_num DESC
 </select>

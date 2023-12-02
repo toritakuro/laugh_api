@@ -83,13 +83,15 @@ public class ProfileController extends _CmnController {
         bean.setUserId(registerUserId);
 
         //サムネイルをS3に登録
-        String[] awsUploadFileInfo = Util.toAwsUploadFileInfo(bean.getProfileImgPath());
+        if(bean.getProfileImgPath() != "") {
+            String[] awsUploadFileInfo = Util.toAwsUploadFileInfo(bean.getProfileImgPath());
 
-        byte[] decodedBytes = Base64.getDecoder().decode(awsUploadFileInfo[0]);
-        MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", "dummy" + awsUploadFileInfo[2], awsUploadFileInfo[1]);
-        String fileName = s3Util.uploadFile(registerUserId, multipartFile);
-        String url = AwsS3Util.S3URL + registerUserId +"/" + fileName;
-        userRepository.updateImg(registerUserId, url);
+            byte[] decodedBytes = Base64.getDecoder().decode(awsUploadFileInfo[0]);
+            MultipartFile multipartFile = new ByteArrayMultipartFile(decodedBytes, "file", "dummy" + awsUploadFileInfo[2], awsUploadFileInfo[1]);
+            String fileName = s3Util.uploadFile(registerUserId, multipartFile);
+            String url = AwsS3Util.S3URL + registerUserId +"/" + fileName;
+            userRepository.updateImg(registerUserId, url);
+        }
 
         // 作家プロフィールの登録
         if(bean.getUserType() == UserEnum.COMPOSER.getId()) {

@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import com.c4ccup.laugh.util.AppConst.FeeEnum;
 import com.c4ccup.laugh.util.AppConst.UserEnum;
@@ -25,8 +26,10 @@ public class ProfileBean {
     private String userAddress;
     /** 活動名 */
     @NotEmpty
+    @Size(min=0, max=50, message="活動名は50文字以内で入力して下さい。")
     private String userName;
     /** 活動名(かな) */
+    @Size(min=0, max=50, message="活動名(カナ)は50文字以内で入力して下さい。")
     private String userNameKana;
     /** 活動種別 */
     private int userType;
@@ -47,6 +50,7 @@ public class ProfileBean {
     /** 活動場所ID */
     private int areaId;
     /** 自己紹介文 */
+    @Size(min=0, max=500, message="自己紹介は500文字以内で入力して下さい。")
     private String selfIntroduction;
     /** プロフィール画像 */
     private String profileImgPath;
@@ -462,16 +466,6 @@ public class ProfileBean {
         LocalDate dt = LocalDate.parse(this.getDebutDtStr() + "-01", formatter);
         int month = (int) ChronoUnit.MONTHS.between(dt.withDayOfMonth(1), LocalDate.now().withDayOfMonth(1));
         return (month >= 0 && (month / 12) <= 100);
-    }
-    /**
-     * @return
-     */
-    @AssertTrue(message = "自己紹介文は500文字以内で入力して下さい")
-    public boolean isValidLong() {
-        if (this.selfIntroduction.isEmpty()) {
-            return true;
-        }
-        return (this.selfIntroduction.length() <= 500);
     }
 
 

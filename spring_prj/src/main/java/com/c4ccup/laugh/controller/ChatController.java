@@ -148,7 +148,7 @@ public class ChatController {
 
         // お知らせ送信
         NoticeBean noticeBean = new NoticeBean();
-        noticeBean.setTargetType(AppConst.NoticeType.LAUGH.getType());
+        noticeBean.setTargetType(AppConst.NoticeType.MESSAGE.getType());
         noticeBean.setTargetId(chat.getChatRoomId());
         noticeBean.setUserIdFrom(request.getUserId());
         noticeBean.setUserId(request.getTargetUserId());

@@ -118,7 +118,7 @@ public class MyPageController extends _CmnController {
      * @return int[] 0:年、1:月
      */
     private int[] getActiveTerm(LocalDate debutAt) {
-        int month = (int) ChronoUnit.MONTHS.between(debutAt.withDayOfMonth(1), LocalDate.now().withDayOfMonth(1)) + 1;
+        int month = (int) ChronoUnit.MONTHS.between(debutAt.withDayOfMonth(1), LocalDate.now().withDayOfMonth(1));
         return new int[]{(month / 12),(month % 12)};
     }
 

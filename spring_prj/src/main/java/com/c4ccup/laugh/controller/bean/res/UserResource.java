@@ -114,9 +114,9 @@ public class UserResource {
         if (user.getSpecialSkillIds() != null) {
             this.specialSkillIdList = Util.toIntList(user.getSpecialSkillIds());
             this.specialSkillNameList = Util.toStrList(user.getSpecialSkillNames());
-            if (user.getAnotherSkillNames() != null) {
-                this.anotherSkill = user.getAnotherSkillNames();
-            }
+        }
+        if (user.getAnotherSkillNames() != null) {
+            this.anotherSkill = user.getAnotherSkillNames();
         }
     }
 

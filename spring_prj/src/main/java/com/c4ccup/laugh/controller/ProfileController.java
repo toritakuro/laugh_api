@@ -221,13 +221,15 @@ public class ProfileController extends _CmnController {
                 profileBeanList.add(profile);
             }
             // 「その他」で自由入力された内容は、specialSkillId = nullで登録する
-            if(!bean.getAnotherSkill().isEmpty()) {
+            if(bean.getAnotherSkill() != null && !bean.getAnotherSkill().isEmpty()) {
                 ProfileBean profile = new ProfileBean();
                 profile.setUserId(loginUserId);
                 profile.setAnotherSkill(bean.getAnotherSkill());
                 profileBeanList.add(profile);
             }
-            userRepository.registerOwnSpecialSkill(profileBeanList);
+            if (profileBeanList != null) {
+                userRepository.registerOwnSpecialSkill(profileBeanList);
+            }
         }
 
         return ResponseEntity.ok(new ApiResource<>(super.getReturnMsg(msgUtil.getMessage("s001", "プロフィール", "更新"))));

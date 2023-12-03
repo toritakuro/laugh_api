@@ -627,6 +627,9 @@ public class UserResource {
         // 現在日付と活動開始年月の差分を取得
         LocalDate differenceYear = date.minusYears(this.getDebutDt().getYear());
         LocalDate differenceDate = differenceYear.minusMonths(this.getDebutDt().getMonthValue());
+        if (differenceDate.getMonthValue() == 12) {
+            differenceDate = differenceDate.plusYears(1);
+        }
         // String型に変換
         String activityYear = Integer.valueOf(differenceDate.getYear()).toString();
         String activityMonth = Integer.valueOf(differenceDate.getMonthValue()).toString();
@@ -642,7 +645,9 @@ public class UserResource {
         // 活動年数
         int activityNum = differenceDate.getYear();
         // 画面表示用にセット
-        if (0 < differenceDate.getYear()) {
+        if (differenceDate.getMonthValue() == 12) {
+            activityDate = activityYear + "年 ";
+        } else if(differenceDate.getMonthValue() != 12 && 0 < differenceDate.getYear()) {
             activityDate = activityYear + "年 " + activityMonth + "ヶ月" ;
         } else {
             activityDate = activityMonth + "ヶ月 " ;

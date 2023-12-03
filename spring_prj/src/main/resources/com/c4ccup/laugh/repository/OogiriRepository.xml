@@ -199,7 +199,7 @@
         tu.profile_img_path as theme_user_img,
         t.theme_content,
         t.create_at as theme_create_at,
-        COUNT(r.id) as reaction_num,
+        COUNT(CASE WHEN r.reaction_status = 11 THEN 1 ELSE NULL END) as reaction_num,
         GROUP_CONCAT(r.id ORDER BY r.user_id ASC) as reaction_ids,
         GROUP_CONCAT(r.user_id) as reaction_user_ids,
         GROUP_CONCAT(r.reaction_status ORDER BY r.user_id ASC) as reaction_status

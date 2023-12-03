@@ -93,7 +93,7 @@ CREATE TABLE chat_detail (
   id INT AUTO_INCREMENT NOT NULL COMMENT 'ID',
   chat_room_list_id INT NOT NULL COMMENT 'チャットルームリストID',
   send_user_id INT NOT NULL COMMENT '送信者ID',
-  chat_message VARCHAR(500) NOT NULL COMMENT '送信文',
+  chat_message VARCHAR(1024) NOT NULL COMMENT '送信文',
   readed_flg tinyint NOT NULL DEFAULT '0' COMMENT '既読フラグ',
   create_at DATETIME COMMENT '作成日時',
   update_at DATETIME COMMENT '更新日時',

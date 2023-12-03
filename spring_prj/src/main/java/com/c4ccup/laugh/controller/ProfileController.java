@@ -227,7 +227,7 @@ public class ProfileController extends _CmnController {
                 profile.setAnotherSkill(bean.getAnotherSkill());
                 profileBeanList.add(profile);
             }
-            if (profileBeanList != null) {
+            if (profileBeanList != null && !profileBeanList.isEmpty()) {
                 userRepository.registerOwnSpecialSkill(profileBeanList);
             }
         }
